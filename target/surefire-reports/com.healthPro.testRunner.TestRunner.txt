@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: com.healthPro.testRunner.TestRunner
+-------------------------------------------------------------------------------
+Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 338.057 s - in com.healthPro.testRunner.TestRunner
