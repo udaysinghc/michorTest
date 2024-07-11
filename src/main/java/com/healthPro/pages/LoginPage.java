@@ -35,32 +35,35 @@ public class LoginPage extends DriverFactory {
     @FindBy(css = "[class*='container-fluid'] h1")
     private WebElement home;
 
-    public WebElement getEmailField() {
-        return emailField;
-    }
+    @FindBy(xpath="//div[@class='text-center card-body']/..")
+    private WebElement links;
 
-    public WebElement getPasswordField() {
-        return passwordField;
-    }
+    @FindBy(css = "[class*='d-flex'] h2")
+    private WebElement notification;
 
-    public WebElement getLoginButton() {
-        return loginButton;
-    }
+    @FindBy(css = "[class*='d-flex m']")
+    private WebElement allNotification;
 
-    public void loginApp() throws InterruptedException {
-        Thread.sleep(8000);
+
+
+    public void loginApp()  {
+
         String email=prop.getProperty("userName");
         String password=prop.getProperty("password");
-        getEmailField().sendKeys(email);
-        getPasswordField().sendKeys(password);
-        getLoginButton().click();
+        ts.presenceOfElementWait(emailField);
+        emailField.sendKeys(email);
+        ts.presenceOfElementWait(passwordField);
+        passwordField.sendKeys(password);
+        ts.presenceOfElementWait(loginButton);
+        loginButton.click();
     }
 
-    public void homePage() throws InterruptedException {
-        Thread.sleep(9000);
+    public void homePage(){
         ts.presenceOfElementWait(home);
-        String text = home.getText();
-        System.out.println(text);
+        ts.presenceOfElementWait(links);
+        ts.presenceOfElementWait(notification);
+        ts.presenceOfElementWait(allNotification);
+
     }
 
 

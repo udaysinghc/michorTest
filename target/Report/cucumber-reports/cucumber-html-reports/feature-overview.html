@@ -51,7 +51,7 @@ $(document).ready(function() {
     var chartData = {
         datasets: [{
             data: [
-                19,
+                39,
                 0,
                 0,
                 0,
@@ -94,7 +94,7 @@ $(document).ready(function() {
                         var allData = data.datasets[tooltipItem.datasetIndex].data;
                         var tooltipLabel = data.labels[tooltipItem.index];
                         var tooltipData = allData[tooltipItem.index];
-                        var tooltipPercentage = Math.round(10000 * tooltipData / 19) / 100;
+                        var tooltipPercentage = Math.round(10000 * tooltipData / 39) / 100;
                         return tooltipLabel + ': ' + tooltipData + ' (' + tooltipPercentage + '%)';
                     }
                 }
@@ -107,7 +107,7 @@ $(document).ready(function() {
     var chartData = {
         datasets: [{
             data: [
-                6,
+                14,
                 0
             ],
             backgroundColor: [
@@ -144,7 +144,7 @@ $(document).ready(function() {
                         var allData = data.datasets[tooltipItem.datasetIndex].data;
                         var tooltipLabel = data.labels[tooltipItem.index];
                         var tooltipData = allData[tooltipItem.index];
-                        var tooltipPercentage = Math.round(10000 * tooltipData / 6) / 100;
+                        var tooltipPercentage = Math.round(10000 * tooltipData / 14) / 100;
                         return tooltipLabel + ': ' + tooltipData + ' (' + tooltipPercentage + '%)';
                     }
                 }
@@ -157,7 +157,7 @@ $(document).ready(function() {
     var chartData = {
         datasets: [{
             data: [
-                   3,
+                   4,
                    0
                ],
                backgroundColor: [
@@ -191,7 +191,7 @@ $(document).ready(function() {
                         var allData = data.datasets[tooltipItem.datasetIndex].data;
                         var tooltipLabel = data.labels[tooltipItem.index];
                         var tooltipData = allData[tooltipItem.index];
-                        var tooltipPercentage = Math.round(10000 * tooltipData / 3) / 100;
+                        var tooltipPercentage = Math.round(10000 * tooltipData / 4) / 100;
                         return tooltipLabel + ': ' + tooltipData + ' (' + tooltipPercentage + '%)';
                     }
                 }
@@ -231,9 +231,9 @@ $(document).ready(function() {
         </thead>
         <tbody>
           <tr class="info">
-            <td>HealthProTest</td>
+            <td>MoichorTestAutomation</td>
                           <td>1</td>
-                        <td>09 Jul 2024, 10:23</td>
+                        <td>11 Jul 2024, 11:10</td>
           </tr>
         </tbody>
       </table>
@@ -323,33 +323,48 @@ $(document).ready(function() {
 
   <tbody>
           <tr>
+        <td class="tagname"><a href="file-src-test-java-com-healthPro-feature-client-Patient-feature.html">Test the Patient Functionality</a></td>
+        
+        <td  class="passed"    >5</td>
+        <td >0</td>
+        <td class="total">5</td>
+        <td      class="passed"    >13</td>
+        <td >0</td>
+        <td >0</td>
+        <td >0</td>
+        <td >0</td>
+        <td class="total">13</td>
+        <td class="duration" data-value="99232718300">1m 39s 232ms</td>
+        <td class="passed">Passed</td>
+      </tr>
+          <tr>
         <td class="tagname"><a href="file-src-test-java-com-healthPro-feature-client-Veterinarian-feature.html">Test the Veterinarian Functionality</a></td>
         
-        <td  class="passed"    >2</td>
+        <td  class="passed"    >4</td>
         <td >0</td>
-        <td class="total">2</td>
-        <td      class="passed"    >6</td>
-        <td >0</td>
-        <td >0</td>
+        <td class="total">4</td>
+        <td      class="passed"    >10</td>
         <td >0</td>
         <td >0</td>
-        <td class="total">6</td>
-        <td class="duration" data-value="60873198500">1m 873ms</td>
+        <td >0</td>
+        <td >0</td>
+        <td class="total">10</td>
+        <td class="duration" data-value="33664482500">33s 664ms</td>
         <td class="passed">Passed</td>
       </tr>
           <tr>
         <td class="tagname"><a href="file-src-test-java-com-healthPro-feature-client-Clients-feature.html">Test the client functionality</a></td>
         
-        <td  class="passed"    >3</td>
+        <td  class="passed"    >4</td>
         <td >0</td>
-        <td class="total">3</td>
-        <td      class="passed"    >11</td>
-        <td >0</td>
-        <td >0</td>
+        <td class="total">4</td>
+        <td      class="passed"    >14</td>
         <td >0</td>
         <td >0</td>
-        <td class="total">11</td>
-        <td class="duration" data-value="144695388300">2m 24s 695ms</td>
+        <td >0</td>
+        <td >0</td>
+        <td class="total">14</td>
+        <td class="duration" data-value="70676233300">1m 10s 676ms</td>
         <td class="passed">Passed</td>
       </tr>
           <tr>
@@ -364,24 +379,24 @@ $(document).ready(function() {
         <td >0</td>
         <td >0</td>
         <td class="total">2</td>
-        <td class="duration" data-value="18229800800">18s 229ms</td>
+        <td class="duration" data-value="6453762500">6s 453ms</td>
         <td class="passed">Passed</td>
       </tr>
       </tbody>
 
   <tfoot class="total">
     <tr>
-      <td>3</td>
-            <td>6</td>
+      <td>4</td>
+            <td>14</td>
       <td>0</td>
-      <td>6</td>
-      <td>19</td>
-      <td>0</td>
-      <td>0</td>
+      <td>14</td>
+      <td>39</td>
       <td>0</td>
       <td>0</td>
-      <td>19</td>
-      <td class="duration">3m 43s 798ms</td>
+      <td>0</td>
+      <td>0</td>
+      <td>39</td>
+      <td class="duration">3m 30s 027ms</td>
       <td></td>
     </tr>
     <tr>

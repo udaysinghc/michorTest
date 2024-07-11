@@ -24,29 +24,44 @@ public class VeterinarianPageSteps extends DriverFactory {
 
 
     @When("Add a veterinarian")
-    public void addAVeterinarian() throws InterruptedException {
+    public void addAVeterinarian() {
         veterinarianPage.clickOnVetButton();
         veterinarianPage.addTheVet();
     }
 
     @Then("Added Veterinarian is displayed")
-    public void addedVeterinarianIsDisplayed() throws InterruptedException {
+    public void addedVeterinarianIsDisplayed() {
         veterinarianPage.searchTheAddedVet();
     }
 
     @When("search for added Veterinarian and delete it.")
-    public void searchForAddedVeterinarianAndDeleteIt() throws InterruptedException {
+    public void searchForAddedVeterinarianAndDeleteIt() {
         veterinarianPage.clickOnVetButton();
         veterinarianPage.searchTheAddedVet();
         veterinarianPage.deleteTheVet();
     }
 
     @Then("deleted Veterinarian is not displayed")
-    public void deletedVeterinarianIsNotDisplayed() throws InterruptedException {
+    public void deletedVeterinarianIsNotDisplayed() {
 
-        veterinarianPage.searchTheAddedVet();
+        veterinarianPage.searchTheDeleteVet();
     }
 
 
+    @When("Edit a Veterinarian")
+    public void editAVeterinarian() {
+        veterinarianPage.clickOnVetButton();
+        veterinarianPage.searchTheAddedVet();
+        veterinarianPage.editTheVet();
 
+    }
+
+
+    @When("click on toggle button and verify the message")
+    public void clickOnToggleButtonAndVerifyTheMessage()  {
+        veterinarianPage.clickOnVetButton();
+        veterinarianPage.verifyTheToggleButton();
+
+
+    }
 }

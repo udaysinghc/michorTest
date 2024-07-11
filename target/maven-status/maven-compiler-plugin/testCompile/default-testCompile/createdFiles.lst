@@ -3,3 +3,4 @@ com\healthPro\stepDefinations\BowserHandle.class
 com\healthPro\stepDefinations\LoginSteps.class
 com\healthPro\stepDefinations\ClientsPageSteps.class
 com\healthPro\stepDefinations\VeterinarianPageSteps.class
+com\healthPro\stepDefinations\PatientPageSteps.class

@@ -18,7 +18,7 @@ public class LoginSteps {
 
 
   @Given("^user logged in to the application$")
-  public void userLoggedInToTheApplication() throws InterruptedException {
+  public void userLoggedInToTheApplication()  {
 
    loginPage.loginApp();
 
@@ -26,8 +26,7 @@ public class LoginSteps {
 
 
     @Then("home page is displayed")
-    public void homePageIsDisplayed() throws InterruptedException {
-
+    public void homePageIsDisplayed() {
       loginPage.homePage();
     }
 

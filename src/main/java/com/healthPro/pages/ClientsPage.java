@@ -51,11 +51,33 @@ public class ClientsPage  {
     @FindBy(id="external_id")
     private WebElement externalId;
 
-    @FindBy(css = "[class*='float']")
+    @FindBy(css = "[class*=' css-1d']")
+    private WebElement clientName;
+
+    @FindBy(xpath = "//button[text()='SAVE']")
     private WebElement saveButton;
 
-    @FindBy(xpath = "//div/a/p[contains(@class,'list-it')]")
+    @FindBy(css = "[role='status']")
+    private WebElement status;
+
+    @FindBy(xpath = "(//div/a/p[contains(@class,'list-it')])[1]")
     private WebElement selectClient;
+
+    @FindBy(css = "[class*='col'] h1")
+    private WebElement clientDetails;
+
+    @FindBy(xpath = "//a[text()='Main']")
+    private WebElement mainText;
+
+
+    @FindBy(id = "city")
+    private WebElement cityField;
+
+    @FindBy(id="state")
+    private WebElement stateField;
+
+    @FindBy(id="zip")
+    private WebElement zipField;
 
     @FindBy(css = "[class*='flex-grow']")
     private WebElement createPatientButton;
@@ -106,14 +128,20 @@ public class ClientsPage  {
     @FindBy(css = "[class*='align-self-center d-flex flex-column flex-m'] a")
     private WebElement addedPatient;
 
+    @FindBy(xpath = "(//div/a/p[contains(@class,'list-it')])[1]")
+    private WebElement selectPatient;
+
     @FindBy(css = "[class*='float-right m-1 b']")
-    private WebElement deleteClient;
+    private WebElement deleteButton;
 
     @FindBy(css = "[class*='d-flex fl']")
     private WebElement confirmDelete;
 
     @FindBy(css = "[class*='infinite-scroll-component ']")
     private WebElement noResultMessage;
+
+    @FindBy(css = "[class*='text-ce']")
+    private WebElement noResultFound;
 
     public void clickOnClientButton()
     {
@@ -126,39 +154,53 @@ public class ClientsPage  {
   static  Random r=new Random();
    static int random=r.nextInt(100);
     String clientID=prop.getProperty("externalID");
-    public void addClient() throws InterruptedException {
-        Thread.sleep(5000);
+    public void addClient()  {
         ts.presenceOfElementWait(addNewButton);
         addNewButton.click();
         String fn = prop.getProperty("firstNameClient");
         String ln = prop.getProperty("lastNameClient");
+        ts.presenceOfElementWait(firstName);
         firstName.sendKeys(fn+random);
-        Thread.sleep(2000);
         lastName.sendKeys(ln);
-        Thread.sleep(2000);
         externalId.sendKeys(clientID);
-        Thread.sleep(2000);
         saveButton.click();
-        Thread.sleep(5000);
+        ts.presenceOfElementWait(status);
 
     }
 
-    public void searchTheAddedClient() throws InterruptedException {
-        Thread.sleep(2000);
+    public void searchTheAddedClient() {
         ts.presenceOfElementWait(search);
         search.sendKeys(clientID);
         ts.presenceOfElementWait(selectClient);
-        Thread.sleep(2000);
     }
 
     public void selectClient() throws InterruptedException {
-        Thread.sleep(5000);
         ts.presenceOfElementWait(search);
         search.sendKeys(clientID);
         ts.presenceOfElementWait(selectClient);
-        Thread.sleep(5000);
         selectClient.click();
+        ts.presenceOfElementWait(clientDetails);
+        ts.presenceOfElementWait(mainText);
+        String fn = prop.getProperty("firstNameClient");
+        String ln = prop.getProperty("lastNameClient");
+        String mail=fn+random+" "+ln;
         Thread.sleep(5000);
+        WebElement client = driver.findElement(By.xpath("//li[text()='" +mail+ "']"));
+        ts.presenceOfElementWait(client);
+
+    }
+
+    public void editTheClient()
+    {
+        ts.presenceOfElementWait(cityField);
+        String city=prop.getProperty("city");
+        cityField.sendKeys(city);
+        String state=prop.getProperty("state");
+        stateField.sendKeys(state);
+        String zip=prop.getProperty("zip");
+        zipField.sendKeys(zip);
+        saveButton.click();
+        ts.presenceOfElementWait(status);
     }
 
     public void clickOnNewPatient()
@@ -170,47 +212,88 @@ public class ClientsPage  {
 
    static int random2=r.nextInt(100);
     String patientID=prop.getProperty("idPatient");
-    public void addPatient() throws InterruptedException {
+    public void addPatient() {
         ts.presenceOfElementWait(pName);
+        ts.presenceOfElementWait(clientName);
         String name=prop.getProperty("namePatient");
         pName.sendKeys(name+random2);
         weightDropDown.click();
-        Thread.sleep(2000);
         ts.doActionsClick(weightUnit);
         String wg=prop.getProperty("weightPatient");
         weightText.sendKeys(wg);
-        Thread.sleep(2000);
         internalId.sendKeys(patientID);
-        Thread.sleep(2000);
         speciesDropDown.click();
+        ts.presenceOfElementWait(speciesText);
         ts.doActionsClick(speciesText);
         patientSaveButton.click();
-        Thread.sleep(2000);
+        ts.presenceOfElementWait(status);
 
     }
 
-    public void searchTheAddedPatient() throws InterruptedException {
+    public void editThePatient() {
         ts.presenceOfElementWait(patientLink);
         patientLink.click();
-        Thread.sleep(2000);
         ts.presenceOfElementWait(addedPatient);
-        Thread.sleep(4000);
+        addedPatient.click();
+        String date=prop.getProperty("date");
+        ts.presenceOfElementWait(dob);
+        dob.sendKeys(date);
+        saveButton.click();
+        ts.presenceOfElementWait(status);
+    }
+
+
+
+    public void searchTheAddedPatient() {
+        ts.presenceOfElementWait(patientLink);
+        patientLink.click();
+        ts.presenceOfElementWait(addedPatient);
+
 
     }
 
-    public void deleteTheAddedClient() throws InterruptedException {
-        ts.presenceOfElementWait(deleteClient);
-        deleteClient.click();
+    public void deleteTheAddedClient() {
+        ts.presenceOfElementWait(deleteButton);
+        deleteButton.click();
         ts.presenceOfElementWait(confirmDelete);
         confirmDelete.click();
-        Thread.sleep(2000);
+        ts.presenceOfElementWait(status);
     }
 
-    public void searchTheDeletedClient() throws InterruptedException {
-        Thread.sleep(2000);
+    public void searchTheDeletedClient() {
         ts.presenceOfElementWait(search);
         search.sendKeys(clientID);
         ts.presenceOfElementWait(noResultMessage);
-        Thread.sleep(2000);
+
     }
+
+    public void searchTheEditedPatient()
+    {
+        search.sendKeys(patientID);
+        ts.presenceOfElementWait(selectPatient);
+        selectPatient.click();
+    }
+
+    public void deleteThePatient()
+    {
+        ts.presenceOfElementWait(patientLink);
+        patientLink.click();
+        ts.presenceOfElementWait(addedPatient);
+        addedPatient.click();
+        ts.presenceOfElementWait(deleteButton);
+        deleteButton.click();
+        ts.presenceOfElementWait(confirmDelete);
+        confirmDelete.click();
+        ts.presenceOfElementWait(status);
+
+    }
+    public void searchTheDeletedPatient()
+    {
+        ts.presenceOfElementWait(patientLink);
+        patientLink.click();
+        ts.presenceOfElementWait(noResultFound);
+
+
+    }
+
 }

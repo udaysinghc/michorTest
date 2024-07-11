@@ -4,4 +4,5 @@ com\healthPro\base\DriverFactory.class
 com\healthPro\pages\LoginPage.class
 com\healthPro\util\TestUtil.class
 com\healthPro\pages\ClientsPage.class
+com\healthPro\pages\PatientPage.class
 com\healthPro\util\ConfigReader.class

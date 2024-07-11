@@ -23,14 +23,14 @@ public class ClientsPageSteps extends DriverFactory {
     }
 
     @When("Add a Client")
-    public void addAClient() throws InterruptedException {
+    public void addAClient() {
         clientsPage.clickOnClientButton();
         clientsPage.addClient();
 
     }
 
     @Then("Added client is displayed")
-    public void addedClientIsDisplayed() throws InterruptedException {
+    public void addedClientIsDisplayed()  {
 
         clientsPage.searchTheAddedClient();
     }
@@ -42,7 +42,7 @@ public class ClientsPageSteps extends DriverFactory {
     }
 
     @And("add a patient")
-    public void addAPatient() throws InterruptedException {
+    public void addAPatient()  {
         clientsPage.clickOnNewPatient();
         clientsPage.addPatient();
     }
@@ -58,14 +58,60 @@ public class ClientsPageSteps extends DriverFactory {
     }
 
     @And("delete the selected client")
-    public void deleteTheSelectedClient() throws InterruptedException {
+    public void deleteTheSelectedClient() {
         clientsPage.deleteTheAddedClient();
 
     }
 
     @Then("deleted client is not displayed")
-    public void deletedClientIsNotDisplayed() throws InterruptedException {
+    public void deletedClientIsNotDisplayed()  {
         clientsPage.searchTheDeletedClient();
+
+    }
+
+
+    @When("edit the client")
+    public void editTheClient() throws InterruptedException {
+        clientsPage.clickOnClientButton();
+        clientsPage.selectClient();
+        clientsPage.editTheClient();
+
+    }
+
+    @Then("edited data is displayed")
+    public void editedDataIsDisplayed() throws InterruptedException {
+        clientsPage.selectClient();
+    }
+
+    @When("edit the patient")
+    public void editThePatient() throws InterruptedException {
+        clientsPage.clickOnClientButton();
+        clientsPage.selectClient();
+        clientsPage.editThePatient();
+
+    }
+
+    @Then("edited data is displayed in patient")
+    public void editedDataIsDisplayedInPatient()  {
+        clientsPage.searchTheEditedPatient();
+    }
+
+
+    @When("delete the patient")
+    public void deleteThePatient() throws InterruptedException {
+        clientsPage.clickOnClientButton();
+        clientsPage.selectClient();
+        clientsPage.deleteThePatient();
+
+    }
+
+    @Then("deleted patient is not display")
+    public void deletedPatientIsNotDisplay() throws InterruptedException {
+        clientsPage.clickOnClientButton();
+        clientsPage.selectClient();
+        clientsPage.searchTheDeletedPatient();
+
+
 
     }
 }

@@ -43,6 +43,10 @@ public class TestUtil {
     return text;
   }
 
+  public String doGetElementAttribute(WebElement element, String attrName) {
+    return element.getAttribute(attrName);
+  }
+
   public void click(WebElement element1) {
     element1.click();
   }
@@ -100,6 +104,14 @@ public class TestUtil {
     act.moveToElement(ele).click().build().perform();
   }
 
+
+  public void scrollIntoView(WebElement element) {
+    js.executeScript("arguments[0].scrollIntoView(true);", element);
+  }
+
+  public void scrollPageDown() {
+    js.executeScript("window.scrollTo(0, document.body.scrollHeight);");
+  }
   // location of file
   public static String avatarFile = System.getProperty("user.dir") + "\\Resources\\avatar.jpg";
 }
