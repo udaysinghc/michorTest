@@ -98,8 +98,8 @@
                         </goals>
                         <configuration>
                             <projectName>MoichorTestAutomation</projectName>
-                            <outputDirectory>${project.build.directory}/Report/cucumber-reports</outputDirectory>
                             <cucumberOutput>${project.build.directory}/cucumber/cucumber.json</cucumberOutput>
+                            <outputDirectory>${project.build.directory}/Report/cucumber-reports</outputDirectory>
                             <skippedFails>true</skippedFails>
                         </configuration>
                     </execution>
