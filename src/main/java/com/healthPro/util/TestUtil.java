@@ -6,6 +6,7 @@ import java.awt.Toolkit;
 import java.awt.datatransfer.StringSelection;
 import java.sql.Driver;
 import java.time.Duration;
+import java.util.LinkedList;
 import java.util.List;
 
 import com.healthPro.base.DriverFactory;
@@ -34,7 +35,7 @@ public class TestUtil {
   }
   public void presenceOfElementWait(WebElement elemen) {
     webelement =
-        (new WebDriverWait(driver, Duration.ofSeconds(120))
+        (new WebDriverWait(driver, Duration.ofSeconds(40))
             .until(ExpectedConditions.visibilityOf(elemen)));
   }
 
@@ -112,6 +113,23 @@ public class TestUtil {
   public void scrollPageDown() {
     js.executeScript("window.scrollTo(0, document.body.scrollHeight);");
   }
+
+  public void scrollPageUP() {
+    js.executeScript("window.scrollTo(0, -document.body.scrollHeight);");
+  }
+
+
+  public void switchToTab(int index) {
+    var handlers = new LinkedList<String>(driver.getWindowHandles());
+    driver.switchTo().window(handlers.get(index));
+  }
+
+  public void openNewTab()
+  {
+    driver.switchTo().newWindow(WindowType.TAB);
+  }
+
+
   // location of file
   public static String avatarFile = System.getProperty("user.dir") + "\\Resources\\avatar.jpg";
 }

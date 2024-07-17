@@ -57,7 +57,7 @@ public class PatientPageSteps extends DriverFactory {
     }
 
     @Then("Add a test to added patient")
-    public void addATestToAddedPatient()  {
+    public void addATestToAddedPatient() throws InterruptedException {
         patientPage.clickOnPatientButton();
         patientPage.selectTheAddedPatient();
         patientPage.addTest();
@@ -69,4 +69,7 @@ public class PatientPageSteps extends DriverFactory {
     public void addedTestIsDisplayedOnTestPage() {
         patientPage.searchTheTest();
     }
+
+
+
 }

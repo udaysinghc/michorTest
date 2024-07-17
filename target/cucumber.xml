@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="Cucumber" time="739.735" tests="35" skipped="0" failures="0" errors="0">
+<testcase classname="Test the Functionality of AddNewSpecies module" name="Verify Add New Species" time="15.205">
+<system-out><![CDATA[
+Given user logged in to the application.....................................passed
+Then add a new species......................................................passed
+]]></system-out>
+</testcase>
+<testcase classname="Test the functionality of billing module" name="Verify View Invoice in Billing" time="14.68">
+<system-out><![CDATA[
+Given user logged in to the application.....................................passed
+Then check for an existing invoice..........................................passed
+]]></system-out>
+</testcase>
+<testcase classname="Test the functionality of billing module" name="Verify Download Invoice PDF in Billing" time="24.702">
+<system-out><![CDATA[
+Given user logged in to the application.....................................passed
+Then check for download invoice pdf.........................................passed
+]]></system-out>
+</testcase>
+<testcase classname="Test the client functionality" name="Add a client" time="11.461">
+<system-out><![CDATA[
+Given user logged in to the application.....................................passed
+When Add a Client...........................................................passed
+Then Added client is displayed..............................................passed
+]]></system-out>
+</testcase>
+<testcase classname="Test the client functionality" name="Edit the Added client" time="23.617">
+<system-out><![CDATA[
+Given user logged in to the application.....................................passed
+When edit the client........................................................passed
+Then edited data is displayed...............................................passed
+]]></system-out>
+</testcase>
+<testcase classname="Test the client functionality" name="Add a Patient" time="30.888">
+<system-out><![CDATA[
+Given user logged in to the application.....................................passed
+When Select the added client................................................passed
+And add a patient...........................................................passed
+Then patient is displayed...................................................passed
+]]></system-out>
+</testcase>
+<testcase classname="Test the client functionality" name="Delete the added client" time="16.735">
+<system-out><![CDATA[
+Given user logged in to the application.....................................passed
+When Select the added client................................................passed
+And delete the selected client..............................................passed
+Then deleted client is not displayed........................................passed
+]]></system-out>
+</testcase>
+<testcase classname="Test the Functionality of feedback module" name="Verify Give Feedback" time="11.579">
+<system-out><![CDATA[
+Given user logged in to the application.....................................passed
+Then add a feedback.........................................................passed
+]]></system-out>
+</testcase>
+<testcase classname="Test the Functionality of all elements in Home page" name="Verify Search for Client or Create Client on the fly from Test Ordering" time="18.997">
+<system-out><![CDATA[
+Given user logged in to the application.....................................passed
+Then add a client from home page............................................passed
+Then added client is displayed on client page and delete it.................passed
+]]></system-out>
+</testcase>
+<testcase classname="Test the Functionality of all elements in Home page" name="Verify Search for Patient or Create Patient on the fly from Test Ordering" time="17.046">
+<system-out><![CDATA[
+Given user logged in to the application.....................................passed
+Then search for a patient and update a patient..............................passed
+]]></system-out>
+</testcase>
+<testcase classname="Test the Functionality of all elements in Home page" name="verify the shipping label functionality" time="23.047">
+<system-out><![CDATA[
+Given user logged in to the application.....................................passed
+Then click on create shipping label element.................................passed
+]]></system-out>
+</testcase>
+<testcase classname="Test the Functionality of all elements in Home page" name="Verify Search for Test Bundle from Test Ordering" time="21.853">
+<system-out><![CDATA[
+Given user logged in to the application.....................................passed
+Then add a test from select test menu.......................................passed
+]]></system-out>
+</testcase>
+<testcase classname="Test the Functionality of LabTestDirectory" name="Verify View Lab Test Directory" time="42.489">
+<system-out><![CDATA[
+Given user logged in to the application.....................................passed
+Then check the Lab Test Directory page......................................passed
+Then check for each element in test bundles.................................passed
+]]></system-out>
+</testcase>
+<testcase classname="Test the Functionality of LabTestDirectory" name="Verify Search Lab Test Directory" time="14.895">
+<system-out><![CDATA[
+Given user logged in to the application.....................................passed
+Then search the relevant test from search lab test directory................passed
+]]></system-out>
+</testcase>
+<testcase classname="Test the login Functionality" name="open the browser and login." time="12.29">
+<system-out><![CDATA[
+Given user logged in to the application.....................................passed
+Then home page is displayed.................................................passed
+]]></system-out>
+</testcase>
+<testcase classname="Test the Functionality of Logistics module" name="Verify Get sample shipping label" time="55.865">
+<system-out><![CDATA[
+Given user logged in to the application.....................................passed
+Then select the sample to include in shipping...............................passed
+]]></system-out>
+</testcase>
+<testcase classname="Test the Functionality of Logistics module" name="Verify Request Supplies" time="18.756">
+<system-out><![CDATA[
+Given user logged in to the application.....................................passed
+Then Select items for supplies..............................................passed
+]]></system-out>
+</testcase>
+<testcase classname="Test the Patient Functionality" name="Add a patient from patient page" time="23.317">
+<system-out><![CDATA[
+When user logged in to the application......................................passed
+Then Add a patient from patient page........................................passed
+]]></system-out>
+</testcase>
+<testcase classname="Test the Patient Functionality" name="Edit the Patient" time="19.692">
+<system-out><![CDATA[
+Given user logged in to the application.....................................passed
+Then edit the patient from patient page.....................................passed
+Then edited data is displayed on patient....................................passed
+]]></system-out>
+</testcase>
+<testcase classname="Test the Patient Functionality" name="Delete the patient" time="16.105">
+<system-out><![CDATA[
+Given user logged in to the application.....................................passed
+Then delete the patient from patient page...................................passed
+Then deleted patient is not display on patient page.........................passed
+]]></system-out>
+</testcase>
+<testcase classname="Test the Patient Functionality" name="Add a test to created patient" time="31.703">
+<system-out><![CDATA[
+Given user logged in to the application.....................................passed
+Then Add a patient from patient page........................................passed
+Then Add a test to added patient............................................passed
+]]></system-out>
+</testcase>
+<testcase classname="Test the Patient Functionality" name="Search the added test" time="28.592">
+<system-out><![CDATA[
+Given user logged in to the application.....................................passed
+Then Added test is displayed on test page...................................passed
+]]></system-out>
+</testcase>
+<testcase classname="Test the functionality of sign out" name="Verify the Sign Out functionality" time="19.615">
+<system-out><![CDATA[
+Given user logged in to the application.....................................passed
+Then sign out from the application..........................................passed
+Then login page is displayed................................................passed
+]]></system-out>
+</testcase>
+<testcase classname="Test the Functionality of Tests Page" name="Add a test from test page" time="31.11">
+<system-out><![CDATA[
+Given user logged in to the application.....................................passed
+Then add a test.............................................................passed
+]]></system-out>
+</testcase>
+<testcase classname="Test the Functionality of Tests Page" name="Edit a test from test page" time="15.917">
+<system-out><![CDATA[
+Given user logged in to the application.....................................passed
+Then edit the test..........................................................passed
+]]></system-out>
+</testcase>
+<testcase classname="Test the Functionality of Tests Page" name="Delete a test from test page" time="12.218">
+<system-out><![CDATA[
+Given user logged in to the application.....................................passed
+Then delete the test........................................................passed
+]]></system-out>
+</testcase>
+<testcase classname="Test the Functionality of Tests Page" name="Verify View Filter tests by statuses" time="38.575">
+<system-out><![CDATA[
+Given user logged in to the application.....................................passed
+Then check all test status..................................................passed
+]]></system-out>
+</testcase>
+<testcase classname="Test the Functionality of Tests Page" name="Verify Sample info sheet from Info Sheet button from test page" time="10.57">
+<system-out><![CDATA[
+Given user logged in to the application.....................................passed
+Then check for info sheet...................................................passed
+]]></system-out>
+</testcase>
+<testcase classname="Test the Functionality of Tests Page" name="Verify Test Archiving" time="43.123">
+<system-out><![CDATA[
+Given user logged in to the application.....................................passed
+Then archive the test.......................................................passed
+Then archive test is displayed on archive page..............................passed
+]]></system-out>
+</testcase>
+<testcase classname="Test the Functionality of Tests Page" name="Verify Filter test by Ordering Veterinarians" time="13.841">
+<system-out><![CDATA[
+Given user logged in to the application.....................................passed
+Then select the veterinarian from test module...............................passed
+]]></system-out>
+</testcase>
+<testcase classname="Test the Functionality of Tests Page" name="Verify Search Test by patient name" time="13.491">
+<system-out><![CDATA[
+Given user logged in to the application.....................................passed
+Then search for existing patient from test module...........................passed
+]]></system-out>
+</testcase>
+<testcase classname="Test the Veterinarian Functionality" name="Add a Veterinarian" time="11.562">
+<system-out><![CDATA[
+Given user logged in to the application.....................................passed
+When Add a veterinarian.....................................................passed
+Then Added Veterinarian is displayed........................................passed
+]]></system-out>
+</testcase>
+<testcase classname="Test the Veterinarian Functionality" name="Edit a Veterinarian" time="12.823">
+<system-out><![CDATA[
+Given user logged in to the application.....................................passed
+When Edit a Veterinarian....................................................passed
+]]></system-out>
+</testcase>
+<testcase classname="Test the Veterinarian Functionality" name="verify sms notification toggle button" time="10.758">
+<system-out><![CDATA[
+Given user logged in to the application.....................................passed
+When click on toggle button and verify the message..........................passed
+]]></system-out>
+</testcase>
+<testcase classname="Test the Veterinarian Functionality" name="Delete the added Veterinarian" time="12.242">
+<system-out><![CDATA[
+Given user logged in to the application.....................................passed
+When search for added Veterinarian and delete it............................passed
+Then deleted Veterinarian is not displayed..................................passed
+]]></system-out>
+</testcase>
+</testsuite>

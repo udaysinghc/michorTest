@@ -174,7 +174,9 @@ public class PatientPage {
     String patientID=prop.getProperty("idPatient");
     public void addPatient() throws InterruptedException {
         ts.presenceOfElementWait(addNewButton);
+        Thread.sleep(2000);
         addNewButton.click();
+        Thread.sleep(2000);
         ts.presenceOfElementWait(pName);
         String name=prop.getProperty("namePatient");
         pName.sendKeys(name+random2);
@@ -233,7 +235,7 @@ public class PatientPage {
 
     }
     static String codeText;
-    public void addTest() {
+    public void addTest() throws InterruptedException {
         ts.presenceOfElementWait(createTest);
         createTest.click();
         ts.presenceOfElementWait(selectTestFromMenu);
@@ -250,7 +252,9 @@ public class PatientPage {
         codeText = ts.doGetElementAttribute(code, "value");
         System.out.println(codeText);
         ts.scrollPageDown();
+        ts.presenceOfElementWait(createButton);
         createButton.click();
+        Thread.sleep(5000);
         ts.presenceOfElementWait(status);
 
     }

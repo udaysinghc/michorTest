@@ -1,6 +1,14 @@
-D:\MoichorUiAutomation\Moichor\src\test\java\com\healthPro\stepDefinations\LoginSteps.java
-D:\MoichorUiAutomation\Moichor\src\test\java\com\healthPro\stepDefinations\PatientPageSteps.java
-D:\MoichorUiAutomation\Moichor\src\test\java\com\healthPro\stepDefinations\ClientsPageSteps.java
-D:\MoichorUiAutomation\Moichor\src\test\java\com\healthPro\stepDefinations\VeterinarianPageSteps.java
-D:\MoichorUiAutomation\Moichor\src\test\java\com\healthPro\stepDefinations\BowserHandle.java
-D:\MoichorUiAutomation\Moichor\src\test\java\com\healthPro\testRunner\TestRunner.java
+C:\Users\Admin\Desktop\michor git\michorTest\src\test\java\com\healthPro\stepDefinations\BowserHandle.java
+C:\Users\Admin\Desktop\michor git\michorTest\src\test\java\com\healthPro\stepDefinations\ClientsPageSteps.java
+C:\Users\Admin\Desktop\michor git\michorTest\src\test\java\com\healthPro\stepDefinations\PatientPageSteps.java
+C:\Users\Admin\Desktop\michor git\michorTest\src\test\java\com\healthPro\stepDefinations\AddNewSpeciesPageSteps.java
+C:\Users\Admin\Desktop\michor git\michorTest\src\test\java\com\healthPro\stepDefinations\LogisticsPageSteps.java
+C:\Users\Admin\Desktop\michor git\michorTest\src\test\java\com\healthPro\stepDefinations\LoginSteps.java
+C:\Users\Admin\Desktop\michor git\michorTest\src\test\java\com\healthPro\stepDefinations\SignOutPageSteps.java
+C:\Users\Admin\Desktop\michor git\michorTest\src\test\java\com\healthPro\testRunner\TestRunner.java
+C:\Users\Admin\Desktop\michor git\michorTest\src\test\java\com\healthPro\stepDefinations\LabTestDirectoryPAgeSteps.java
+C:\Users\Admin\Desktop\michor git\michorTest\src\test\java\com\healthPro\stepDefinations\VeterinarianPageSteps.java
+C:\Users\Admin\Desktop\michor git\michorTest\src\test\java\com\healthPro\stepDefinations\HomePageSteps.java
+C:\Users\Admin\Desktop\michor git\michorTest\src\test\java\com\healthPro\stepDefinations\FeedBackPageSteps.java
+C:\Users\Admin\Desktop\michor git\michorTest\src\test\java\com\healthPro\stepDefinations\TestsPageSteps.java
+C:\Users\Admin\Desktop\michor git\michorTest\src\test\java\com\healthPro\stepDefinations\BillingPageSteps.java
