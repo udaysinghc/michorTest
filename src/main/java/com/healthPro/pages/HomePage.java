@@ -4,6 +4,7 @@ import com.healthPro.base.DriverFactory;
 import com.healthPro.util.ConfigReader;
 import com.healthPro.util.TestUtil;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -62,6 +63,8 @@ public class HomePage {
     @FindBy(xpath = "(//span[@class='float-right']/parent::div/descendant::div[@id])[1]")
     private WebElement patientDropDown;
 
+    @FindBy(xpath = "(//span[@class='float-right']/parent::div/descendant::div[@id])[1]/descendant::input")
+    private WebElement patientInput;
 
     @FindBy(css = "[class='close'] span")
     private WebElement cancelButton;
@@ -281,8 +284,7 @@ public class HomePage {
         ts.scrollIntoView(selectTestFromMenu);
     }
 
-    public void selectClientPatient()
-    {
+    public void selectClientPatient() throws InterruptedException {
         ts.presenceOfElementWait(orderIcon);
         orderIcon.click();
         ts.presenceOfElementWait(clientDropDown);
@@ -294,8 +296,13 @@ public class HomePage {
         selectClient.click();
         ts.presenceOfElementWait(patientDropDown);
         patientDropDown.click();
-        ts.presenceOfElementWait(selectPatient);
-        selectPatient.click();
+        ts.presenceOfElementWait(patientInput);
+        String pn=prop.getProperty("searchPatient");
+        patientInput.sendKeys(pn);
+        Thread.sleep(4000);
+        patientInput.sendKeys(Keys.ENTER);
+//        ts.presenceOfElementWait(selectPatient);
+//        selectPatient.click();
     }
     public void selectTestMenu() throws InterruptedException {
         Thread.sleep(5000);
