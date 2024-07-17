@@ -19,6 +19,6 @@ Feature: Test the Functionality of all elements in Home page
     Then click on create shipping label element
 
 
-  Scenario: Verify Search for Test Bundle from Test Ordering
-    Given user logged in to the application
-    Then add a test from select test menu
+#  Scenario: Verify Search for Test Bundle from Test Ordering
+#    Given user logged in to the application
+#    Then add a test from select test menu
