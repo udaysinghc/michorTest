@@ -1,5 +1,6 @@
 package com.moichor.stepDefinations;
 
+
 import com.moichor.base.DriverFactory;
 import com.moichor.pages.HomePage;
 import io.cucumber.java.en.Then;
@@ -26,7 +27,7 @@ public class HomePageSteps extends DriverFactory {
 
 
     @Then("added client is displayed on client page and delete it")
-    public void addedClientIsDisplayedOnClientPageAndDeleteIt() {
+    public void addedClientIsDisplayedOnClientPageAndDeleteIt() throws InterruptedException {
         homePage.clickOnCancelButton();
         homePage.deleteTheAddedClient();
     }
@@ -57,4 +58,25 @@ public class HomePageSteps extends DriverFactory {
     }
 
 
+    @Then("create a patient from home page")
+    public void createAPatientFromHomePage() throws InterruptedException {
+        homePage.searchTheClient();
+        homePage.addPatient();
+    }
+
+
+
+    @Then("created patient is displayed on patient page and delete it")
+    public void createdPatientIsDisplayedOnPatientPageAndDeleteIt() throws InterruptedException {
+        homePage.clickOnCancelButton();
+        homePage.searchForAddedPatient();
+        homePage.deleteTheAddedPatient();
+
+    }
+
+    @Then("create a patient from home page while turn on the colony mode")
+    public void createAPatientFromHomePageWhileTurnOnTheColonyMode() throws InterruptedException {
+        homePage.turnOnColonyModeAndAddAPatient();
+
+    }
 }

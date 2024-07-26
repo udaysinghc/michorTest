@@ -9,9 +9,9 @@ Feature: Test the Functionality of all elements in Home page
     Given user logged in to the application
     Then search for a patient and update a patient
 
-#  Scenario: Verify Patient on Colony Mode
-#    Given user logged in to the application
-#    Then search for a patient and turn on the colony mode and update the patient
+  Scenario: Verify Patient on Colony Mode
+    Given user logged in to the application
+    Then search for a patient and turn on the colony mode and update the patient
 
 
   Scenario: verify the shipping label functionality

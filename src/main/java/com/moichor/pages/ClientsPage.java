@@ -119,6 +119,9 @@ public class ClientsPage  {
    @FindBy(id="react-select-refspecies-option-1")
    private WebElement speciesText;
 
+    @FindBy(css =  "[placeholder='DOB']")
+    private WebElement date;
+
     @FindBy(css = "[class*='float-right']")
     private WebElement patientSaveButton;
 
@@ -225,6 +228,8 @@ public class ClientsPage  {
         speciesDropDown.click();
         ts.presenceOfElementWait(speciesText);
         ts.doActionsClick(speciesText);
+        String dateOfPatient=prop.getProperty("dateOfBirth");
+        date.sendKeys(dateOfPatient);
         patientSaveButton.click();
         ts.presenceOfElementWait(status);
 

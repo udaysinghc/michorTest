@@ -196,6 +196,8 @@ public class PatientPage {
         ts.presenceOfElementWait(speciesDropDown);
         speciesDropDown.click();
         ts.doActionsClick(speciesText);
+        String dateOFBirth=prop.getProperty("dateOfBirth");
+        dob.sendKeys(dateOFBirth);
         patientSaveButton.click();
         ts.presenceOfElementWait(status);
     }
