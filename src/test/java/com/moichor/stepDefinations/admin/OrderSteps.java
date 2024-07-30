@@ -44,4 +44,20 @@ public class OrderSteps extends DriverFactory {
         adminOrderPage.clickOnOrdersButton();
         adminOrderPage.searchTheTest();
     }
+
+    @Then("check all test status in admin portal")
+    public void checkAllTestStatusInAdminPortal() throws InterruptedException {
+        adminOrderPage.clickOnOrdersButton();
+        adminOrderPage.testStatus();
+    }
+
+    @Then("Edit the patient from order page")
+    public void editThePatientFromOrderPage() {
+
+        adminOrderPage.clickOnOrdersButton();
+        adminOrderPage.editThePatient();
+
+    }
+
+
 }

@@ -64,6 +64,9 @@ public class NotificationPage {
     @FindBy(css = "[class='false nav-link']")
     private WebElement messageSent;
 
+    @FindBy(css = "[class='active nav-link']")
+    private WebElement messageReceived;
+
     @FindBy(xpath = "(//*[@class='d-flex flex-row list-item-card card'])[1]")
     private WebElement sentMessageDisplayed;
 
@@ -127,6 +130,10 @@ public class NotificationPage {
     {
         ts.presenceOfElementWait(notificationButton);
         notificationButton.click();
+        ts.presenceOfElementWait(messageSent);
+        messageSent.click();
+        ts.presenceOfElementWait(messageReceived);
+        messageReceived.click();
         ts.presenceOfElementWait(sentMessageDisplayed);
         String sms= prop.getProperty("message");
         ts.presenceOfElementWait(messageText);

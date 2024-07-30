@@ -122,7 +122,7 @@ public class TestsPage {
     @FindBy(css = "[class='infinite-scroll-component__outerdiv']")
     private WebElement allTests;
 
-    @FindBy(xpath = "(//p/span[contains(@class,'cursor-pointer badge badge')])[1]")
+    @FindBy(xpath = "(//span[@class='cursor-pointer flex badge badge-info badge-pill'])[1]")
     private WebElement infoSheet;
 
     @FindBy(xpath = "(//div[contains(@class,'d-flex flex-column c')]/descendant::button)[1]")

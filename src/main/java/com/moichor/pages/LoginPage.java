@@ -47,8 +47,8 @@ public class LoginPage extends DriverFactory {
 
     public void loginApp()  {
 
-        String email=prop.getProperty("userName");
-        String password=prop.getProperty("password");
+        String email=prop.getProperty("clientUsername");
+        String password=prop.getProperty("clientPassword");
         ts.presenceOfElementWait(emailField);
         emailField.sendKeys(email);
         ts.presenceOfElementWait(passwordField);

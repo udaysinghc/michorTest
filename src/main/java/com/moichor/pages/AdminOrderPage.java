@@ -7,6 +7,8 @@ import com.moichor.util.TestUtil;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+
+import java.util.List;
 import java.util.Properties;
 
 
@@ -82,6 +84,33 @@ public class AdminOrderPage {
     @FindBy(xpath = "(//div[contains(@class,'d-flex list')])[1]")
     private WebElement firstTest;
 
+    @FindBy(xpath = "//div/p[text()='Test status']")
+    private WebElement testStatus;
+
+    @FindBy(css = "[class='infinite-scroll-component__outerdiv']")
+    private WebElement allTests;
+    
+
+    @FindBy(css = "[class*='edit_text_button']")
+    private WebElement editButton;
+
+    @FindBy(css = "[class='modal-header'] h5")
+    private WebElement patientForm;
+
+    @FindBy(id="weight")
+    private WebElement weightInput;
+
+    @FindBy(css = "[placeholder='DOB']")
+    private WebElement dob;
+
+    @FindBy(css = "[type='submit']")
+    private WebElement saveDetailButton;
+
+    @FindBy(css = "[role='status']")
+    private WebElement status;
+
+    @FindBy(xpath = "(//div[@class='col-12']/descendant::div[contains(@class,'d-flex flex-row list-title')]/p)[1]")
+    private WebElement selectTest;
 
     public void clickOnOrdersButton()
     {
@@ -150,5 +179,38 @@ public class AdminOrderPage {
         Thread.sleep(4000);
         speciesInput.sendKeys(Keys.ENTER);
         ts.presenceOfElementWait(firstTest);
+    }
+
+    List<WebElement> allTestStatus;
+    public void testStatus() throws InterruptedException {
+        ts.presenceOfElementWait(testStatus);
+        allTestStatus = driver.findElements(By.cssSelector("[class*='px'] [href*='/app/']"));
+        for(WebElement r:allTestStatus)
+        {
+            r.click();
+            ts.scrollIntoView(r);
+            ts.presenceOfElementWait(allTests);
+            Thread.sleep(2000);
+        }
+    }
+
+    public void editThePatient()
+    {
+        ts.presenceOfElementWait(selectTest);
+        selectTest.click();
+        ts.presenceOfElementWait(editButton);
+        editButton.click();
+        ts.presenceOfElementWait(patientForm);
+        ts.presenceOfElementWait(weightInput);
+        weightInput.clear();
+        String pWeight=prop.getProperty("patientWeight");
+        weightInput.sendKeys(pWeight);
+        ts.presenceOfElementWait(dob);
+        dob.clear();
+        String date=prop.getProperty("patientDOB");
+        dob.sendKeys(date);
+        ts.presenceOfElementWait(saveDetailButton);
+        saveDetailButton.click();
+        ts.presenceOfElementWait(status);
     }
 }
