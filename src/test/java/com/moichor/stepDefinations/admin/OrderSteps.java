@@ -7,6 +7,8 @@ import com.moichor.pages.AdminOrderPage;
 import io.cucumber.java.en.Then;
 import org.openqa.selenium.JavascriptExecutor;
 
+import java.awt.*;
+
 public class OrderSteps extends DriverFactory {
 
     private final AdminOrderPage adminOrderPage;
@@ -60,4 +62,26 @@ public class OrderSteps extends DriverFactory {
     }
 
 
+    @Then("upload the image and send a message with image")
+    public void uploadTheImageAndSendAMessageWithImage() throws InterruptedException, AWTException {
+        adminOrderPage.clickOnOrdersButton();
+        adminOrderPage.uploadImage();
+        adminOrderPage.sendMessage();
+    }
+
+    @Then("reply to that message")
+    public void replyToThatMessage() {
+        adminOrderPage.replyMessage();
+    }
+
+    @Then("turn on historical toggle button")
+    public void turnOnHistoricalToggleButton() throws InterruptedException {
+        adminOrderPage.turnOnToggle();
+    }
+
+    @Then("check for validation test status")
+    public void checkForValidationTestStatus() throws InterruptedException {
+        adminOrderPage.clickOnOrdersButton();
+        adminOrderPage.testValidationStatus();
+    }
 }

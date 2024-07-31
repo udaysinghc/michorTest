@@ -4,6 +4,7 @@ import java.awt.AWTException;
 import java.awt.Robot;
 import java.awt.Toolkit;
 import java.awt.datatransfer.StringSelection;
+import java.awt.event.KeyEvent;
 import java.time.Duration;
 import java.util.LinkedList;
 
@@ -65,7 +66,15 @@ public class TestUtil {
 
     // Create an object for robot class
     Robot robot = new Robot();
-    new Actions(driver).sendKeys(Keys.ENTER).build().perform();
+    robot.keyPress(KeyEvent.VK_CONTROL);
+    robot.keyPress(KeyEvent.VK_V);
+    robot.keyRelease(KeyEvent.VK_V);
+    robot.keyRelease(KeyEvent.VK_CONTROL);
+
+    // Press ENTER to confirm the file selection
+    robot.keyPress(KeyEvent.VK_ENTER);
+    robot.keyRelease(KeyEvent.VK_ENTER);
+//    new Actions(driver).sendKeys(Keys.ENTER).build().perform();
     // Control key in the keyboard
     // Ctrl+V
 

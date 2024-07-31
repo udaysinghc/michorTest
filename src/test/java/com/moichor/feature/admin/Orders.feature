@@ -26,3 +26,14 @@ Feature: Test The Functionality Of Orders Module
   Scenario: Verify the Edit patient from Order page functionality
     Given user logged in to the admin portal
     Then Edit the patient from order page
+
+
+  Scenario: Verify the View Result functionality from Order page functionality
+    Given user logged in to the admin portal
+    Then upload the image and send a message with image
+    Then reply to that message
+    Then turn on historical toggle button
+
+  Scenario: Verify the test validation functionality of view result
+    Given user logged in to the admin portal
+    Then check for validation test status
