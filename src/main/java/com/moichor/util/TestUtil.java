@@ -32,10 +32,10 @@ public class TestUtil {
 
     }
   }
-  public void presenceOfElementWait(WebElement elemen) {
+  public void presenceOfElementWait(WebElement element) {
     webelement =
         (new WebDriverWait(driver, Duration.ofSeconds(40))
-            .until(ExpectedConditions.visibilityOf(elemen)));
+            .until(ExpectedConditions.visibilityOf(element)));
   }
 
   public String getElement(WebElement element1) {

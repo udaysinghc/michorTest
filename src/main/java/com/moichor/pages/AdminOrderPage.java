@@ -371,6 +371,7 @@ public class AdminOrderPage {
         ts.presenceOfElementWait(status);
         ts.presenceOfElementWait(viewResultButton);
         viewResultButton.click();
+        Thread.sleep(4000);
         ts.scrollIntoView(validationCheck);
         validationCheck.click();
         ts.presenceOfElementWait(saveButtonForComplete);
