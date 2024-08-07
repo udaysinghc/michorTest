@@ -1,11 +1,13 @@
 package com.moichor.stepDefinations.admin;
 
 import com.moichor.base.DriverFactory;
+import com.moichor.pages.AdminOrderPage;
 import com.moichor.pages.AdminTestPage;
 import io.cucumber.java.en.Then;
 import org.openqa.selenium.JavascriptExecutor;
 
 public class TestsSteps extends DriverFactory {
+
 
     private final AdminTestPage adminTestPage;
     private final JavascriptExecutor js;
@@ -45,4 +47,14 @@ public class TestsSteps extends DriverFactory {
         adminTestPage.searchTheApplicationStatus();
 
     }
+
+    @Then("search for an existing test")
+    public void searchForAnExistingTest() {
+        adminTestPage.selectTheTestID();
+        adminTestPage.clickOnQCLink();
+        adminTestPage.searchForAnTest();
+
+    }
+
+
 }

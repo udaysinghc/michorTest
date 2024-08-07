@@ -85,7 +85,7 @@ public class NotificationPage {
     @FindBy(xpath = "(//*[@class='card-body'])[1]")
     private WebElement sentMessage;
 
-    @FindBy(xpath = "(//div[@class='w-30 mb-1 w-sm-100 notification-item d-flex flex-row'])[1]")
+    @FindBy(xpath = "(//div[contains(@class,'notification-item d-flex flex-row')])[2]/p")
     private WebElement messageText;
 
     public void clickOnTestButton()
@@ -130,11 +130,11 @@ public class NotificationPage {
     {
         ts.presenceOfElementWait(notificationButton);
         notificationButton.click();
-        ts.presenceOfElementWait(messageSent);
-        messageSent.click();
-        ts.presenceOfElementWait(messageReceived);
-        messageReceived.click();
-        ts.presenceOfElementWait(sentMessageDisplayed);
+//        ts.presenceOfElementWait(messageSent);
+//        messageSent.click();
+//        ts.presenceOfElementWait(messageReceived);
+//        messageReceived.click();
+//        ts.presenceOfElementWait(sentMessageDisplayed);
         String sms= prop.getProperty("message");
         ts.presenceOfElementWait(messageText);
         String text = messageText.getText();

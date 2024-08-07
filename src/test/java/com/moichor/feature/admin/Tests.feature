@@ -15,3 +15,7 @@ Feature: Test The Functionality Of Tests Module
   Scenario: Verify the Applicable Status dropdown functionality
     Given user logged in to the admin portal
     Then search multiple status from applicable status dropdown
+
+  Scenario: Verify the Search for Find Test functionality
+    Given user logged in to the admin portal
+    Then search for an existing test

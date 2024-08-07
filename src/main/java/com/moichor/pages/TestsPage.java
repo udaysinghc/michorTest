@@ -185,6 +185,9 @@ public class TestsPage {
         String nameOfTest=prop.getProperty("testName");
         Thread.sleep(5000);
         driver.findElement(By.xpath("//label[text()='"+nameOfTest+"']/preceding-sibling::input")).click();
+        Thread.sleep(5000);
+        String nameOFSecondTest=prop.getProperty("testName2");
+        driver.findElement(By.xpath("//label[text()='"+nameOFSecondTest+"']/preceding-sibling::input")).click();
         ts.scrollPageDown();
         ts.presenceOfElementWait(applyCloseButton);
         applyCloseButton.click();

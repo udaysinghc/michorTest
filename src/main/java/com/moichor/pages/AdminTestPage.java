@@ -33,6 +33,24 @@ public class AdminTestPage {
     @FindBy(xpath = "//a[text()='Clinics']")
     private WebElement clinicsButton;
 
+    @FindBy(xpath = "//a[text()='Orders']")
+    private WebElement orderButton;
+
+    @FindBy(css = "[class*='col'] p")
+    private WebElement selectOrder;
+
+    @FindBy(xpath = "(//div[contains(@class,'d-flex flex-row align')])[1]/span[2]")
+    private WebElement testID;
+
+    @FindBy(xpath = "(//div[contains(@class,'d-flex flex-row align')])[1]/span[3]")
+    private WebElement testName;
+
+    @FindBy(css = "[class='btn btn-outline-primary']")
+    private WebElement closeButton;
+
+    @FindBy(xpath = "(//div[contains(@class,'d-flex flex-row')]/span)[2]")
+    private WebElement testStatus;
+
     @FindBy(css = "[data-flag='tests']")
     private WebElement testsButton;
 
@@ -80,6 +98,12 @@ public class AdminTestPage {
 
     @FindBy(xpath = "(//span[contains(@id,'live-region')]/..)[2]/descendant::input")
     private WebElement applicableStatusInput;
+
+    @FindBy(css = "[type='search']")
+    private WebElement findTestSearchBar;
+
+    @FindBy(xpath = "//table")
+    private WebElement table;
 
 
     public void clickOnTestButton()
@@ -194,6 +218,68 @@ public class AdminTestPage {
         }
 
 
+    }
+
+    static String testI;
+    static String testN;
+    static String testS;
+
+    public void selectTheTestID()
+    {
+        ts.presenceOfElementWait(clinicsButton);
+        ts.scrollIntoView(orderButton);
+        orderButton.click();
+        ts.presenceOfElementWait(testStatus);
+        testS=testStatus.getText();
+        ts.presenceOfElementWait(selectOrder);
+        selectOrder.click();
+        ts.presenceOfElementWait(testID);
+        ts.presenceOfElementWait(testName);
+        testI=testID.getText();
+        testN=testName.getText();
+        System.out.println(testI);
+        System.out.println(testN);
+        System.out.println(testS);
+        ts.scrollIntoView(closeButton);
+        closeButton.click();
+        ts.presenceOfElementWait(testsButton);
+        testsButton.click();
+
+    }
+
+    public void searchForAnTest()
+    {
+        ts.presenceOfElementWait(referenceTestDropDown);
+        referenceTestDropDown.click();
+        ts.presenceOfElementWait(referenceTestInput);
+        List<WebElement> allReference = driver.findElements(By.cssSelector("[role='listbox'] div"));
+        for(WebElement r: allReference)
+        {
+
+            if(r.getText().equalsIgnoreCase(testN))
+            {
+                r.click();
+                break;
+            }
+        }
+        ts.presenceOfElementWait(applicableStatusDropDown);
+        applicableStatusDropDown.click();
+        ts.presenceOfElementWait(applicableStatusInput);
+        List<WebElement> allApplicable = driver.findElements(By.cssSelector("[role='listbox'] div"));
+        for(WebElement r1:allApplicable)
+        {
+
+            if(r1.getText().equalsIgnoreCase(testS))
+            {
+                r1.click();
+                break;
+
+            }
+        }
+
+        ts.presenceOfElementWait(findTestSearchBar);
+        findTestSearchBar.sendKeys(testI);
+        ts.presenceOfElementWait(table);
     }
 
 

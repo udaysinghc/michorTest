@@ -51,6 +51,11 @@ public class TestUtil {
     element1.click();
   }
 
+  public void refreshTheWebPAge()
+  {
+    driver.navigate().refresh();
+  }
+
   public WebElement elementToBeClickableWait(By locator) {
     webelement =
         (new WebDriverWait(driver, Duration.ofSeconds(120))
@@ -110,6 +115,12 @@ public class TestUtil {
   public void doActionsClick(WebElement ele) {
     Actions act = new Actions(driver);
     act.moveToElement(ele).click().build().perform();
+  }
+
+  public void doActionsDoubleClick(WebElement ele)
+  {
+    Actions act=new Actions(driver);
+    act.moveToElement(ele).doubleClick().build().perform();
   }
 
 

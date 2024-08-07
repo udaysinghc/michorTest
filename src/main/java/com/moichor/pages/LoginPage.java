@@ -57,6 +57,8 @@ public class LoginPage extends DriverFactory {
         loginButton.click();
     }
 
+
+
     public void homePage(){
         ts.presenceOfElementWait(home);
         ts.presenceOfElementWait(links);
