@@ -554,6 +554,7 @@ public class AdminInvoicePage {
         ts.presenceOfElementWait(payInvoiceLink);
         ts.scrollIntoView(payInvoiceLink);
         payInvoiceLink.click();
+        ts.switchToTab(2);
         ts.presenceOfElementWait(paymentPage);
     }
 
