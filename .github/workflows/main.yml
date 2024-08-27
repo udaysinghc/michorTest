@@ -35,17 +35,6 @@ jobs:
         with:
           name: cucumber-reports
           path: '**/target/cucumber/cucumber.json'
-
-      - name: Send Slack notification on success
-        if: success()
-        run: |
-          curl -X POST -H 'Content-type: application/json' --data "{\"text\":\"Build successful! Cucumber Report: ${{ github.run_id }}\"}" ${{ secrets.SLACK_WEBHOOK_URL }}
-
-      - name: Send Slack notification on failure
-        if: failure()
-        run: |
-          curl -X POST -H 'Content-type: application/json' --data "{\"text\":\"Build failed! Jenkins Build: ${{ github.run_id }}\"}" ${{ secrets.SLACK_WEBHOOK_URL }}
-
       - name: Generate Cucumber Report
         if: always()
         run: |
