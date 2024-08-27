@@ -19,16 +19,12 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Set up JDK 11
+      - name: Set up JDK 11 and Maven
         uses: actions/setup-java@v3
         with:
           java-version: '11'
           distribution: 'adopt'  # or 'temurin', depending on your needs
-
-      - name: Set up Maven
-        uses: sormuras/actions/setup-maven@v1
-        with:
-          maven-version: '3.x'  # Specify the version of Maven
+          cache: 'maven'  # Enable caching for Maven dependencies
 
       - name: Build and run tests
         run: mvn clean install -Dcucumber.filter.tags="${{ github.event.inputs.CUCUMBER_TAGS }}"
