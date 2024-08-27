@@ -27,7 +27,7 @@ jobs:
           cache: 'maven'  # Enable caching for Maven dependencies
 
       - name: Build and run tests
-        run: mvn clean install -Dcucumber.filter.tags="@veterinarian" # mvn clean install -Dcucumber.filter.tags="${{ github.event.inputs.CUCUMBER_TAGS }}"
+        run: mvn clean install -Dcucumber.filter.tags=@veterinarian # mvn clean install -Dcucumber.filter.tags="${{ github.event.inputs.CUCUMBER_TAGS }}"
 
       - name: Archive Cucumber Reports
         if: success()
