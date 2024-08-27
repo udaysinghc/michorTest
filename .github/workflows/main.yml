@@ -29,13 +29,16 @@ jobs:
       - name: Build and run tests
         run: mvn clean install "-Dcucumber.filter.tags=@veterinarian" # mvn clean install -Dcucumber.filter.tags="${{ github.event.inputs.CUCUMBER_TAGS }}"
 
+      - name: Generate Cucumber Report
+        if: always()
+        run: |
+    # Add your Cucumber report generation logic here
+    # Example command if you use a specific tool:
+    # java -cp "path/to/your/report-generator.jar" com.yourcompany.ReportGenerator
       - name: Archive Cucumber Reports
         if: success()
         uses: actions/upload-artifact@v3
         with:
           name: cucumber-reports
-          path: '**/target/cucumber/cucumber.json'
-      - name: Generate Cucumber Report
-        if: always()
-        run: |
-          # Add your Cucumber report generation logic here, if needed
+          path: '**/target/cucumber-reports/*.json'
+
