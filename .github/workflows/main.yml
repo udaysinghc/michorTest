@@ -26,10 +26,9 @@ jobs:
           distribution: 'adopt'  # or 'temurin', depending on your needs
 
       - name: Set up Maven
-        uses: actions/setup-java@v3
+        uses: sormuras/actions/setup-maven@v1
         with:
-          distribution: 'maven'
-          maven-version: '3.x'
+          maven-version: '3.9.5'  # Specify the version of Maven
 
       - name: Build and run tests
         run: mvn clean install -Dcucumber.filter.tags="${{ github.event.inputs.CUCUMBER_TAGS }}"
