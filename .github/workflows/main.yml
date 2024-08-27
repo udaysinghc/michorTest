@@ -23,6 +23,7 @@ jobs:
         uses: actions/setup-java@v3
         with:
           java-version: '11'
+          distribution: 'adopt'  # or 'temurin', depending on your needs
 
       - name: Set up Maven
         uses: actions/setup-java@v3
@@ -43,16 +44,12 @@ jobs:
       - name: Send Slack notification on success
         if: success()
         run: |
-          curl -X POST -H 'Content-type: application/json' \
-          --data '{"text":"Build successful! Cucumber Report: ${{ github.run_id }}"}' \
-          ${{ secrets.SLACK_WEBHOOK_URL }}
+          curl -X POST -H 'Content-type: application/json' --data "{\"text\":\"Build successful! Cucumber Report: ${{ github.run_id }}\"}" ${{ secrets.SLACK_WEBHOOK_URL }}
 
       - name: Send Slack notification on failure
         if: failure()
         run: |
-          curl -X POST -H 'Content-type: application/json' \
-          --data '{"text":"Build failed! Jenkins Build: ${{ github.run_id }}"}' \
-          ${{ secrets.SLACK_WEBHOOK_URL }}
+          curl -X POST -H 'Content-type: application/json' --data "{\"text\":\"Build failed! Jenkins Build: ${{ github.run_id }}\"}" ${{ secrets.SLACK_WEBHOOK_URL }}
 
       - name: Generate Cucumber Report
         if: always()
