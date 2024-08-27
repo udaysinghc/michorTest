@@ -9,7 +9,7 @@ on:
       CUCUMBER_TAGS:
         description: 'Cucumber tags for test execution'
         required: false
-        default: '@veterinarian'
+        default: '@veterinarian'  # Default tag
 
 jobs:
   build:
@@ -23,38 +23,22 @@ jobs:
         uses: actions/setup-java@v3
         with:
           java-version: '11'
-          distribution: 'adopt'
-          cache: 'maven'
-
-      - name: Install ffmpeg
-        run: choco install ffmpeg
-
-      - name: Start video recording
-        run: |
-          mkdir -p recordings
-          ffmpeg -y -video_size 1920x1080 -framerate 30 -f gdigrab -i desktop recordings/test_run.mp4 &
-        shell: bash
+          distribution: 'adopt'  # or 'temurin', depending on your needs
+          cache: 'maven'  # Enable caching for Maven dependencies
 
       - name: Build and run tests
-        run: mvn clean install "-Dcucumber.filter.tags=@veterinarian"
-
-      - name: Stop video recording
-        run: taskkill /IM ffmpeg.exe /F
-
-      - name: Archive video recording
-        uses: actions/upload-artifact@v3
-        with:
-          name: test-video
-          path: recordings/test_run.mp4
+        run: mvn clean install "-Dcucumber.filter.tags=@veterinarian" # mvn clean install -Dcucumber.filter.tags="${{ github.event.inputs.CUCUMBER_TAGS }}"
 
       - name: Generate Cucumber Report
         if: always()
         run: |
-          # Add your Cucumber report generation logic here
-
+    # Add your Cucumber report generation logic here
+    # Example command if you use a specific tool:
+    # java -cp "path/to/your/report-generator.jar" com.yourcompany.ReportGenerator
       - name: Archive Cucumber Reports
         if: success()
         uses: actions/upload-artifact@v3
         with:
           name: cucumber-reports
           path: '**/target/cucumber-reports/*.json'
+
