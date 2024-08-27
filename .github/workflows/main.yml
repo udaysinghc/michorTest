@@ -32,11 +32,6 @@ jobs:
       - name: Generate Cucumber Report
         if: always()
         run: |
-         mvn net.masterthought:maven-cucumber-reporting:5.7.0:generate \
-         -Dcucumber.jsonReport=target/cucumber-reports/cucumber.json \
-         -Dcucumber.outputDir=target/cucumber-html-reports \
-         -Dcucumber.projectName="MyProject"
-
     # Add your Cucumber report generation logic here
     # Example command if you use a specific tool:
     # java -cp "path/to/your/report-generator.jar" com.yourcompany.ReportGenerator
