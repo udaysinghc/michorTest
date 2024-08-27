@@ -9,7 +9,7 @@ on:
       CUCUMBER_TAGS:
         description: 'Cucumber tags for test execution'
         required: false
-        default: ''
+        default: '@veterinarian'  # Default tag
 
 jobs:
   build:
