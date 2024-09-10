@@ -100,13 +100,13 @@ public class UsersPage {
     @FindBy(css = "[class*='text-center font-medium']")
     private WebElement getInbox;
 
-    @FindBy(css = "input[class*=' focus:bg-white']")
+    @FindBy(css = "input[placeholder='Enter username']")
     private WebElement userName;
 
     @FindBy(css = "[class*='dark:focus:border-primary-500']")
     private WebElement selectDomain;
 
-    @FindBy(css = "[class*='rounded-lg w-full1']")
+    @FindBy(xpath = "//button[text()='Add Inbox']")
     private WebElement addInbox;
 
     @FindBy(xpath = "//table/tbody/tr/td[2]")
