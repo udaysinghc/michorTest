@@ -27,17 +27,30 @@ jobs:
           cache: 'maven'  # Enable caching for Maven dependencies
 
       - name: Build and run tests
-        run: mvn clean install "-Dcucumber.filter.tags=@veterinarian" # mvn clean install -Dcucumber.filter.tags="${{ github.event.inputs.CUCUMBER_TAGS }}"
+        run: mvn clean install "-Dcucumber.filter.tags=@veterinarian"
+        # If you want to use dynamic tags based on workflow_dispatch input
+        # run: mvn clean install "-Dcucumber.filter.tags=${{ github.event.inputs.CUCUMBER_TAGS }}"
 
       - name: Generate Cucumber Report
         if: always()
         run: |
-    # Add your Cucumber report generation logic here
-    # Example command if you use a specific tool:
-    # java -cp "path/to/your/report-generator.jar" com.yourcompany.ReportGenerator
+          # Add your Cucumber report generation logic here
+          # Example command if you use a specific tool:
+          # java -cp "path/to/your/report-generator.jar" com.yourcompany.ReportGenerator
+
       - name: Archive Cucumber Reports
         if: success()
         uses: actions/upload-artifact@v3
         with:
           name: cucumber-reports
           path: '**/target/cucumber-reports/*.json'
+
+      - name: Notify Slack on Success
+        if: success()
+        run: |
+          curl -X POST -H 'Content-type: application/json' --data "{\"text\":\"Build successful! Cucumber Report: ${{ github.run_url }}\"}" ${{ secrets.SLACK_WEBHOOK_URL }}
+
+      - name: Notify Slack on Failure
+        if: failure()
+        run: |
+          curl -X POST -H 'Content-type: application/json' --data "{\"text\":\"Build failed! GitHub Actions Build: ${{ github.run_url }}\"}" ${{ secrets.SLACK_WEBHOOK_URL }}
