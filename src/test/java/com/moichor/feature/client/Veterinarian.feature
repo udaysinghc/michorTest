@@ -6,7 +6,7 @@ Feature: Test the Veterinarian Functionality
     When Add a veterinarian
     Then Added Veterinarian is displayed
 
-
+@EditVeterinarian
   Scenario: Edit a Veterinarian
     Given user logged in to the application
     When Edit a Veterinarian
