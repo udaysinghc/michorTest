@@ -1,4 +1,5 @@
 Feature: Test The Functionality OF Alerts Module
+  @alert
   Scenario: Verify Add Alerts, Search For The Alerts, Edit The Alerts, Delete The Alerts Functionalities
     Given user logged in to the admin portal
     Then add a alerts
