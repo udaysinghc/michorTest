@@ -43,7 +43,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: cucumber-reports
-          path: '**/target/cucumber-reports/*.json'
+          path: '**/target/cucumber/cucumber.json'
 
       - name: Notify Slack on Success
         if: success()
