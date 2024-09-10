@@ -1,0 +1,43 @@
+name: Java Maven Cucumber CI
+
+on:
+  push:
+    branches:
+      - master
+  workflow_dispatch:
+    inputs:
+      CUCUMBER_TAGS:
+        description: 'Cucumber tags for test execution'
+        required: false
+        default: '@veterinarian'  # Default tag
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up JDK 11 and Maven
+        uses: actions/setup-java@v3
+        with:
+          java-version: '11'
+          distribution: 'adopt'  # or 'temurin', depending on your needs
+          cache: 'maven'  # Enable caching for Maven dependencies
+
+      - name: Build and run tests
+        run: mvn clean install "-Dcucumber.filter.tags=@veterinarian" # mvn clean install -Dcucumber.filter.tags="${{ github.event.inputs.CUCUMBER_TAGS }}"
+
+      - name: Generate Cucumber Report
+        if: always()
+        run: |
+    # Add your Cucumber report generation logic here
+    # Example command if you use a specific tool:
+    # java -cp "path/to/your/report-generator.jar" com.yourcompany.ReportGenerator
+      - name: Archive Cucumber Reports
+        if: success()
+        uses: actions/upload-artifact@v3
+        with:
+          name: cucumber-reports
+          path: '**/target/cucumber-reports/*.json'
