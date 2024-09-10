@@ -28,6 +28,7 @@ Feature: Test The Functionality Of Invoices
     Given user logged in to the admin portal
     Then download the invoice from an existing invoice
 
+
   Scenario: Verify the Edit Invoice functionality
     Given user logged in to the admin portal
     Then edit the price of any issued invoice

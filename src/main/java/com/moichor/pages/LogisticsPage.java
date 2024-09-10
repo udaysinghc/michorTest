@@ -3,12 +3,16 @@ package com.moichor.pages;
 import com.moichor.base.DriverFactory;
 import com.moichor.util.ConfigReader;
 import com.moichor.util.TestUtil;
+import org.junit.Assert;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Properties;
 
@@ -37,8 +41,23 @@ public class LogisticsPage {
     @FindBy(xpath = "//i[contains(@class,'iconsminds-t')]/..")
     private WebElement sampleButton;
 
+    @FindBy(xpath = "//i[@class='simple-icon-reload']/..")
+    private WebElement reloadButton;
+
     @FindBy(xpath = "//i[contains(@class,'iconsminds-sho')]/..")
     private WebElement suppliesButton;
+
+    @FindBy(css = "[placeholder='Start']")
+    private WebElement startDate;
+
+    @FindBy(css = "[placeholder='End']")
+    private WebElement endDate;
+
+    @FindBy(xpath = "(//div[contains(@class,'d-flex flex')]/*/*/a)[1]")
+    private WebElement firstSampleRequest;
+
+    @FindBy(css = "[class*='infinite'] h3")
+    private WebElement noResultFound;
 
     @FindBy(css = "[class*='text-zero top'] button")
     private WebElement requestSupplies;
@@ -80,7 +99,7 @@ public class LogisticsPage {
            sampleButton.click();
            ts.presenceOfElementWait(getSampleShippingLabelButton);
            getSampleShippingLabelButton.click();
-           ts.presenceOfElementWait(confirmRequest);
+           ts.waitForTheElementVisibility(confirmRequest,5);
            confirmRequest.click();
            Thread.sleep(5000);
            ts.switchToTab(0);
@@ -93,6 +112,40 @@ public class LogisticsPage {
            System.out.println(noSampleTest.getText());
        }
 
+    }
+
+    public void searchTheSampleShipment()  {
+        clickOnLogisticButton();
+        ts.presenceOfElementWait(sampleButton);
+        sampleButton.click();
+        ts.presenceOfElementWait(startDate);
+        String sDate=prop.getProperty("startDateForSample");
+        startDate.sendKeys(sDate, Keys.ENTER);
+        String eDate=localDate();
+        endDate.sendKeys(eDate, Keys.ENTER);
+        try{
+            ts.waitForTheElementVisibility(firstSampleRequest,5);
+        }
+        catch (Exception e)
+        {
+            ts.waitForTheElementVisibility(noResultFound,5);
+            String actual=noResultFound.getText();
+            String expected=prop.getProperty("noResultMessageForSample");
+            Assert.assertEquals(expected, actual);
+        }
+
+        ts.presenceOfElementWait(reloadButton);
+        reloadButton.click();
+        ts.presenceOfElementWait(firstSampleRequest);
+
+    }
+
+    public String localDate()
+    {
+        LocalDate currentDate = LocalDate.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy"); // Adjust pattern if needed
+
+        return currentDate.format(formatter);
     }
 
     public void clickOnSupplies() throws InterruptedException {

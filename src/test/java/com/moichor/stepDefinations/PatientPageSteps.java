@@ -21,7 +21,6 @@ public class PatientPageSteps extends DriverFactory {
     public void addAPatientFromPatientPage() throws InterruptedException {
         patientPage.clickOnClientButton();
         patientPage.addClient();
-        patientPage.clickOnPatientButton();
         patientPage.addPatient();
 
     }

@@ -1,7 +1,5 @@
 package com.moichor.stepDefinations;
 
-
-
 import com.moichor.base.DriverFactory;
 import com.moichor.pages.NotificationPage;
 import io.cucumber.java.en.Then;
@@ -46,5 +44,16 @@ public class NotificationSteps extends DriverFactory {
     @Then("search for a message received from admin side")
     public void searchForAMessageReceivedFromAdminSide() throws InterruptedException {
         notificationPage.searchMessageReceivedFromAdminSide();
+    }
+
+
+    @Then("search the existing notification by patient name")
+    public void searchTheExistingNotificationByPatientName() {
+        notificationPage.searchNotificationByPatientName();
+    }
+
+    @Then("search the existing notification by clinic name")
+    public void searchTheExistingNotificationByClinicName() {
+        notificationPage.searchNotificationByClinicName();
     }
 }

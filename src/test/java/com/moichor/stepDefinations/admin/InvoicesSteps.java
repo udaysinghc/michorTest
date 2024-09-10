@@ -79,8 +79,9 @@ public class InvoicesSteps extends  DriverFactory{
     }
 
     @Then("send the invoice email")
-    public void sendTheInvoiceEmail() {
+    public void sendTheInvoiceEmail() throws InterruptedException {
         adminInvoicePage.clickOnInvoices();
+        adminInvoicePage.getNada();
         adminInvoicePage.sendTheInvoiceEmail();
 
     }
@@ -90,4 +91,5 @@ public class InvoicesSteps extends  DriverFactory{
         adminInvoicePage.cancelOrder();
 
     }
+
 }

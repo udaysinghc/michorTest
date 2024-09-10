@@ -13,3 +13,11 @@ Feature: Test The Functionality Of Notification
   Scenario: Verify Message Received In Client Notification
     Given user logged in to the application
     Then search for a message received from admin side
+
+  Scenario: Verify the search by Patient Name or ID functionality
+    Given user logged in to the admin portal
+    Then search the existing notification by patient name
+
+  Scenario: Verify Filter by clinic functionality
+    Given user logged in to the admin portal
+    Then search the existing notification by clinic name

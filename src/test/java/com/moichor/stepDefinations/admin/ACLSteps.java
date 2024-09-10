@@ -41,20 +41,6 @@ public class ACLSteps extends DriverFactory {
         aclPage.editTheRole();
     }
 
-    @Then("Add a permission")
-    public void addAPermission() {
-        aclPage.clickOnACLButton();
-        aclPage.clickOnPermission();
-        aclPage.addAPermission();
-
-    }
-
-
-    @Then("Added permission is displayed on permission page")
-    public void addedPermissionIsDisplayedOnPermissionPage() {
-        aclPage.searchAddedPermission();
-    }
-
     @Then("Search for an existing permission")
     public void searchForAnExistingPermission() {
         aclPage.clickOnACLButton();

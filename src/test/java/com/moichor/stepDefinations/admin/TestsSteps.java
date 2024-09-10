@@ -34,14 +34,14 @@ public class TestsSteps extends DriverFactory {
     }
 
     @Then("search for QC and Resulting")
-    public void searchForQCAndResulting() {
+    public void searchForQCAndResulting() throws InterruptedException {
         adminTestPage.clickOnTestButton();
         adminTestPage.clickOnQCLink();
         adminTestPage.searchQCResult();
     }
 
     @Then("search multiple status from applicable status dropdown")
-    public void searchMultipleStatusFromApplicableStatusDropdown() {
+    public void searchMultipleStatusFromApplicableStatusDropdown() throws InterruptedException {
         adminTestPage.clickOnTestButton();
         adminTestPage.clickOnQCLink();
         adminTestPage.searchTheApplicationStatus();
@@ -49,7 +49,7 @@ public class TestsSteps extends DriverFactory {
     }
 
     @Then("search for an existing test")
-    public void searchForAnExistingTest() {
+    public void searchForAnExistingTest() throws InterruptedException {
         adminTestPage.selectTheTestID();
         adminTestPage.clickOnQCLink();
         adminTestPage.searchForAnTest();

@@ -17,6 +17,6 @@ Feature: Test the Veterinarian Functionality
 
   Scenario: Delete the added Veterinarian
     Given user logged in to the application
-    When search for added Veterinarian and delete it.
+    When search for added Veterinarian and delete it
     Then deleted Veterinarian is not displayed
 

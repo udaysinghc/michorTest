@@ -4,6 +4,7 @@ package com.moichor.pages;
 import com.moichor.base.DriverFactory;
 import com.moichor.util.ConfigReader;
 import com.moichor.util.TestUtil;
+import org.junit.Assert;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
@@ -120,48 +121,50 @@ public class ClinicsPage {
     public void addAClinics() throws InterruptedException {
         addClinicButton.click();
         ts.presenceOfElementWait(nameField);
-        String cName= prop.getProperty("clinicName");
-        int random=r.nextInt(100);
-        nameField.sendKeys(cName+random);
+        String cName = prop.getProperty("clinicName");
+        int random = r.nextInt(100);
+        nameField.sendKeys(cName + random);
         ts.presenceOfElementWait(street);
-        String streetName=prop.getProperty("street");
+        String streetName = prop.getProperty("street");
         street.sendKeys(streetName);
         ts.presenceOfElementWait(city);
-        String cityName=prop.getProperty("clinicCity");
+        String cityName = prop.getProperty("clinicCity");
         city.sendKeys(cityName);
         ts.presenceOfElementWait(state);
-        String stateName=prop.getProperty("ClinicState");
+        String stateName = prop.getProperty("ClinicState");
         state.sendKeys(stateName);
         ts.presenceOfElementWait(zip);
-        String zipcode=prop.getProperty("ClinicZip");
+        String zipcode = prop.getProperty("ClinicZip");
         zip.sendKeys(zipcode);
         ts.presenceOfElementWait(representativeDropDown);
         representativeDropDown.click();
         ts.presenceOfElementWait(representativeInput);
-        String representativeName=prop.getProperty("RepresentativeName");
+        String representativeName = prop.getProperty("RepresentativeName");
         representativeInput.sendKeys(representativeName);
         Thread.sleep(4000);
         representativeInput.sendKeys(Keys.ENTER);
         ts.presenceOfElementWait(currencyDropDown);
         currencyDropDown.click();
         ts.presenceOfElementWait(currencyInput);
-        String currencyName=prop.getProperty("Currency");
+        String currencyName = prop.getProperty("Currency");
         currencyInput.sendKeys(currencyName);
         Thread.sleep(4000);
         currencyInput.sendKeys(Keys.ENTER);
         ts.presenceOfElementWait(email);
-        String emailName=prop.getProperty("clinicEmail");
-        String domain= prop.getProperty("emailDomain");
-        int random1=r.nextInt(100);
-        email.sendKeys(emailName+random1+domain);
+        String emailName = prop.getProperty("clinicEmail");
+        String domain = prop.getProperty("emailDomain");
+        int random1 = r.nextInt(100);
+        email.sendKeys(emailName + random1 + domain);
         ts.presenceOfElementWait(billingEmail);
-        billingEmail.sendKeys(emailName+random1+domain);
+        billingEmail.sendKeys(emailName + random1 + domain);
         ts.presenceOfElementWait(phoneField);
-        String number=prop.getProperty("clinicPhoneNumber");
+        String number = prop.getProperty("clinicPhoneNumber");
         phoneField.sendKeys(number);
         ts.presenceOfElementWait(saveClinicInfoButton);
         saveClinicInfoButton.click();
         ts.presenceOfElementWait(status);
+        String successMessage = status.getText();
+        Assert.assertTrue(successMessage.contains("successfully"));
 
     }
 
@@ -189,6 +192,8 @@ public class ClinicsPage {
         ts.presenceOfElementWait(saveClinicInfoButton);
         saveClinicInfoButton.click();
         ts.presenceOfElementWait(status);
+        String successMessage=status.getText();
+        Assert.assertTrue(successMessage.contains("successfully"));
     }
 
 

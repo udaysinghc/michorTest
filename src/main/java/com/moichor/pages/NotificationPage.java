@@ -11,6 +11,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
+import java.util.List;
 import java.util.Properties;
 
 public class NotificationPage {
@@ -87,6 +88,30 @@ public class NotificationPage {
 
     @FindBy(xpath = "(//div[contains(@class,'notification-item d-flex flex-row')])[2]/p")
     private WebElement messageText;
+
+    @FindBy(xpath = "//a[text()='Clinics']")
+    private WebElement clinicLink;
+
+    @FindBy(xpath = "//i[@class='iconsminds-id-card']/..")
+    private WebElement notificationLink;
+
+    @FindBy(css = "[class*='mb'] h1")
+    private WebElement notification;
+
+    @FindBy(id = "patient")
+    private WebElement patientNameIDInputField;
+
+    @FindBy(xpath = "//div[contains(@id,'react')]/../../..")
+    private WebElement clinicDropDown;
+
+    @FindBy(xpath = "//div[contains(@id,'react')]/../../../descendant::input")
+    private WebElement clinicInputField;
+
+    @FindBy(xpath = "(//div[@class='d-flex flex-row list-item-card card'])[1]")
+    private WebElement firstNotification;
+
+    @FindBy(css = "[role='listbox'] [role='option']")
+    private List<WebElement> allElementsInDropDown;
 
     public void clickOnTestButton()
     {
@@ -173,5 +198,42 @@ public class NotificationPage {
         String sms= prop.getProperty("messageToClient");
         Assert.assertEquals("Message text validation",sms,note);
 
+    }
+
+    public void searchNotificationByPatientName()
+    {
+        ts.presenceOfElementWait(clinicLink);
+        ts.scrollIntoView(notificationLink);
+        notificationLink.click();
+        ts.presenceOfElementWait(notification);
+        ts.presenceOfElementWait(patientNameIDInputField);
+        ts.presenceOfElementWait(clinicDropDown);
+        String patientName=prop.getProperty("adminPatientName");
+        patientNameIDInputField.sendKeys(patientName);
+        ts.presenceOfElementWait(firstNotification);
+    }
+
+    public void searchNotificationByClinicName()
+    {
+        ts.presenceOfElementWait(clinicLink);
+        ts.scrollIntoView(notificationLink);
+        notificationLink.click();
+        ts.presenceOfElementWait(notification);
+        ts.presenceOfElementWait(patientNameIDInputField);
+        ts.presenceOfElementWait(clinicDropDown);
+        clinicDropDown.click();
+        ts.presenceOfElementWait(clinicInputField);
+        String clinicName=prop.getProperty("adminClinicName");
+        clinicInputField.sendKeys(clinicName);
+        int size=allElementsInDropDown.size();
+        for(int i=0; i<size; i++)
+        {
+            if(allElementsInDropDown.get(i).getText().equalsIgnoreCase(clinicName))
+            {
+                allElementsInDropDown.get(i).click();
+                break;
+            }
+        }
+        ts.presenceOfElementWait(firstNotification);
     }
 }

@@ -208,6 +208,7 @@ public class TestsPage {
         ts.switchToTab(0);
         ts.presenceOfElementWait(search);
         search.sendKeys(codeText);
+        Thread.sleep(5000);
         ts.presenceOfElementWait(particularTest);
     }
 

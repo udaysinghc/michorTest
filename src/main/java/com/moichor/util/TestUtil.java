@@ -38,6 +38,13 @@ public class TestUtil {
             .until(ExpectedConditions.visibilityOf(element)));
   }
 
+  public void waitForTheElementVisibility(WebElement element, int time) {
+    webelement = (new WebDriverWait(driver, Duration.ofSeconds(time))
+                    .until(ExpectedConditions.visibilityOf(element)));
+  }
+
+
+
   public String getElement(WebElement element1) {
     String text = element1.getText();
     return text;
@@ -121,6 +128,12 @@ public class TestUtil {
   {
     Actions act=new Actions(driver);
     act.moveToElement(ele).doubleClick().build().perform();
+  }
+
+  public void doActionsDragOperation(WebElement ele, int x, int y)
+  {
+    Actions act=new Actions(driver);
+    act.dragAndDropBy(ele,x,y).perform();
   }
 
 

@@ -53,7 +53,7 @@ public class HomePageSteps extends DriverFactory {
     }
 
     @Then("search for a patient and update a patient")
-    public void searchForAPatientAndUpdateAPatient() {
+    public void searchForAPatientAndUpdateAPatient() throws InterruptedException {
         homePage.updateThePatient();
     }
 

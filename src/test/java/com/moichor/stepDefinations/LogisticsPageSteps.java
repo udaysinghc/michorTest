@@ -32,4 +32,9 @@ public class LogisticsPageSteps extends DriverFactory{
         logisticsPage.clickOnLogisticButton();
         logisticsPage.clickOnSupplies();
     }
+
+    @Then("search the sample shipment between dates")
+    public void searchTheSampleShipmentBetweenDates() {
+        logisticsPage.searchTheSampleShipment();
+    }
 }

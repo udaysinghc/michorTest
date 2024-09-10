@@ -17,16 +17,6 @@ Feature: Test the client functionality
     And add a patient
     Then patient is displayed
 
-#  Scenario: Edit the patient
-#    Given user logged in to the application
-#    When edit the patient
-#    Then edited data is displayed in patient
-#
-#
-#  Scenario: Delete the added patient
-#    Given user logged in to the application
-#    When delete the patient
-#    Then deleted patient is not display
 
   Scenario: Delete the added client
     Given user logged in to the application

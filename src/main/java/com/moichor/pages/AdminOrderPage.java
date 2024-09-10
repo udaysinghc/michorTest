@@ -300,7 +300,6 @@ public class AdminOrderPage {
         ts.presenceOfElementWait(body);
         ts.scrollIntoView(viewResultButton);
         viewResultButton.click();
-        ts.presenceOfElementWait(imagesBody);
         Thread.sleep(5000);
 //        ts.presenceOfElementWait(uploadedImageButton);
         UploadedImageButton.click();

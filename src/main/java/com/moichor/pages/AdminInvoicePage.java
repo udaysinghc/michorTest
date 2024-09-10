@@ -188,13 +188,13 @@ public class AdminInvoicePage {
     @FindBy(css = "[class*='text-center font-medium']")
     private WebElement getInbox;
 
-    @FindBy(css = "input[class*=' focus:bg-white']")
+    @FindBy(css = "input[placeholder='Enter username']")
     private WebElement userName;
 
     @FindBy(css = "[class*='dark:focus:border-primary-500']")
     private WebElement selectDomain;
 
-    @FindBy(css = "[class*='rounded-lg w-full1']")
+    @FindBy(xpath = "//button[text()='Add Inbox']")
     private WebElement addInbox;
 
     @FindBy(xpath = "//table/tbody/tr/td[2]")
@@ -203,7 +203,7 @@ public class AdminInvoicePage {
     @FindBy(xpath = "//a[text()='Pay Invoice Electronically']")
     private WebElement payInvoiceLink;
 
-    @FindBy(css = "[class*='ContentCard ContentCard-mobileNoMargin ']")
+    @FindBy(css = "[class*='HeaderImage-text Text Text-color']")
     private WebElement paymentPage;
 
     @FindBy(css = "[class*='d-flex flex-row']+h5")
@@ -387,6 +387,7 @@ public class AdminInvoicePage {
         String idOfIssueInvoice=trimTheInvoiceID(idName);
         System.out.println(idOfIssueInvoice);
         ts.presenceOfElementWait(invoiceCloseButton);
+        Thread.sleep(2000);
         invoiceCloseButton.click();
         Thread.sleep(2000);
         ts.presenceOfElementWait(issuedInvoiceLink);
@@ -515,11 +516,26 @@ public class AdminInvoicePage {
         emailInput.sendKeys(eName+random+domain);
         emailYesButton.click();
         ts.presenceOfElementWait(status);
-        getNada();
+        ts.switchToTab(1);
+        try {
+            ts.waitForTheElementVisibility(inboxMessage,10);
+            inboxMessage.click();
+        }
+        catch (Exception e)
+        {
+            ts.refreshTheWebPAge();
+            ts.presenceOfElementWait(inboxMessage);
+            inboxMessage.click();
+        }
+
+        ts.presenceOfElementWait(payInvoiceLink);
+        ts.scrollIntoView(payInvoiceLink);
+        payInvoiceLink.click();
+        ts.switchToTab(2);
+        ts.presenceOfElementWait(paymentPage);
     }
 
-    public void getNada()
-    {
+    public void getNada() throws InterruptedException {
         ts.openNewTab();
         driver.get("https://inboxes.com/");
         ts.switchToTab(1);
@@ -534,28 +550,8 @@ public class AdminInvoicePage {
         ts.doSelectDropDownByVisibleText(selectDomain,domain);
         ts.presenceOfElementWait(addInbox);
         addInbox.click();
-        try {
-            ts.presenceOfElementWait(inboxMessage);
-            inboxMessage.click();
-    }
-        catch (Exception e)
-        {
-            ts.switchToTab(0);
-            ts.presenceOfElementWait(emailYesButton);
-            emailYesButton.click();
-            ts.presenceOfElementWait(status);
-            ts.switchToTab(1);
-            ts.refreshTheWebPAge();
-            ts.presenceOfElementWait(inboxMessage);
-            inboxMessage.click();
-
-        }
-
-        ts.presenceOfElementWait(payInvoiceLink);
-        ts.scrollIntoView(payInvoiceLink);
-        payInvoiceLink.click();
-        ts.switchToTab(2);
-        ts.presenceOfElementWait(paymentPage);
+        Thread.sleep(2000);
+        ts.switchToTab(0);
     }
 
     public void cancelOrder() throws InterruptedException {
@@ -578,6 +574,8 @@ public class AdminInvoicePage {
         ts.presenceOfElementWait(cancelOrderYesButton);
         cancelOrderYesButton.click();
         ts.presenceOfElementWait(status);
+        String successMessage=status.getText();
+        org.junit.Assert.assertTrue(successMessage.contains("successfully"));
 
     }
 

@@ -32,7 +32,7 @@ public class VeterinarianPageSteps extends DriverFactory {
         veterinarianPage.searchTheAddedVet();
     }
 
-    @When("search for added Veterinarian and delete it.")
+    @When("search for added Veterinarian and delete it")
     public void searchForAddedVeterinarianAndDeleteIt() {
         veterinarianPage.clickOnVetButton();
         veterinarianPage.searchTheAddedVet();

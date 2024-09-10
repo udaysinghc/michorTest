@@ -10,6 +10,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
+import java.util.List;
 import java.util.Properties;
 import java.util.Random;
 
@@ -115,8 +116,8 @@ public class HomePage {
     @FindBy(css = "[class*=' css-d']")
     private WebElement selectClient;
 
-    @FindBy(css = "[class*=' css-q']")
-    private WebElement selectPatient;
+    @FindBy(css = "[role='listbox'] [role='option']")
+    private List<WebElement> selectPatient;
 
     @FindBy(css = "[class*='float-right ml']")
     private WebElement updateButton;
@@ -187,6 +188,7 @@ public class HomePage {
     static Random r=new Random();
     static int random=r.nextInt(100);
     String id=prop.getProperty("clientID");
+
 
 
 
@@ -272,6 +274,7 @@ public class HomePage {
 
     public void deleteTheAddedPatient() throws InterruptedException {
         ts.presenceOfElementWait(addedPatient);
+        Thread.sleep(4000);
         addedPatient.click();
         ts.presenceOfElementWait(deleteButton);
         deleteButton.click();
@@ -314,7 +317,7 @@ public class HomePage {
 
     String st=prop.getProperty("state");
     String zip=prop.getProperty("zip");
-    public void updateThePatient()  {
+    public void updateThePatient() throws InterruptedException {
         searchTheClient();
         state.clear();
         state.sendKeys(st);
@@ -325,15 +328,15 @@ public class HomePage {
         ts.presenceOfElementWait(status);
         ts.presenceOfElementWait(patientDropDown);
         patientDropDown.click();
-        ts.presenceOfElementWait(selectPatient);
-        selectPatient.click();
+        int size=selectPatient.size();
+        for(int i=0; i<size; i++)
+        {
+            selectPatient.get(i).click();
+            break;
+        }
         ts.presenceOfElementWait(editPatientButton);
         ts.presenceOfElementWait(editPatientButton);
         editPatientButton.click();
-        ts.presenceOfElementWait(dob);
-        dob.clear();
-        String date=prop.getProperty("date");
-        dob.sendKeys(date);
         ts.presenceOfElementWait(weightField);
         weightField.clear();
         String wg=prop.getProperty("weight");
@@ -357,8 +360,12 @@ public class HomePage {
         colonyModeButton.click();
         ts.presenceOfElementWait(patientDropDown);
         patientDropDown.click();
-        ts.presenceOfElementWait(selectPatient);
-        selectPatient.click();
+        int size=selectPatient.size();
+        for(int i=0; i<size; i++)
+        {
+            selectPatient.get(i).click();
+            break;
+        }
         ts.presenceOfElementWait(editPatientButton);
         editPatientButton.click();
         ts.presenceOfElementWait(weightField);
@@ -387,8 +394,12 @@ public class HomePage {
         String pn=prop.getProperty("searchPatient");
         patientInput.sendKeys(pn);
         Thread.sleep(2000);
-        ts.presenceOfElementWait(selectPatient);
-        patientInput.sendKeys(Keys.ENTER);
+        int size=selectPatient.size();
+        for(int i=0; i<size; i++)
+        {
+            selectPatient.get(i).click();
+            break;
+        }
     }
 
     public void selectTestMenu() throws InterruptedException {

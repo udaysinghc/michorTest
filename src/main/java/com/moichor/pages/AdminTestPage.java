@@ -36,7 +36,7 @@ public class AdminTestPage {
     @FindBy(xpath = "//a[text()='Orders']")
     private WebElement orderButton;
 
-    @FindBy(css = "[class*='col'] p")
+    @FindBy(xpath = "(//div[@class='w-30 w-sm-100 d-flex flex-row list-title']/p)[1]")
     private WebElement selectOrder;
 
     @FindBy(xpath = "(//div[contains(@class,'d-flex flex-row align')])[1]/span[2]")
@@ -160,15 +160,14 @@ public class AdminTestPage {
         }
     }
 
-    public void clickOnQCLink()
-    {
+    public void clickOnQCLink() throws InterruptedException {
         ts.presenceOfElementWait(qc);
         qc.click();
+        Thread.sleep(2000);
         ts.presenceOfElementWait(qcText);
     }
 
-    public void searchQCResult()
-    {
+    public void searchQCResult() throws InterruptedException {
         ts.presenceOfElementWait(referenceTestDropDown);
         referenceTestDropDown.click();
         ts.presenceOfElementWait(referenceTestInput);
@@ -183,6 +182,7 @@ public class AdminTestPage {
             }
         }
         ts.presenceOfElementWait(applicableStatusDropDown);
+        Thread.sleep(2000);
         applicableStatusDropDown.click();
         ts.presenceOfElementWait(applicableStatusInput);
         List<WebElement> allApplicable = driver.findElements(By.cssSelector("[role='listbox'] div"));

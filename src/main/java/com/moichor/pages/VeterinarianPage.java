@@ -63,7 +63,7 @@ public class VeterinarianPage extends DriverFactory {
     @FindBy(css = "[class*='infinite-scroll-component ']")
     private WebElement noResultMessage;
 
-    @FindBy(css = "[role='switch']")
+    @FindBy(xpath = "(//button[contains(@class,'custom-switch')])[1]")
     private WebElement toggleButton;
 
     @FindBy(css = "[role='status']")
@@ -84,6 +84,9 @@ public class VeterinarianPage extends DriverFactory {
        lastname.sendKeys(ln);
        String email=prop.getProperty("email");
        emailId.sendKeys(email);
+       String mobileNumber=prop.getProperty("mobileNo");
+       ts.presenceOfElementWait(phoneNumber);
+       phoneNumber.sendKeys(mobileNumber);
        createButton.click();
        ts.presenceOfElementWait(status);
 
@@ -110,12 +113,11 @@ public class VeterinarianPage extends DriverFactory {
     public void editTheVet() {
         selectTheVet.click();
         ts.presenceOfElementWait(phoneNumber);
+        phoneNumber.clear();
         String ph=prop.getProperty("phone");
         phoneNumber.sendKeys(ph);
         createButton.click();
-        String id=prop.getProperty("email");
-        ts.presenceOfElementWait(cancelIcon);
-        cancelIcon.click();
+        ts.presenceOfElementWait(status);
     }
 
     public void searchTheDeleteVet()

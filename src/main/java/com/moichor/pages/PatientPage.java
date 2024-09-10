@@ -173,6 +173,7 @@ public class PatientPage {
     static int random2=r.nextInt(100);
     String patientID=prop.getProperty("idPatient");
     public void addPatient() throws InterruptedException {
+        clickOnPatientButton();
         ts.presenceOfElementWait(addNewButton);
         Thread.sleep(2000);
         addNewButton.click();

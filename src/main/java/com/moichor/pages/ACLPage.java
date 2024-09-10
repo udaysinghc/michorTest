@@ -4,6 +4,8 @@ package com.moichor.pages;
 import com.moichor.base.DriverFactory;
 import com.moichor.util.ConfigReader;
 import com.moichor.util.TestUtil;
+import org.junit.Assert;
+import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -27,6 +29,7 @@ public class ACLPage {
         this.ts=new TestUtil(driver);
 
     }
+
 
     @FindBy(xpath = "//a[text()='ACL']")
     private WebElement ACLButton;
@@ -110,12 +113,13 @@ public class ACLPage {
         ts.presenceOfElementWait(slug);
         String slugName=prop.getProperty("slug");
         slug.sendKeys(slugName+random);
-        ts.presenceOfElementWait(permissionDropDown);
-        permissionDropDown.click();
-        ts.presenceOfElementWait(selectPermission);
-        selectPermission.click();
+        String permission=prop.getProperty("permissionTitle");
+        driver.findElement(By.xpath("//label[text()='"+permission+"']/../input")).click();
         ts.presenceOfElementWait(submitButton);
         submitButton.click();
+        ts.presenceOfElementWait(status);
+        String successMessage=status.getText();
+        Assert.assertTrue(successMessage.contains("successfully"));
 
     }
 
@@ -150,6 +154,8 @@ public class ACLPage {
         ts.presenceOfElementWait(submitButton);
         submitButton.click();
         ts.presenceOfElementWait(status);
+        String successMessage=status.getText();
+        Assert.assertTrue(successMessage.contains("successfully"));
     }
 
     public void clickOnPermission()
@@ -201,6 +207,8 @@ public class ACLPage {
         title.sendKeys(titleName+random);
         submitButton.click();
         ts.presenceOfElementWait(status);
+        String successMessage=status.getText();
+        Assert.assertTrue(successMessage.contains("successfully"));
 
     }
 
