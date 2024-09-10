@@ -36,7 +36,7 @@ jobs:
         run: |
           # Convert Cucumber JSON report to HTML
           mvn net.masterthought:maven-cucumber-reporting:5.5.3:generate \
-            -DcucumberOutput=target/cucumber-reports/cucumber.json \
+            -DcucumberOutput='**/target/cucumber/cucumber.json'
             -DoutputDirectory=target/cucumber-reports/html
 
       - name: Archive Cucumber Reports
