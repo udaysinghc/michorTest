@@ -17,38 +17,39 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4  # Updated to v4
+        uses: actions/checkout@v4
 
       - name: Set up JDK 11 and Maven
-        uses: actions/setup-java@v4  # Updated to v4
+        uses: actions/setup-java@v4
         with:
           java-version: '11'
-          distribution: 'adopt'  # or 'temurin', depending on your needs
-          cache: 'maven'  # Enable caching for Maven dependencies
+          distribution: 'adopt'
+          cache: 'maven'
 
       - name: Build and run tests
         run: mvn clean install "-Dcucumber.filter.tags=@veterinarian"
-        # If you want to use dynamic tags based on workflow_dispatch input
+        # Uncomment if you want to use dynamic tags
         # run: mvn clean install "-Dcucumber.filter.tags=${{ github.event.inputs.CUCUMBER_TAGS }}"
 
-      - name: Generate Cucumber Report
+      - name: Generate Cucumber HTML Report
         if: always()
         run: |
-          # Add your Cucumber report generation logic here
-          # Example command if you use a specific tool:
-          # java -cp "path/to/your/report-generator.jar" com.yourcompany.ReportGenerator
+          # Convert Cucumber JSON report to HTML
+          mvn net.masterthought:maven-cucumber-reporting:5.5.3:generate \
+            -DcucumberOutput=target/cucumber-reports/cucumber.json \
+            -DoutputDirectory=target/cucumber-reports/html
 
       - name: Archive Cucumber Reports
         if: success()
-        uses: actions/upload-artifact@v4  # Updated to v4
+        uses: actions/upload-artifact@v4
         with:
-          name: cucumber-reports
-          path: '**/target/cucumber/cucumber.json'
+          name: cucumber-html-reports
+          path: '**/target/cucumber-reports/html/**'
 
       - name: Notify Slack on Success
         if: success()
         run: |
-          curl -X POST -H 'Content-type: application/json' --data "{\"text\":\"Build successful! Cucumber Report: ${{ github.run_url }}\"}" ${{ secrets.SLACK_WEBHOOK_URL }}
+          curl -X POST -H 'Content-type: application/json' --data "{\"text\":\"Build successful! Cucumber Report: ${{ github.run_url }}/artifacts/cucumber-html-reports\"}" ${{ secrets.SLACK_WEBHOOK_URL }}
 
       - name: Notify Slack on Failure
         if: failure()
