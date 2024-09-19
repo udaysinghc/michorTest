@@ -11,6 +11,8 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Properties;
 import java.util.Random;
@@ -55,17 +57,20 @@ public class UsersPage {
     @FindBy(id="email")
     private WebElement emailTextField;
 
-    @FindBy(id="roles")
+    @FindBy(xpath = "//span[@id='react-select-roles-live-region']/..")
     private WebElement rolesDropDown;
 
-    @FindBy(css = "[id='roles'] input")
-    private WebElement rolesInput;
+    @FindBy(xpath = "//span[@id='react-select-roles-live-region']/../descendant::input")
+    private WebElement rolesInputField;
 
-    @FindBy(id="clinics")
+    @FindBy(xpath = "//div[@id='react-select-clinics-placeholder']/../../..")
     private WebElement clinicDropDown;
 
-    @FindBy(css = "[id='clinics'] input")
+    @FindBy(xpath = "//div[@id='react-select-clinics-placeholder']/../../../descendant::input")
     private WebElement clinicInput;
+
+    @FindBy(css = "[class*='css-d']")
+    private WebElement firstElementInDropDown;
 
     @FindBy(css = "[class='d-flex btn btn-primary']")
     private WebElement saveDetailButton;
@@ -73,11 +78,14 @@ public class UsersPage {
     @FindBy(css = "[role='status']")
     private WebElement status;
 
+    @FindBy(xpath = "//div[contains(text(),'successfully')]")
+    private WebElement successStatus;
+
     @FindBy(css = "[class*='btn-outline-second']")
     private WebElement cancelButton;
 
-    @FindBy(css = "[class*='card-body'] p[class*='list']")
-    private WebElement user;
+    @FindBy(xpath = "(//div[contains(@class,'d-flex flex-row list')]/*/*/*/p)[1]")
+    private WebElement firstUser;
 
     @FindBy(css = "[class*=' btn btn-danger']")
     private WebElement deactivateButton;
@@ -142,10 +150,10 @@ public class UsersPage {
         ts.presenceOfElementWait(addUserButton);
     }
 
-    static Random r=new Random();
-    static int random=r.nextInt(100);
-    static int random1=r.nextInt(100);
-    public void addAUser() throws InterruptedException {
+    LocalDateTime now = LocalDateTime.now();
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyMMddHHmmss");
+    String formattedDateTime = now.format(formatter);
+    public void addAUser() {
 
            addUserButton.click();
            ts.presenceOfElementWait(firstNameTextField);
@@ -157,33 +165,21 @@ public class UsersPage {
            ts.presenceOfElementWait(emailTextField);
            String eName = prop.getProperty("userEmail");
            String domain = prop.getProperty("userDomain");
-           emailTextField.sendKeys(eName+random+random1+domain);
+           emailTextField.sendKeys(eName+formattedDateTime+domain);
            ts.presenceOfElementWait(rolesDropDown);
            rolesDropDown.click();
-           Thread.sleep(2000);
-           List<WebElement> allRoles = driver.findElements(By.cssSelector("[role='listbox'] div"));
-
-           for (WebElement r : allRoles) {
-               String role = prop.getProperty("userRole");
-               if (r.getText().contains(role)) {
-                   r.click();
-                   break;
-               }
-           }
-
+           ts.presenceOfElementWait(rolesInputField);
+           String roles=prop.getProperty("userRole");
+           rolesInputField.sendKeys(roles);
+           ts.presenceOfElementWait(firstElementInDropDown);
+           firstElementInDropDown.click();
            ts.presenceOfElementWait(clinicDropDown);
            clinicDropDown.click();
-           Thread.sleep(2000);
-           List<WebElement> allClinic = driver.findElements(By.cssSelector("[role='listbox'] div"));
-           for (WebElement r1 : allClinic) {
-               String clinic = prop.getProperty("userClinic");
-               if (r1.getText().contains(clinic)) {
-                   r1.click();
-                   break;
-               }
-
-
-           }
+           ts.presenceOfElementWait(clinicInput);
+           String clinic = prop.getProperty("userClinic");
+           clinicInput.sendKeys(clinic);
+           ts.presenceOfElementWait(firstElementInDropDown);
+           firstElementInDropDown.click();
            ts.presenceOfElementWait(saveDetailButton);
            saveDetailButton.click();
            ts.presenceOfElementWait(status);
@@ -196,7 +192,6 @@ public class UsersPage {
                addAUser();
            }
 
-
     }
 
     public void searchTheUser()
@@ -204,39 +199,29 @@ public class UsersPage {
         ts.presenceOfElementWait(searchBar);
         String eName= prop.getProperty("userEmail");
         String domain=prop.getProperty("userDomain");
-        searchBar.sendKeys(eName+random+random1+domain);
-        ts.presenceOfElementWait(user);
+        searchBar.sendKeys(eName+formattedDateTime+domain);
+        ts.presenceOfElementWait(firstUser);
     }
 
-    public void editTheUser() throws InterruptedException {
-        ts.presenceOfElementWait(user);
-        Thread.sleep(2000);
-        user.click();
+    public void editTheUser() {
+        ts.presenceOfElementWait(firstUser);
+        ts.clickOnElement(firstUser);
         ts.presenceOfElementWait(rolesDropDown);
         rolesDropDown.click();
-        ts.presenceOfElementWait(rolesInput);
-        Thread.sleep(2000);
-        List<WebElement> allRoles = driver.findElements(By.cssSelector("[role='listbox'] div"));
-        for(WebElement r: allRoles)
-        {
-            String role=prop.getProperty("newUserRole");
-            if(r.getText().contains(role))
-            {
-                r.click();
-                break;
-            }
-        }
-
+        ts.presenceOfElementWait(rolesInputField);
+        String role=prop.getProperty("newUserRole");
+        rolesInputField.sendKeys(role);
+        ts.presenceOfElementWait(firstElementInDropDown);
+        firstElementInDropDown.click();
         ts.presenceOfElementWait(saveDetailButton);
         saveDetailButton.click();
         ts.presenceOfElementWait(status);
 
     }
 
-    public void deactivateTheUser() throws InterruptedException {
-        ts.presenceOfElementWait(user);
-        Thread.sleep(2000);
-        user.click();
+    public void deactivateTheUser(){
+        ts.presenceOfElementWait(firstUser);
+        ts.clickOnElement(firstUser);
         ts.presenceOfElementWait(deactivateButton);
         deactivateButton.click();
         ts.presenceOfElementWait(deactivateTextField);
@@ -244,11 +229,11 @@ public class UsersPage {
         deactivateTextField.sendKeys(dName);
         ts.presenceOfElementWait(yesButton);
         yesButton.click();
-        ts.presenceOfElementWait(status);
+        ts.presenceOfElementWait(successStatus);
     }
 
     public void restoreTheDeactivateUser() {
-        ts.presenceOfElementWait(user);
+        ts.presenceOfElementWait(firstUser);
         ts.presenceOfElementWait(restoreButton);
         restoreButton.click();
         ts.presenceOfElementWait(restoreYesButton);
@@ -256,14 +241,13 @@ public class UsersPage {
         ts.presenceOfElementWait(status);
     }
 
-    public void clickOnResetPasswordLink() throws InterruptedException {
+    public void clickOnResetPasswordLink(){
         ts.presenceOfElementWait(reset);
-        Thread.sleep(2000);
         reset.click();
         ts.presenceOfElementWait(status);
     }
 
-    public void getNada() throws InterruptedException {
+    public void getNada()  {
         ts.openNewTab();
         driver.get("https://inboxes.com/");
         ts.switchToTab(1);
@@ -272,7 +256,7 @@ public class UsersPage {
         ts.presenceOfElementWait(userName);
         String name=prop.getProperty("dummyEmailName");
         String domain=prop.getProperty("dummyDomainName");
-        userName.sendKeys(name+random+random1);
+        userName.sendKeys(name+formattedDateTime);
         ts.presenceOfElementWait(selectDomain);
         selectDomain.click();
         ts.doSelectDropDownByVisibleText(selectDomain,domain);

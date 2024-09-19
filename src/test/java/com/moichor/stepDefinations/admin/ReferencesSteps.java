@@ -20,7 +20,7 @@ public class ReferencesSteps extends  DriverFactory {
 
 
     @Then("add a bin")
-    public void addABin() throws InterruptedException {
+    public void addABin(){
         referencesPage.clickOnReferenceButton();
         referencesPage.addABin();
     }
@@ -32,7 +32,7 @@ public class ReferencesSteps extends  DriverFactory {
     }
 
     @Then("edit the added bin")
-    public void editTheAddedBin() throws InterruptedException {
+    public void editTheAddedBin()  {
         referencesPage.editTheBin();
     }
 
@@ -42,7 +42,7 @@ public class ReferencesSteps extends  DriverFactory {
     }
 
     @Then("add a issue and search for added issue")
-    public void addAIssueAndSearchForAddedIssue() throws InterruptedException {
+    public void addAIssueAndSearchForAddedIssue(){
         referencesPage.clickOnReferenceButton();
         referencesPage.addAIssue();
         referencesPage.searchForAnAddedIssue();
@@ -50,13 +50,13 @@ public class ReferencesSteps extends  DriverFactory {
     }
 
     @Then("edit the issue and delete the issue")
-    public void editTheIssueAndDeleteTheIssue() throws InterruptedException {
+    public void editTheIssueAndDeleteTheIssue()  {
         referencesPage.editTheIssue();
         referencesPage.deleteTheIssue();
     }
 
     @Then("add a variable and search for added variable")
-    public void addAVariableAndSearchForAddedVariable() throws InterruptedException {
+    public void addAVariableAndSearchForAddedVariable() {
         referencesPage.clickOnReferenceButton();
         referencesPage.addAVariable();
         referencesPage.searchForTheVariable();
@@ -64,21 +64,21 @@ public class ReferencesSteps extends  DriverFactory {
 
 
     @Then("edit the variable and delete the variable")
-    public void editTheVariableAndDeleteTheVariable() throws InterruptedException {
+    public void editTheVariableAndDeleteTheVariable()  {
         referencesPage.editTheVariable();
         referencesPage.deleteTheVariable();
     }
 
 
     @Then("add a value")
-    public void addAValue() throws InterruptedException {
+    public void addAValue() {
         referencesPage.clickOnReferenceButton();
         referencesPage.addAVariable();
         referencesPage.addAValue();
     }
 
     @And("search for added value")
-    public void searchForAddedValue() throws InterruptedException {
+    public void searchForAddedValue(){
         referencesPage.searchTheValueBySpeciesDropDown();
         referencesPage.searchTheValueByGenus();
         referencesPage.searchTheValueByCommonName();
@@ -87,23 +87,23 @@ public class ReferencesSteps extends  DriverFactory {
     }
 
     @Then("edit the added value")
-    public void editTheAddedValue() throws InterruptedException {
+    public void editTheAddedValue(){
         referencesPage.editTheValue();
     }
 
     @And("delete the added value")
-    public void deleteTheAddedValue() throws InterruptedException {
+    public void deleteTheAddedValue(){
         referencesPage.deleteTheValue();
 
     }
 
     @Then("search the value by breed name")
-    public void searchTheValueByBreedName() throws InterruptedException {
+    public void searchTheValueByBreedName(){
         referencesPage.searchTheValueByBreedName();
     }
 
     @Then("add a new species from admin portal")
-    public void addANewSpeciesFromAdminPortal() throws InterruptedException {
+    public void addANewSpeciesFromAdminPortal() {
         referencesPage.clickOnReferenceButton();
         referencesPage.addNewSpecies();
     }
@@ -114,7 +114,7 @@ public class ReferencesSteps extends  DriverFactory {
     }
 
     @Then("edit the species")
-    public void editTheSpecies() throws InterruptedException {
+    public void editTheSpecies() {
         referencesPage.editTheSpecies();
     }
 
@@ -135,12 +135,12 @@ public class ReferencesSteps extends  DriverFactory {
     }
 
     @Then("edit the question")
-    public void editTheQuestion() throws InterruptedException {
+    public void editTheQuestion(){
         referencesPage.editTheAddedQuestion();
     }
 
     @And("delete the question")
-    public void deleteTheQuestion() throws InterruptedException {
+    public void deleteTheQuestion()  {
         referencesPage.deleteTheAddedTest();
 
     }
@@ -153,6 +153,7 @@ public class ReferencesSteps extends  DriverFactory {
 
     @And("search for the added test")
     public void searchForTheAddedTest() {
+
         referencesPage.searchTheAddedTest();
     }
 
@@ -168,22 +169,22 @@ public class ReferencesSteps extends  DriverFactory {
     }
 
     @And("search for added test group")
-    public void searchForAddedTestGroup() throws InterruptedException {
+    public void searchForAddedTestGroup()  {
         referencesPage.searchForTheAddedTestGroup();
     }
 
     @Then("edit the test group")
-    public void editTheTestGroup() throws InterruptedException {
+    public void editTheTestGroup() {
         referencesPage.editTheTestGroup();
     }
 
     @And("delete the test group")
-    public void deleteTheTestGroup() throws InterruptedException {
+    public void deleteTheTestGroup()  {
         referencesPage.deleteTheAddedTestGroup();
     }
 
     @Then("check the test group sorting filter functionality")
-    public void checkTheTestGroupSortingFilterFunctionality() throws InterruptedException {
+    public void checkTheTestGroupSortingFilterFunctionality(){
         referencesPage.checkForSortFilter();
     }
 
@@ -200,7 +201,7 @@ public class ReferencesSteps extends  DriverFactory {
     }
 
     @Then("edit the item")
-    public void editTheItem() throws InterruptedException {
+    public void editTheItem() {
         referencesPage.editTheItem();
     }
 
@@ -216,7 +217,7 @@ public class ReferencesSteps extends  DriverFactory {
     }
 
     @Then("add a bundle")
-    public void addABundle() throws InterruptedException {
+    public void addABundle() {
         referencesPage.clickOnReferenceButton();
         referencesPage.addABundle();
     }
@@ -228,7 +229,7 @@ public class ReferencesSteps extends  DriverFactory {
     }
 
     @Then("edit the added bundle")
-    public void editTheAddedBundle() throws InterruptedException {
+    public void editTheAddedBundle() {
         referencesPage.editTheBundle();
     }
 
@@ -243,7 +244,7 @@ public class ReferencesSteps extends  DriverFactory {
     }
 
     @Then("add a volume tier")
-    public void addAVolumeTier() throws InterruptedException {
+    public void addAVolumeTier(){
         referencesPage.clickOnReferenceButton();
         referencesPage.addAVolumeTier();
     }
@@ -285,7 +286,7 @@ public class ReferencesSteps extends  DriverFactory {
     }
 
     @Then("add a conditions")
-    public void addAConditions() throws InterruptedException {
+    public void addAConditions() {
         referencesPage.clickOnReferenceButton();
         referencesPage.addAConditions();
     }
@@ -311,7 +312,7 @@ public class ReferencesSteps extends  DriverFactory {
     }
 
     @Then("add a task")
-    public void addATask() throws InterruptedException {
+    public void addATask(){
         referencesPage.clickOnReferenceButton();
         referencesPage.addATask();
     }
@@ -322,7 +323,7 @@ public class ReferencesSteps extends  DriverFactory {
     }
 
     @Then("edit the task")
-    public void editTheTask() throws InterruptedException {
+    public void editTheTask(){
         referencesPage.editTheTask();
     }
 

@@ -64,12 +64,12 @@ public class AddNewSpeciesPage {
 
     }
 
-    public void addSpecies() throws InterruptedException {
+    public void addSpecies() {
         ts.presenceOfElementWait(textarea);
         String species=prop.getProperty("speciesName");
         textarea.sendKeys(species);
-        submitButton.click();
-        Thread.sleep(2000);
+        ts.presenceOfElementWait(submitButton);
+        ts.clickOnElement(submitButton);
         ts.presenceOfElementWait(status);
 
     }

@@ -71,6 +71,15 @@ public class ClinicsPage {
     @FindBy(css = "[id='representative'] input")
     private WebElement representativeInput;
 
+    @FindBy(css = "[class*=' css-qr']")
+    private WebElement listBox;
+
+    @FindBy(xpath = "(//div[@role='option'])[1]")
+    private WebElement elementInDropDown;
+
+    @FindBy(css = "[role='listbox'] [role='option']")
+    private List<WebElement> dropDownElements;
+
     @FindBy(id="currency")
     private WebElement currencyDropDown;
 
@@ -118,7 +127,7 @@ public class ClinicsPage {
 
     static Random r=new Random();
 
-    public void addAClinics() throws InterruptedException {
+    public void addAClinics()  {
         addClinicButton.click();
         ts.presenceOfElementWait(nameField);
         String cName = prop.getProperty("clinicName");
@@ -141,15 +150,33 @@ public class ClinicsPage {
         ts.presenceOfElementWait(representativeInput);
         String representativeName = prop.getProperty("RepresentativeName");
         representativeInput.sendKeys(representativeName);
-        Thread.sleep(4000);
-        representativeInput.sendKeys(Keys.ENTER);
+        ts.presenceOfElementWait(elementInDropDown);
+        int listOfRep=dropDownElements.size();
+        for(int i=0; i<listOfRep; i++)
+        {
+            String repName=dropDownElements.get(i).getText();
+            if(repName.contains(representativeName))
+            {
+                dropDownElements.get(i).click();
+                break;
+            }
+        }
         ts.presenceOfElementWait(currencyDropDown);
         currencyDropDown.click();
         ts.presenceOfElementWait(currencyInput);
         String currencyName = prop.getProperty("Currency");
         currencyInput.sendKeys(currencyName);
-        Thread.sleep(4000);
-        currencyInput.sendKeys(Keys.ENTER);
+        ts.presenceOfElementWait(elementInDropDown);
+        int size=dropDownElements.size();
+        for(int i=0; i<size; i++)
+        {
+            String currency=dropDownElements.get(i).getText();
+            if(currency.contains(currencyName))
+            {
+                dropDownElements.get(i).click();
+                break;
+            }
+        }
         ts.presenceOfElementWait(email);
         String emailName = prop.getProperty("clinicEmail");
         String domain = prop.getProperty("emailDomain");

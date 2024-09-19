@@ -11,6 +11,8 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Properties;
 
@@ -54,6 +56,15 @@ public class AlertsPage {
     @FindBy(xpath = "//div[contains(@id,'react-select-cl')]/../../../descendant::input")
     private WebElement clinicNameInput;
 
+    @FindBy(css = "[role='listbox']")
+    private WebElement listBox;
+
+    @FindBy(xpath = "(//div[@role='option'])[1]")
+    private WebElement elementInDropDown;
+
+    @FindBy(css = "[role='listbox'] [role='option']")
+    private List<WebElement> dropDownElements;
+
     @FindBy(xpath = "//div[contains(@id,'react-select-le')]/../../..")
     private WebElement levelDropDown;
 
@@ -94,7 +105,7 @@ public class AlertsPage {
     @FindBy(css = "[class*='d-flex btn btn-danger']")
     private WebElement yesButtonForDeletingAlerts;
 
-    public void addAAlerts() throws InterruptedException {
+    public void addAAlerts()  {
         ts.presenceOfElementWait(clinic);
         ts.scrollIntoView(alertsLink);
         ts.presenceOfElementWait(alertsLink);
@@ -105,18 +116,43 @@ public class AlertsPage {
         addAlertsButton.click();
         ts.presenceOfElementWait(clinicNameDropDown);
         clinicNameDropDown.click();
-        Thread.sleep(2000);
         ts.presenceOfElementWait(clinicNameInput);
         String clinicName=prop.getProperty("clinic");
         clinicNameInput.sendKeys(clinicName);
-        Thread.sleep(2000);
-        clinicNameInput.sendKeys(Keys.ENTER);
+        ts.presenceOfElementWait(listBox);
+        ts.presenceOfElementWait(elementInDropDown);
+        int size=dropDownElements.size();
+        for(int i=0; i<size; i++)
+        {
+            String clinic=dropDownElements.get(i).getText();
+            if(clinic.contains(clinicName))
+            {
+                dropDownElements.get(i).click();
+                break;
+            }
+        }
         ts.presenceOfElementWait(levelDropDown);
         levelDropDown.click();
         ts.presenceOfElementWait(levelInput);
-        String level=prop.getProperty("level");
-        levelInput.sendKeys(level);
-        levelInput.sendKeys(Keys.ENTER);
+        String levelName=prop.getProperty("level");
+        levelInput.sendKeys(levelName);
+        ts.presenceOfElementWait(listBox);
+        ts.presenceOfElementWait(elementInDropDown);
+        int listOfLevels=dropDownElements.size();
+        for(int i=0; i<listOfLevels; i++)
+        {
+
+            String levels=dropDownElements.get(i).getText();
+            if(levels.contains(levelName))
+            {
+                System.out.println("hello from if block");
+                dropDownElements.get(i).click();
+                break;
+            }
+        }
+        LocalDateTime now = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yy HH:mm");
+        String formattedDateTime = now.format(formatter);
         ts.presenceOfElementWait(subjectInputField);
         String subject=prop.getProperty("subject");
         subjectInputField.sendKeys(subject);
@@ -124,8 +160,7 @@ public class AlertsPage {
         String message=prop.getProperty("message");
         messageInputField.sendKeys(message);
         ts.presenceOfElementWait(dateTimeInputField);
-        String dateAndTime=prop.getProperty("expirationDate");
-        dateTimeInputField.sendKeys(dateAndTime);
+        dateTimeInputField.sendKeys(formattedDateTime);
         ts.presenceOfElementWait(submitButton);
         submitButton.click();
         ts.presenceOfElementWait(status);
@@ -141,17 +176,15 @@ public class AlertsPage {
         ts.presenceOfElementWait(firstAlerts);
     }
 
-    public void editTheAlerts() throws InterruptedException {
+    public void editTheAlerts()  {
         ts.presenceOfElementWait(firstAlerts);
-        Thread.sleep(2000);
-        firstAlerts.click();
+        ts.clickOnElement(firstAlerts);
         ts.presenceOfElementWait(levelNewDropDown);
-        Thread.sleep(2000);
         levelNewDropDown.click();
         ts.presenceOfElementWait(levelNewInputField);
         String editLevel=prop.getProperty("editLevel");
         levelNewInputField.sendKeys(editLevel);
-        Thread.sleep(2000);
+        ts.presenceOfElementWait(listBox);
         levelNewInputField.sendKeys(Keys.ENTER);
         ts.presenceOfElementWait(submitButton);
         submitButton.click();

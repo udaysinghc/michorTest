@@ -49,6 +49,9 @@ public class PatientPage {
     @FindBy(css = "[role='status']")
     private WebElement status;
 
+    @FindBy(xpath = "//div[contains(text(),'successfully')]")
+    private WebElement successStatus;
+
     @FindBy(id="search")
     private WebElement search;
 
@@ -66,6 +69,15 @@ public class PatientPage {
 
     @FindBy(id="external_id")
     private WebElement internalId;
+
+    @FindBy(xpath = "//div[contains(@id,'react-select-client')]/../../..")
+    private WebElement clientDropDown;
+
+    @FindBy(xpath = "//div[contains(@id,'react-select-client')]/../../../descendant::input")
+    private WebElement clientInputField;
+
+    @FindBy(css = "[class*=' css-d']")
+    private WebElement firstElement;
 
     @FindBy(xpath = "//span[@id='react-select-refspecies-live-region']/..")
     private WebElement speciesDropDown;
@@ -166,18 +178,20 @@ public class PatientPage {
         lastName.sendKeys(ln);
         externalId.sendKeys(clientID);
         saveButton.click();
-        ts.presenceOfElementWait(status);
+        ts.presenceOfElementWait(successStatus);
 
     }
 
     static int random2=r.nextInt(100);
     String patientID=prop.getProperty("idPatient");
-    public void addPatient() throws InterruptedException {
-        clickOnPatientButton();
+    public void addPatient() {
+        ts.presenceOfElementWait(patientButton);
+        patientButton.click();
+        ts.presenceOfElementWait(search);
+        ts.presenceOfElementWait(patientText);
         ts.presenceOfElementWait(addNewButton);
-        Thread.sleep(2000);
-        addNewButton.click();
-        Thread.sleep(2000);
+        ts.presenceOfElementWait(addNewButton);
+        ts.clickOnElement(addNewButton);
         ts.presenceOfElementWait(pName);
         String name=prop.getProperty("namePatient");
         pName.sendKeys(name+random2);
@@ -189,18 +203,19 @@ public class PatientPage {
         clientSearch.click();
         String clientFName=prop.getProperty("firstNameClient");
         String clientLName=prop.getProperty("lastNameClient");
-        ts.presenceOfElementWait(passClientName);
-        passClientName.sendKeys(clientFName+random);
-        String text=clientFName+random+" "+clientLName;
-        Thread.sleep(2000);
-        driver.findElement(By.xpath("//div[text()='"+text+"']")).click();
+        ts.presenceOfElementWait(clientDropDown);
+        clientDropDown.click();
+        ts.presenceOfElementWait(clientInputField);
+        clientInputField.sendKeys(clientFName+random);
+        ts.presenceOfElementWait(firstElement);
+        firstElement.click();
         ts.presenceOfElementWait(speciesDropDown);
         speciesDropDown.click();
         ts.doActionsClick(speciesText);
         String dateOFBirth=prop.getProperty("dateOfBirth");
         dob.sendKeys(dateOFBirth);
         patientSaveButton.click();
-        ts.presenceOfElementWait(status);
+        ts.presenceOfElementWait(successStatus);
     }
 
     public void selectTheAddedPatient()
@@ -238,7 +253,7 @@ public class PatientPage {
 
     }
     static String codeText;
-    public void addTest() throws InterruptedException {
+    public void addTest() {
         ts.presenceOfElementWait(createTest);
         createTest.click();
         ts.presenceOfElementWait(selectTestFromMenu);
@@ -257,8 +272,7 @@ public class PatientPage {
         ts.scrollPageDown();
         ts.presenceOfElementWait(createButton);
         createButton.click();
-        Thread.sleep(5000);
-        ts.presenceOfElementWait(status);
+        ts.presenceOfElementWait(successStatus);
 
     }
 

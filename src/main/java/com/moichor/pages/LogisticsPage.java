@@ -77,6 +77,12 @@ public class LogisticsPage {
     @FindBy(css = "[class='modal-body'] p")
     private WebElement noSampleTest;
 
+    @FindBy(css = "[class='modal-body']")
+    private WebElement body;
+
+    @FindBy(css = "[class='supply-items-list']")
+    private WebElement items;
+
     @FindBy(xpath = "//input[@type='checkbox']")
     private List<WebElement> checkBox;
 
@@ -92,16 +98,14 @@ public class LogisticsPage {
 
     }
 
-    public void clickOnSample() throws InterruptedException {
+    public void clickOnSample() {
        try {
            ts.presenceOfElementWait(sampleButton);
-           Thread.sleep(4000);
-           sampleButton.click();
+           ts.clickOnElement(sampleButton);
            ts.presenceOfElementWait(getSampleShippingLabelButton);
            getSampleShippingLabelButton.click();
            ts.waitForTheElementVisibility(confirmRequest,5);
            confirmRequest.click();
-           Thread.sleep(5000);
            ts.switchToTab(0);
            ts.presenceOfElementWait(trackingNumbers);
 
@@ -124,11 +128,11 @@ public class LogisticsPage {
         String eDate=localDate();
         endDate.sendKeys(eDate, Keys.ENTER);
         try{
-            ts.waitForTheElementVisibility(firstSampleRequest,5);
+            ts.waitForTheElementVisibility(firstSampleRequest,15);
         }
         catch (Exception e)
         {
-            ts.waitForTheElementVisibility(noResultFound,5);
+            ts.waitForTheElementVisibility(noResultFound,10);
             String actual=noResultFound.getText();
             String expected=prop.getProperty("noResultMessageForSample");
             Assert.assertEquals(expected, actual);
@@ -148,14 +152,14 @@ public class LogisticsPage {
         return currentDate.format(formatter);
     }
 
-    public void clickOnSupplies() throws InterruptedException {
+    public void clickOnSupplies() {
         ts.presenceOfElementWait(suppliesButton);
-        Thread.sleep(2000);
-        suppliesButton.click();
+        ts.clickOnElement(suppliesButton);
         ts.presenceOfElementWait(requestSupplies);
         requestSupplies.click();
-        Thread.sleep(5000);
-        checkBox.get(0).click();
+        ts.presenceOfElementWait(body);
+        ts.presenceOfElementWait(items);
+        checkBox.get(5).click();
         ts.presenceOfElementWait(confirmRequestButton);
         confirmRequestButton.click();
         ts.presenceOfElementWait(status);

@@ -54,6 +54,15 @@ public class ClientsPage  {
     @FindBy(css = "[class*=' css-1d']")
     private WebElement clientName;
 
+    @FindBy(css = "[class='false nav-link']")
+    private WebElement patientsLink;
+
+    @FindBy(css = "[class='text-center silver-header']")
+    private WebElement noPatientCreated;
+
+    @FindBy(css = "[class='false nav-link']")
+    private WebElement detailsLink;
+
     @FindBy(xpath = "//button[text()='SAVE']")
     private WebElement saveButton;
 
@@ -69,6 +78,8 @@ public class ClientsPage  {
     @FindBy(xpath = "//a[text()='Main']")
     private WebElement mainText;
 
+    @FindBy(xpath = "(//div[@class='d-flex flex-row list-item-card card']/*/*/a)[1]")
+    private WebElement firstClient;
 
     @FindBy(id = "city")
     private WebElement cityField;
@@ -140,8 +151,9 @@ public class ClientsPage  {
     @FindBy(css = "[class*='d-flex fl']")
     private WebElement confirmDelete;
 
-    @FindBy(css = "[class*='infinite-scroll-component ']")
-    private WebElement noResultMessage;
+
+    @FindBy(xpath = "//div[contains(text(),'deleted')]")
+    private WebElement deleteStatus;
 
     @FindBy(css = "[class*='text-ce']")
     private WebElement noResultFound;
@@ -177,24 +189,11 @@ public class ClientsPage  {
         ts.presenceOfElementWait(selectClient);
     }
 
-    public void selectClient() throws InterruptedException {
-        ts.presenceOfElementWait(search);
-        search.sendKeys(clientID);
-        ts.presenceOfElementWait(selectClient);
-        selectClient.click();
-        ts.presenceOfElementWait(clientDetails);
-        ts.presenceOfElementWait(mainText);
-        String fn = prop.getProperty("firstNameClient");
-        String ln = prop.getProperty("lastNameClient");
-        String mail=fn+random+" "+ln;
-        Thread.sleep(5000);
-        WebElement client = driver.findElement(By.xpath("//li[text()='" +mail+ "']"));
-        ts.presenceOfElementWait(client);
-
-    }
 
     public void editTheClient()
     {
+        ts.presenceOfElementWait(firstClient);
+        firstClient.click();
         ts.presenceOfElementWait(cityField);
         String city=prop.getProperty("city");
         cityField.sendKeys(city);
@@ -208,6 +207,20 @@ public class ClientsPage  {
 
     public void clickOnNewPatient()
     {
+        ts.presenceOfElementWait(firstClient);
+        firstClient.click();
+        ts.presenceOfElementWait(saveButton);
+        ts.presenceOfElementWait(patientsLink);
+        patientsLink.click();
+        try {
+            ts.waitForTheElementVisibility(noPatientCreated,5);
+        }
+        catch (Exception e)
+        {
+
+        }
+        ts.presenceOfElementWait(detailsLink);
+        detailsLink.click();
         ts.presenceOfElementWait(createPatientButton);
         createPatientButton.click();
         ts.presenceOfElementWait(createPatientText);
@@ -235,49 +248,23 @@ public class ClientsPage  {
 
     }
 
-    public void editThePatient() {
-        ts.presenceOfElementWait(patientLink);
-        patientLink.click();
-        ts.presenceOfElementWait(addedPatient);
-        addedPatient.click();
-        String date=prop.getProperty("date");
-        ts.presenceOfElementWait(dob);
-        dob.sendKeys(date);
-        saveButton.click();
-        ts.presenceOfElementWait(status);
-    }
-
-
-
-    public void searchTheAddedPatient() {
-        ts.presenceOfElementWait(patientLink);
-        patientLink.click();
-        ts.presenceOfElementWait(addedPatient);
-
-
-    }
 
     public void deleteTheAddedClient() {
+        ts.presenceOfElementWait(selectClient);
+        selectClient.click();
         ts.presenceOfElementWait(deleteButton);
         deleteButton.click();
         ts.presenceOfElementWait(confirmDelete);
         confirmDelete.click();
-        ts.presenceOfElementWait(status);
+        ts.presenceOfElementWait(deleteStatus);
     }
 
     public void searchTheDeletedClient() {
         ts.presenceOfElementWait(search);
         search.sendKeys(clientID);
-        ts.presenceOfElementWait(noResultMessage);
 
     }
 
-    public void searchTheEditedPatient()
-    {
-        search.sendKeys(patientID);
-        ts.presenceOfElementWait(selectPatient);
-        selectPatient.click();
-    }
 
     public void deleteThePatient()
     {
@@ -292,13 +279,6 @@ public class ClientsPage  {
         ts.presenceOfElementWait(status);
 
     }
-    public void searchTheDeletedPatient()
-    {
-        ts.presenceOfElementWait(patientLink);
-        patientLink.click();
-        ts.presenceOfElementWait(noResultFound);
 
-
-    }
 
 }

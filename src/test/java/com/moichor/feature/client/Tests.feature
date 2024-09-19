@@ -3,7 +3,6 @@ Feature: Test the Functionality of Tests Page
     Given user logged in to the application
     Then add a test
 
-
   Scenario: Edit a test from test page
     Given user logged in to the application
     Then edit the test
@@ -12,16 +11,13 @@ Feature: Test the Functionality of Tests Page
      Given user logged in to the application
      Then delete the test
 
-
   Scenario: Verify View Filter tests by statuses
     Given user logged in to the application
     Then check all test status
 
-
   Scenario: Verify Sample info sheet from Info Sheet button from test page
     Given user logged in to the application
     Then check for info sheet
-
 
   Scenario: Verify Test Archiving
     Given user logged in to the application
@@ -35,6 +31,4 @@ Feature: Test the Functionality of Tests Page
   Scenario: Verify Search Test by patient name
     Given user logged in to the application
     Then search for existing patient from test module
-
-
 

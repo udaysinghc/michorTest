@@ -62,6 +62,9 @@ public class AdminLogisticsPage {
     @FindBy(xpath = "//div[contains(@id,'react')]/../../../descendant::input")
     private WebElement filterClinicInputField;
 
+    @FindBy(css = "[class*='css-d']")
+    private WebElement firstElementInDropDown;
+
     @FindBy(css = "[class='btn btn-secondary']")
     private WebElement requestSuppliesButton;
 
@@ -83,12 +86,87 @@ public class AdminLogisticsPage {
     @FindBy(xpath = "//h1")
     private WebElement suppliesRequestText;
 
-
     @FindBy(xpath = "//div[contains(@class,'card-body')]/a")
     private List<WebElement> trackingNumbers;
 
     @FindBy(xpath = "(//div[contains(@class,'card-body')])[1]")
     private WebElement firstSupplies;
+
+    @FindBy(xpath = "//div[contains(@class,'react-select__value')]/../..")
+    private WebElement selectClinicDropDown;
+
+    @FindBy(xpath = "(//div[contains(@class,'react-select__value')]/../../descendant::input)[1]")
+    private WebElement selectClinicInputField;
+
+    @FindBy(xpath = "//span[@id='react-select-items-live-region']/..")
+    private WebElement suppliesItemDropDown;
+
+    @FindBy(xpath = "//span[@id='react-select-items-live-region']/../descendant::input")
+    private WebElement suppliesInputField;
+
+    @FindBy(css = "[class='btn btn-info']")
+    private WebElement confirmRequestButton;
+
+    @FindBy(css = "[role='status']")
+    private WebElement status;
+
+    @FindBy(xpath = "(//div[@class='d-flex flex-row card']/..)[1]")
+    private WebElement firstSuppliesRequest;
+
+    @FindBy(css = "[class*='btn btn-outline-success btn-xs']")
+    private List<WebElement> allNewLabelButton;
+
+    @FindBy(css = "[class='modal-header'] h5")
+    private WebElement titleInfo;
+
+    @FindBy(xpath = "//span[@id='react-select-serviceLevel-live-region']/..")
+    private WebElement serviceLevelDropDown;
+
+    @FindBy(css = "[class*=' css-tr']")
+    private WebElement firstServiceInDropDown;
+
+    @FindBy(id = "packageDimension.width")
+    private WebElement widthInputField;
+
+    @FindBy(id = "packageDimension.length")
+    private WebElement lengthInputField;
+
+    @FindBy(id = "packageDimension.height")
+    private WebElement heightInputField;
+
+    @FindBy(id = "packageDimension.weight")
+    private WebElement weightInputField;
+
+    @FindBy(css = "[class*='d-inline-flex']")
+    private WebElement submitButton;
+
+    @FindBy(xpath = "//i[@class='iconsminds-microscope']/..")
+    private WebElement testsLink;
+
+    @FindBy(xpath = "(//div[@class='d-flex flex-row']/..)[1]")
+    private WebElement firstTest;
+
+    @FindBy(xpath = "//i[@class='simple-icon-plus align-middle']/..")
+    private WebElement createdTest;
+
+    @FindBy(xpath = "(//div[@class='d-flex flex-row']/../*/*/*/a)[1]")
+    private WebElement firstTestName;
+
+    @FindBy(css = "[class*='active breadcrumb']")
+    private WebElement testID;
+
+    @FindBy(xpath = "(//i[@class='iconsminds-shopping-bag']/..)[2]")
+    private WebElement sampleReceivingLink;
+
+    @FindBy(css = "[placeholder='Test id']")
+    private WebElement testIDInputField;
+
+    @FindBy(css = "[class*='btn btn-success float-right']")
+    private WebElement createOrderButton;
+
+    @FindBy(xpath = "//div[contains(@class,'d-flex flex-row justify-content-between p')]/..")
+    private WebElement testBody;
+
 
     public void clickOnSupplies()
     {
@@ -98,7 +176,6 @@ public class AdminLogisticsPage {
         logisticsLink.click();
         ts.presenceOfElementWait(suppliesLink);
         suppliesLink.click();
-
     }
 
     public void clickOnTestIncoming()
@@ -112,24 +189,27 @@ public class AdminLogisticsPage {
 
     }
 
-    public void searchTheSampleRequest() throws InterruptedException {
+    public void searchTheSampleRequest(){
         clickOnTestIncoming();
         ts.presenceOfElementWait(sampleRequestText);
         ts.presenceOfElementWait(startDate);
         ts.presenceOfElementWait(endDate);
-        ts.presenceOfElementWait(firstSample);
-        Thread.sleep(4000);
-        int size=allTrackingNumber.size();
-        String trackingNumber="";
-        for(int i=0; i<size; i++)
-        {
-            trackingNumber=allTrackingNumber.get(i).getText();
-            System.out.println(trackingNumber);
-            break;
+        try {
+            ts.presenceOfElementWait(firstSample);
+            int size = allTrackingNumber.size();
+            String trackingNumber = "";
+            for (int i = 0; i < size; i++) {
+                trackingNumber = allTrackingNumber.get(i).getText();
+                break;
+            }
+            ts.presenceOfElementWait(searchBar);
+            searchBar.sendKeys(trackingNumber);
+            ts.presenceOfElementWait(firstSample);
         }
-        ts.presenceOfElementWait(searchBar);
-        searchBar.sendKeys(trackingNumber);
-        ts.presenceOfElementWait(firstSample);
+        catch (Exception e)
+        {
+            ts.presenceOfElementWait(noResult);
+        }
     }
 
     public void checkTheDateFunctionality()
@@ -143,7 +223,13 @@ public class AdminLogisticsPage {
         startDate.sendKeys(sDate, Keys.ENTER);
         String eDate=localDate();
         endDate.sendKeys(eDate, Keys.ENTER);
-        ts.presenceOfElementWait(firstSample);
+        try {
+            ts.presenceOfElementWait(firstSample);
+        }
+        catch (Exception e)
+        {
+            ts.presenceOfElementWait(noResult);
+        }
     }
 
     public String localDate()
@@ -154,7 +240,7 @@ public class AdminLogisticsPage {
         return currentDate.format(formatter);
     }
 
-    public void searchSampleByEnterClinic() throws InterruptedException {
+    public void searchSampleByEnterClinic(){
 
         clickOnTestIncoming();
         ts.presenceOfElementWait(sampleRequestText);
@@ -166,8 +252,8 @@ public class AdminLogisticsPage {
         ts.presenceOfElementWait(filterClinicInputField);
         String clinicName=prop.getProperty("filterClinicName");
         filterClinicInputField.sendKeys(clinicName);
-        Thread.sleep(2000);
-        filterClinicInputField.sendKeys(Keys.ENTER);
+        ts.presenceOfElementWait(firstElementInDropDown);
+        firstElementInDropDown.click();
         ts.presenceOfElementWait(firstSample);
     }
 
@@ -232,7 +318,7 @@ public class AdminLogisticsPage {
         ts.presenceOfElementWait(firstSupplies);
     }
 
-    public void searchSuppliesByClinicName() throws InterruptedException {
+    public void searchSuppliesByClinicName(){
 
         clickOnSupplies();
         ts.presenceOfElementWait(filterClinicDropDown);
@@ -240,8 +326,8 @@ public class AdminLogisticsPage {
         ts.presenceOfElementWait(filterClinicInputField);
         String clinicName=prop.getProperty("filterClinicName");
         filterClinicInputField.sendKeys(clinicName);
-        Thread.sleep(2000);
-        filterClinicInputField.sendKeys(Keys.ENTER);
+        ts.presenceOfElementWait(firstElementInDropDown);
+        firstElementInDropDown.click();
         ts.presenceOfElementWait(firstSupplies);
 
     }
@@ -250,7 +336,102 @@ public class AdminLogisticsPage {
     {
         clickOnSupplies();
         ts.presenceOfElementWait(requestSuppliesButton);
-
+        requestSuppliesButton.click();
+        ts.presenceOfElementWait(selectClinicDropDown);
+        selectClinicDropDown.click();
+        ts.presenceOfElementWait(selectClinicInputField);
+        String clinicName=prop.getProperty("requestClinicName");
+        selectClinicInputField.sendKeys(clinicName);
+        ts.presenceOfElementWait(firstElementInDropDown);
+        firstElementInDropDown.click();
+        ts.presenceOfElementWait(suppliesItemDropDown);
+        suppliesItemDropDown.click();
+        ts.presenceOfElementWait(suppliesInputField);
+        String itemName=prop.getProperty("suppliesRequest");
+        suppliesInputField.sendKeys(itemName);
+        ts.presenceOfElementWait(firstElementInDropDown);
+        firstElementInDropDown.click();
+        ts.presenceOfElementWait(confirmRequestButton);
+        confirmRequestButton.click();
+        ts.presenceOfElementWait(status);
     }
 
+    public void clickOnNewLabelButton()
+    {
+        clickOnSupplies();
+        ts.presenceOfElementWait(firstSuppliesRequest);
+        allNewLabelButton.get(0).click();
+        ts.presenceOfElementWait(titleInfo);
+        ts.presenceOfElementWait(serviceLevelDropDown);
+        serviceLevelDropDown.click();
+        ts.presenceOfElementWait(firstServiceInDropDown);
+        firstServiceInDropDown.click();
+        ts.presenceOfElementWait(widthInputField);
+        String width=prop.getProperty("width");
+        widthInputField.sendKeys(width);
+        ts.presenceOfElementWait(lengthInputField);
+        String length=prop.getProperty("length");
+        lengthInputField.sendKeys(length);
+        ts.presenceOfElementWait(heightInputField);
+        String height=prop.getProperty("height");
+        heightInputField.sendKeys(height);
+        ts.presenceOfElementWait(weightInputField);
+        String weight=prop.getProperty("labelWeight");
+        weightInputField.sendKeys(weight);
+        ts.presenceOfElementWait(submitButton);
+        submitButton.click();
+        try
+        {
+            ts.waitForTheElementVisibility(status,15);
+        }
+        catch (Exception e)
+        {
+            ts.switchToTab(1);
+        }
+    }
+
+    static String createdTestID="";
+    public void fetchTestID()
+    {
+        ts.presenceOfElementWait(testsLink);
+        testsLink.click();
+        ts.presenceOfElementWait(searchBar);
+        ts.presenceOfElementWait(firstTest);
+        ts.presenceOfElementWait(createdTest);
+        ts.clickOnElement(createdTest);
+        ts.presenceOfElementWait(firstTest);
+        ts.presenceOfElementWait(firstTestName);
+        ts.clickOnElement(firstTestName);
+        ts.presenceOfElementWait(testID);
+        String ID=testID.getText();
+        String [] array=ID.split("-");
+        createdTestID=array[0];
+    }
+
+    public void clickOnSampleReceiving()
+    {
+        ts.presenceOfElementWait(clinic);
+        ts.scrollIntoView(logisticsLink);
+        ts.presenceOfElementWait(logisticsLink);
+        logisticsLink.click();
+        ts.presenceOfElementWait(sampleReceivingLink);
+        sampleReceivingLink.click();
+        ts.presenceOfElementWait(createOrderButton);
+        ts.presenceOfElementWait(testIDInputField);
+    }
+
+    public void searchTheSampleByTestID()
+    {
+        clickOnSampleReceiving();
+        System.out.println(createdTestID);
+        ts.presenceOfElementWait(testIDInputField);
+        testIDInputField.sendKeys(createdTestID);
+        try {
+            ts.presenceOfElementWait(testBody);
+        }
+        catch (Exception e)
+        {
+            ts.presenceOfElementWait(noResult);
+        }
+    }
 }

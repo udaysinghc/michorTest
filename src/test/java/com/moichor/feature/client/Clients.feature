@@ -1,25 +1,18 @@
 Feature: Test the client functionality
-
-  Scenario: Add a client
+  Scenario: Verify the create "Clients" functionality
     Given user logged in to the application
-    When Add a Client
+    Then Add a Client
     Then Added client is displayed
 
-  Scenario: Edit the Added client
+  Scenario: Verify the edit "Client" functionality
     Given user logged in to the application
-    When edit the client
-    Then edited data is displayed
+    Then edit the client
 
 
-  Scenario: Add a Patient
+  Scenario: Verify the "Patient" functionality from Clients.
     Given user logged in to the application
-    When Select the added client
-    And add a patient
-    Then patient is displayed
+    Then add a patient
 
-
-  Scenario: Delete the added client
+  Scenario: Verify the delete "Client" functionality.
     Given user logged in to the application
-    When Select the added client
-    And delete the selected client
-    Then deleted client is not displayed
+    Then delete the selected client

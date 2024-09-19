@@ -65,6 +65,18 @@ public class TestsPage {
     @FindBy(xpath = "//label[text()='Selected Tests']")
     private WebElement selectTestText;
 
+    @FindBy(css = "[class='reftest-list-groups']")
+    private WebElement refTestList;
+
+    @FindBy(xpath = "(//*[@class='modal-body'])[2]/descendant::div[@class=' css-hlgwow']/../..")
+    private WebElement selectTestFromBundleDropDown;
+
+    @FindBy(xpath = "(//*[@class='modal-body'])[2]/descendant::div[@class=' css-hlgwow']/../../descendant::input")
+    private WebElement selectTestFromBundleInputField;
+
+    @FindBy(css = "[class*=' css-d']")
+    private WebElement firstElementInDropDown;
+
     @FindBy(xpath = "//button[text()='Apply and Close']")
     private WebElement applyCloseButton;
 
@@ -74,16 +86,31 @@ public class TestsPage {
     @FindBy(css = "[name='id']")
     private WebElement code;
 
+    @FindBy(css = "[class='questions-block']")
+    private WebElement questionBody;
+
+    @FindBy(css = "[class*='badge badge-danger py']")
+    private List<WebElement> requiredFields;
+
+    @FindBy(css = "textarea[class*='form-control']")
+    private WebElement noteTextArea;
+
+    @FindBy(css = "button[class='btn btn-primary']")
+    private WebElement answerButton;
+
     @FindBy(xpath = "//button[text()='Create']")
     private WebElement createButton;
 
     @FindBy(css = "[role='status']")
     private WebElement status;
 
+    @FindBy(xpath = "//div[contains(text(),'successfully')]")
+    private WebElement successStatus;
+
     @FindBy(css = "[class*='d-flex li']")
     private WebElement particularTest;
 
-    @FindBy(xpath = "//a/p[contains(@class,'list')]")
+    @FindBy(xpath = "(//a/p[contains(@class,'list')])[1]")
     private WebElement allTest;
 
     @FindBy(xpath = "//span[text()='DELETE']")
@@ -119,8 +146,9 @@ public class TestsPage {
     @FindBy(xpath = "//div/p[text()='Test Status']")
     private WebElement testStatus;
 
-    @FindBy(css = "[class='infinite-scroll-component__outerdiv']")
+    @FindBy(xpath = "(//div[@class='d-flex flex-row']/*/*/a)[1]")
     private WebElement allTests;
+
 
     @FindBy(xpath = "(//span[@class='cursor-pointer flex badge badge-info badge-pill'])[1]")
     private WebElement infoSheet;
@@ -146,10 +174,13 @@ public class TestsPage {
     @FindBy(xpath = "//span[contains(@id,'react')]/../descendant::input[@id]")
     private WebElement veterinarianInput;
 
+    @FindBy(xpath = "(//div[contains(@class,'react-select__option')])[1]")
+    private WebElement firstVet;
+
     @FindBy(xpath = "//div[contains(@class,'react-select__menu-li')]/div")
     private WebElement selectVet;
 
-    @FindBy(xpath = "//div/h3[text()='No results found.']")
+    @FindBy(xpath = "//div/h3")
     private WebElement noResult;
 
 
@@ -162,32 +193,36 @@ public class TestsPage {
 
     static String codeText;
 
-    public void addATest() throws InterruptedException {
+    public void addATest(){
         ts.presenceOfElementWait(addNewButton);
         addNewButton.click();
         ts.presenceOfElementWait(clientDropDown);
         clientText.click();
         ts.presenceOfElementWait(clientText);
-        clientText.sendKeys("uday88");
+        String clientName=prop.getProperty("clientName");
+        clientText.sendKeys(clientName);
         ts.presenceOfElementWait(createClient);
         createClient.click();
         ts.presenceOfElementWait(saveButton);
         ts.presenceOfElementWait(patientDropDown);
         patientDropDown.click();
         ts.presenceOfElementWait(patientText);
-        patientText.sendKeys("uday");
+        String patientName=prop.getProperty("testPatientName");
+        patientText.sendKeys(patientName);
         ts.presenceOfElementWait(createPatient);
         createClient.click();
         ts.scrollPageDown();
         ts.presenceOfElementWait(selectTestFromMenu);
         selectTestFromMenu.click();
         ts.presenceOfElementWait(selectTestText);
+        ts.presenceOfElementWait(refTestList);
+        ts.presenceOfElementWait(selectTestFromBundleDropDown);
+        selectTestFromBundleDropDown.click();
+        ts.presenceOfElementWait(selectTestFromBundleInputField);
         String nameOfTest=prop.getProperty("testName");
-        Thread.sleep(5000);
-        driver.findElement(By.xpath("//label[text()='"+nameOfTest+"']/preceding-sibling::input")).click();
-        Thread.sleep(5000);
-        String nameOFSecondTest=prop.getProperty("testName2");
-        driver.findElement(By.xpath("//label[text()='"+nameOFSecondTest+"']/preceding-sibling::input")).click();
+        selectTestFromBundleInputField.sendKeys(nameOfTest);
+        ts.presenceOfElementWait(firstElementInDropDown);
+        firstElementInDropDown.click();
         ts.scrollPageDown();
         ts.presenceOfElementWait(applyCloseButton);
         applyCloseButton.click();
@@ -196,19 +231,45 @@ public class TestsPage {
         ts.presenceOfElementWait(code);
         codeText = ts.doGetElementAttribute(code, "value");
         System.out.println(codeText);
+        try {
+            ts.presenceOfElementWait(questionBody);
+            int count = requiredFields.size();
+            for (int i = 1; i <= count; i++) {
+
+                try {
+                    WebElement dropdown = driver.findElement(By.xpath("(//span[contains(@class,'badge badge-danger py')])[" + i + "]/../.." +
+                            "/descendant::div[@class=' css-hlgwow']/../.."));
+                    ts.waitForTheElementVisibility(dropdown, 10);
+                    dropdown.click();
+                    ts.presenceOfElementWait(firstElementInDropDown);
+                    firstElementInDropDown.click();
+                } catch (RuntimeException e) {
+                    WebElement inputField = driver.findElement(By.xpath("(//span[contains(@class,'badge badge-danger py')])[" + i + "]" +
+                            "/../../descendant::input"));
+                    inputField.click();
+                    ts.presenceOfElementWait(noteTextArea);
+                    String text = prop.getProperty("noteText");
+                    noteTextArea.sendKeys(text);
+                    ts.presenceOfElementWait(answerButton);
+                    answerButton.click();
+                }
+            }
+        }
+        catch (Exception e)
+        {
+
+        }
         ts.scrollPageDown();
         ts.presenceOfElementWait(createButton);
         createButton.click();
-        ts.presenceOfElementWait(status);
+        ts.presenceOfElementWait(successStatus);
 
     }
 
-    public void searchForAddedTest() throws InterruptedException {
-        Thread.sleep(5000);
+    public void searchForAddedTest() {
         ts.switchToTab(0);
         ts.presenceOfElementWait(search);
         search.sendKeys(codeText);
-        Thread.sleep(5000);
         ts.presenceOfElementWait(particularTest);
     }
 
@@ -216,7 +277,6 @@ public class TestsPage {
     {
         ts.presenceOfElementWait(allTest);
         allTest.click();
-        ts.presenceOfElementWait(deleteButton);
         ts.presenceOfElementWait(save);
         ts.presenceOfElementWait(vetDropDown);
         vetDropDown.click();
@@ -237,9 +297,9 @@ public class TestsPage {
 
     }
 
-    public void deleteTest() throws InterruptedException {
+    public void deleteTest() {
         try {
-            ts.presenceOfElementWait(deleteTheTest);
+            ts.waitForTheElementVisibility(deleteTheTest,10);
             deleteTheTest.click();
             ts.presenceOfElementWait(confirmDelete);
             confirmDelete.click();
@@ -254,23 +314,26 @@ public class TestsPage {
     }
 
     List<WebElement> allTestStatus;
-    public void testStatus() throws InterruptedException {
+    public void testStatus() {
         ts.presenceOfElementWait(testStatus);
         allTestStatus = driver.findElements(By.cssSelector("[class*='px'] [href*='/app/']"));
-        System.out.println(allTestStatus);
         for(WebElement r:allTestStatus)
         {
-            System.out.println(r.getText());
             r.click();
             ts.scrollIntoView(r);
-            ts.presenceOfElementWait(allTests);
-            Thread.sleep(2000);
+            try {
+                ts.waitForTheElementVisibility(allTest,15);
+            }
+            catch (Exception e)
+            {
+                ts.waitForTheElementVisibility(noResult,5);
+            }
         }
 
 
     }
 
-    public void infoSheet() throws InterruptedException {
+    public void infoSheet(){
         ts.presenceOfElementWait(search);
         ts.presenceOfElementWait(infoSheet);
         infoSheet.click();
@@ -278,11 +341,10 @@ public class TestsPage {
     }
 
     static String sampleId;
-    public void clickOnArchive() throws InterruptedException {
+    public void clickOnArchive() {
         testStatus();
         for(WebElement r:allTestStatus)
         {
-            System.out.println(r.getText());
             if(r.getText().equalsIgnoreCase("Completed Tests"))
             {
                 r.click();
@@ -309,16 +371,14 @@ public class TestsPage {
 
     }
 
-    public void clickOnVetDropDown() throws InterruptedException {
+    public void clickOnVetDropDown() {
 
         try {
             ts.presenceOfElementWait(veterinarianDropDown);
             veterinarianDropDown.click();
             ts.presenceOfElementWait(veterinarianInput);
-            String vet = prop.getProperty("vetName");
-            veterinarianInput.sendKeys(vet);
-            Thread.sleep(2000);
-            veterinarianInput.sendKeys(Keys.ENTER);
+            ts.presenceOfElementWait(firstVet);
+            firstVet.click();
             ts.presenceOfElementWait(allTest);
         }
         catch (Exception e)

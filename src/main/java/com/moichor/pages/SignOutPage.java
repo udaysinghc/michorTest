@@ -40,14 +40,8 @@ public class SignOutPage {
 
     public void clickOnSignOutButton() throws InterruptedException {
         ts.presenceOfElementWait(menuButton);
-        Thread.sleep(5000);
-        ts.presenceOfElementWait(menuButton);
-        menuButton.click();
-        Thread.sleep(5000);
+        ts.clickOnElement(menuButton);
         menuItems.get(1).click();
-
-
-
     }
 
     public void loginPage()

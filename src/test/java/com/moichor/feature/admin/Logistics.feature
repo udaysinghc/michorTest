@@ -30,3 +30,13 @@ Feature: Test The Functionality Of Logistics Module
   Scenario: Verify the Request Supplies CTA functionality
     Given user logged in to the admin portal
     Then add supplies request
+
+  Scenario: Verify the New Label functionality
+    Given user logged in to the admin portal
+    Then check new label button functionality
+
+  Scenario: Verify the search by Test ID functionality
+    Given user logged in to the application
+    Then fetch the test id from created test
+    And user logged in to the admin portal
+    Then search sample receiving by created test id

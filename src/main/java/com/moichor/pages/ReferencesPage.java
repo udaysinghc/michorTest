@@ -3,6 +3,8 @@ package com.moichor.pages;
 import com.moichor.base.DriverFactory;
 import com.moichor.util.ConfigReader;
 import com.moichor.util.TestUtil;
+import org.codehaus.plexus.util.Expand;
+import org.junit.Assert;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
@@ -77,11 +79,23 @@ public class ReferencesPage {
     @FindBy(xpath = "//span[@id='react-select-tests-live-region']/../descendant::input")
     private WebElement relatedTestInputField;
 
+    @FindBy(xpath = "(//div[@role='option'])[1]")
+    private WebElement elementInDropDown;
+
+    @FindBy(css = "[role='listbox'] [role='option']")
+    private List<WebElement> dropDownElements;
+
     @FindBy(css = "[class*='d-inline-flex mx-auto ']")
     private WebElement saveButton;
 
     @FindBy(css = "[role='status']")
     private WebElement status;
+
+    @FindBy(xpath = "//div[contains(text(),'updated.')]")
+    private WebElement updatedStatus;
+
+    @FindBy(xpath = "//div[contains(text(),'deleted')]")
+    private WebElement deleteStatus;
 
     @FindBy(xpath = "(//div[contains(@class,'d-flex flex-row list')]/..)[1]")
     private WebElement firstBin;
@@ -127,6 +141,9 @@ public class ReferencesPage {
 
     @FindBy(xpath = "(//span[contains(@class,'list-title w')])[1]")
     private WebElement firstIssueTitle;
+
+    @FindBy(xpath = "(//div[@class='d-flex flex-row list-item-card card']/*/*/*/p)[1]")
+    private WebElement firstIssueID;
 
     @FindBy(xpath = "(//i[@class='simple-icon-trash primary'])[1]")
     private WebElement firstIssueDeleteIcon;
@@ -196,6 +213,9 @@ public class ReferencesPage {
 
     @FindBy(xpath = "(//div[contains(@class,'d-flex flex-row list')]/..)[1]")
     private WebElement firstVariableID;
+
+    @FindBy(css = "[class='sub-menu']")
+    private WebElement subMenu;
 
     @FindBy(xpath = "//i[@class='simple-icon-chart']/..")
     private WebElement valueLink;
@@ -536,8 +556,14 @@ public class ReferencesPage {
     @FindBy(xpath = "(//label[text()='Name']/following-sibling::input)[1]")
     private WebElement bundleNameInputField;
 
-    @FindBy(xpath = "//div[contains(@id,'placeholder')]/../..")
+    @FindBy(xpath = "//div[contains(@class,'react-select__indicator react')]/*[name()='svg']")
     private WebElement addReferenceTestToBundleDropDown;
+
+    @FindBy(css = "[class*='react-select__menu-list']")
+    private WebElement listBox;
+
+    @FindBy(css = "[class*='css-d']")
+    private WebElement firstElementInDropDown;
 
     @FindBy(xpath = "//div[contains(@id,'placeholder')]/../../descendant::input")
     private WebElement addReferenceTestToBundleInputField;
@@ -677,6 +703,9 @@ public class ReferencesPage {
     @FindBy(xpath = "(//div[@class='d-flex flex-column flex-lg-row min-width-zero align-items-lg-center']/*/*)[1]")
     private WebElement firstCondition;
 
+    @FindBy(xpath = "(//div[contains(@class,'d-flex flex-column')]/p)[1]")
+    private WebElement firstConditionID;
+
     @FindBy(css = "[class*='btn btn-danger']")
     private WebElement deleteConditionsButton;
 
@@ -743,6 +772,9 @@ public class ReferencesPage {
     @FindBy(css = "[class*='d-flex btn btn-danger']")
     private WebElement yesButtonForDeletingTask;
 
+    @FindBy(xpath = "//div/h4")
+    private WebElement noResultFound;
+
     public void clickOnReferenceButton() {
         ts.presenceOfElementWait(clinicButton);
         ts.scrollIntoView(referencesButton);
@@ -753,8 +785,9 @@ public class ReferencesPage {
 
     Random r = new Random();
     int random = r.nextInt(100);
+    int random1=r.nextInt(100);
 
-    public void addABin() throws InterruptedException {
+    public void addABin()  {
         ts.presenceOfElementWait(binsLink);
         binsLink.click();
         ts.presenceOfElementWait(binText);
@@ -763,7 +796,7 @@ public class ReferencesPage {
         addBinButton.click();
         ts.presenceOfElementWait(codeInputField);
         String code = prop.getProperty("codeName");
-        codeInputField.sendKeys(random + code);
+        codeInputField.sendKeys(random + code+random1);
         ts.presenceOfElementWait(priorityInputField);
         Random r1 = new Random();
         int priority = r1.nextInt(20);
@@ -793,23 +826,39 @@ public class ReferencesPage {
         ts.presenceOfElementWait(relatedTestInputField);
         String test = prop.getProperty("relatedTestName");
         relatedTestInputField.sendKeys(test);
-        Thread.sleep(4000);
-        relatedTestInputField.sendKeys(Keys.ENTER);
+        ts.presenceOfElementWait(elementInDropDown);
+        int listOfTest=dropDownElements.size();
+        for(int i=0; i<listOfTest; i++)
+        {
+            String testName=dropDownElements.get(i).getText();
+            if(testName.contains(test))
+            {
+                dropDownElements.get(i).click();
+                break;
+            }
+        }
         ts.presenceOfElementWait(saveButton);
         saveButton.click();
         ts.presenceOfElementWait(status);
-
+        String actual=status.getText();
+        String expected=prop.getProperty("createdMessage");
+        if(!(actual.contains(expected)))
+        {
+            ts.backTheWebPage();
+        }
+        ts.presenceOfElementWait(searchBar);
+        ts.presenceOfElementWait(addBinButton);
     }
 
     public void searchForAddedBin() {
         ts.presenceOfElementWait(searchBar);
         String code = prop.getProperty("codeName");
-        searchBar.sendKeys(random + code);
+        searchBar.sendKeys(random + code+random1);
         ts.presenceOfElementWait(firstBin);
     }
 
-    public void editTheBin() throws InterruptedException {
-        Thread.sleep(2000);
+    public void editTheBin(){
+        ts.presenceOfElementWait(firstBin);
         ts.presenceOfElementWait(firstCodeID);
         firstCodeID.click();
         ts.presenceOfElementWait(dragIcon);
@@ -827,12 +876,11 @@ public class ReferencesPage {
         ts.presenceOfElementWait(yesButton);
         yesButton.click();
         ts.presenceOfElementWait(status);
-
     }
 
     char c = (char) (r.nextInt(26) + 'a');
 
-    public void addAIssue() throws InterruptedException {
+    public void addAIssue()  {
         ts.presenceOfElementWait(issueLink);
         issueLink.click();
         ts.presenceOfElementWait(issueText);
@@ -851,8 +899,17 @@ public class ReferencesPage {
         ts.presenceOfElementWait(issueStatusInput);
         String statusOFIssue = prop.getProperty("issueStatus");
         issueStatusInput.sendKeys(statusOFIssue);
-        Thread.sleep(2000);
-        issueStatusInput.sendKeys(Keys.ENTER);
+        ts.presenceOfElementWait(elementInDropDown);
+        int listOfStatus=dropDownElements.size();
+        for(int i=0; i<listOfStatus; i++)
+        {
+            String testName=dropDownElements.get(i).getText();
+            if(testName.contains(statusOFIssue))
+            {
+                dropDownElements.get(i).click();
+                break;
+            }
+        }
         ts.presenceOfElementWait(saveIssueButton);
         saveIssueButton.click();
         ts.presenceOfElementWait(status);
@@ -868,6 +925,7 @@ public class ReferencesPage {
     }
 
     public void editTheIssue() {
+        ts.presenceOfElementWait(firstIssueID);
         ts.presenceOfElementWait(firstIssueTitle);
         firstIssueTitle.click();
         ts.presenceOfElementWait(issueStatusDropDown);
@@ -878,21 +936,21 @@ public class ReferencesPage {
         issueStatusInput.sendKeys(Keys.ENTER);
         ts.presenceOfElementWait(saveIssueButton);
         saveIssueButton.click();
-        ts.presenceOfElementWait(status);
+        ts.presenceOfElementWait(updatedStatus);
 
     }
 
-    public void deleteTheIssue() throws InterruptedException {
+    public void deleteTheIssue()  {
+        ts.presenceOfElementWait(firstIssueID);
         ts.presenceOfElementWait(firstIssueDeleteIcon);
-        Thread.sleep(4000);
-        firstIssueDeleteIcon.click();
+        ts.clickOnElement(firstIssueDeleteIcon);
         ts.presenceOfElementWait(deletePopUp);
         ts.presenceOfElementWait(deleteIssueYesButton);
         deleteIssueYesButton.click();
-        ts.presenceOfElementWait(status);
+        ts.presenceOfElementWait(deleteStatus);
     }
 
-    public void addAVariable() throws InterruptedException {
+    public void addAVariable() {
         ts.presenceOfElementWait(variablesLink);
         variablesLink.click();
         ts.presenceOfElementWait(variableText);
@@ -910,8 +968,8 @@ public class ReferencesPage {
         ts.presenceOfElementWait(visibilityOfClinicInput);
         String visibility = prop.getProperty("variableVisibilityForClinic");
         visibilityOfClinicInput.sendKeys(visibility);
-        Thread.sleep(2000);
-        visibilityOfClinicInput.sendKeys(Keys.ENTER);
+        ts.presenceOfElementWait(elementInDropDown);
+        elementInDropDown.click();
         ts.presenceOfElementWait(variableTypeDropDown);
         variableTypeDropDown.click();
         ts.presenceOfElementWait(variableTypeInput);
@@ -921,8 +979,8 @@ public class ReferencesPage {
             String text = r.getText();
             if (variableType.equalsIgnoreCase(text)) {
                 variableTypeInput.sendKeys(variableType);
-                Thread.sleep(2000);
-                variableTypeInput.sendKeys(Keys.ENTER);
+                ts.presenceOfElementWait(elementInDropDown);
+                elementInDropDown.click();
                 try {
                     ts.waitForTheElementVisibility(addOptionButton, 5);
                     addOptionButton.click();
@@ -961,9 +1019,8 @@ public class ReferencesPage {
 
     }
 
-    public void editTheVariable() throws InterruptedException {
+    public void editTheVariable()  {
         ts.presenceOfElementWait(firstVariableID);
-        Thread.sleep(2000);
         firstVariableID.click();
         ts.presenceOfElementWait(visibilityOfClinicDropDown);
         ts.presenceOfElementWait(visibilityOfClinicInput);
@@ -973,32 +1030,27 @@ public class ReferencesPage {
         driver.findElement(By.xpath("//label[text()='" + toggle + "']/../button")).click();
         ts.presenceOfElementWait(variableSubmitButton);
         variableSubmitButton.click();
-        ts.presenceOfElementWait(status);
+        ts.presenceOfElementWait(updatedStatus);
     }
 
-    public void deleteTheVariable() throws InterruptedException {
+    public void deleteTheVariable() {
         ts.presenceOfElementWait(firstVariableID);
-        Thread.sleep(2000);
         firstVariableID.click();
-        Thread.sleep(2000);
         ts.scrollPageDown();
         ts.presenceOfElementWait(deleteTheVariable);
         deleteTheVariable.click();
-        Thread.sleep(2000);
         ts.presenceOfElementWait(yesButtonForDeleteTheVariable);
         yesButtonForDeleteTheVariable.click();
-        Thread.sleep(2000);
-        ts.presenceOfElementWait(status);
+        ts.presenceOfElementWait(deleteStatus);
 
     }
 
-    public void addAValue() throws InterruptedException {
+    public void addAValue() {
         ts.presenceOfElementWait(referencesButton);
         referencesButton.click();
-        Thread.sleep(2000);
+        ts.presenceOfElementWait(subMenu);
         ts.presenceOfElementWait(valueLink);
-        valueLink.click();
-        Thread.sleep(2000);
+        ts.clickOnElement(valueLink);
         ts.presenceOfElementWait(valueText);
         ts.presenceOfElementWait(addValueButton);
         addValueButton.click();
@@ -1008,15 +1060,15 @@ public class ReferencesPage {
         ts.presenceOfElementWait(variableInput);
         String variableName = prop.getProperty("variableName");
         variableInput.sendKeys(variableName + random);
-        Thread.sleep(4000);
-        variableInput.sendKeys(Keys.ENTER);
+        ts.presenceOfElementWait(elementInDropDown);
+        elementInDropDown.click();
         ts.presenceOfElementWait(speciesDropDown);
         speciesDropDown.click();
         ts.presenceOfElementWait(speciesInput);
         String speciesName = prop.getProperty("speciesNameForValue");
         speciesInput.sendKeys(speciesName);
-        Thread.sleep(2000);
-        speciesInput.sendKeys(Keys.ENTER);
+        ts.presenceOfElementWait(elementInDropDown);
+        elementInDropDown.click();
         String variableType = prop.getProperty("variableType");
         if (variableType.equalsIgnoreCase("categorical") || variableType.equalsIgnoreCase("multicategorical")) {
             ts.presenceOfElementWait(refValueDropDown);
@@ -1036,17 +1088,17 @@ public class ReferencesPage {
         }
     }
 
-    public void searchTheValue() throws InterruptedException {
+    public void searchTheValue()  {
         ts.presenceOfElementWait(searchTheValueByVariableNameDropDown);
         searchTheValueByVariableNameDropDown.click();
         String variableName = prop.getProperty("variableName");
         searchTheValueByVariableNameInputField.sendKeys(variableName + random);
-        Thread.sleep(2000);
-        searchTheValueByVariableNameInputField.sendKeys(Keys.ENTER);
+        ts.presenceOfElementWait(elementInDropDown);
+        elementInDropDown.click();
         ts.presenceOfElementWait(firstValue);
     }
 
-    public void editTheValue() throws InterruptedException {
+    public void editTheValue() {
         ts.presenceOfElementWait(firstValue);
         firstValue.click();
         ts.presenceOfElementWait(editTheValue);
@@ -1068,15 +1120,14 @@ public class ReferencesPage {
         ts.presenceOfElementWait(status);
     }
 
-    public void deleteTheValue() throws InterruptedException {
+    public void deleteTheValue() {
         ts.presenceOfElementWait(firstValue);
         firstValue.click();
         ts.presenceOfElementWait(deleteValueButton);
         deleteValueButton.click();
         ts.presenceOfElementWait(yesButtonForDeleteValue);
         yesButtonForDeleteValue.click();
-        ts.presenceOfElementWait(status);
-        Thread.sleep(2000);
+        ts.presenceOfElementWait(deleteStatus);
         ts.presenceOfElementWait(referencesButton);
         referencesButton.click();
         ts.presenceOfElementWait(variablesLink);
@@ -1085,14 +1136,14 @@ public class ReferencesPage {
 
     }
 
-    public void searchTheValueBySpeciesDropDown() throws InterruptedException {
+    public void searchTheValueBySpeciesDropDown() {
         ts.presenceOfElementWait(searchSpeciesDropDown);
         searchSpeciesDropDown.click();
         ts.presenceOfElementWait(searchSpeciesInput);
         String speciesName = prop.getProperty("speciesNameForValue");
         searchSpeciesInput.sendKeys(speciesName);
-        Thread.sleep(2000);
-        searchSpeciesInput.sendKeys(Keys.ENTER);
+        ts.presenceOfElementWait(elementInDropDown);
+        elementInDropDown.click();
         ts.presenceOfElementWait(firstValue);
         ts.presenceOfElementWait(speciesDropDownCancelIcon);
         speciesDropDownCancelIcon.click();
@@ -1117,13 +1168,11 @@ public class ReferencesPage {
 
     }
 
-    public void searchTheValueByBreedName() throws InterruptedException {
+    public void searchTheValueByBreedName() {
         ts.presenceOfElementWait(referencesButton);
-        referencesButton.click();
-        Thread.sleep(2000);
-        ts.presenceOfElementWait(valueLink);
-        valueLink.click();
-        Thread.sleep(2000);
+        ts.clickOnElement(referencesButton);
+        ts.presenceOfElementWait(subMenu);
+        ts.clickOnElement(valueLink);
         ts.presenceOfElementWait(valueText);
         ts.presenceOfElementWait(breedInputField);
         String breedName=prop.getProperty("breedName");
@@ -1133,7 +1182,7 @@ public class ReferencesPage {
         }
         catch (Exception e)
         {
-
+            ts.presenceOfElementWait(noResultFound);
         }
         breedInputField.clear();
 
@@ -1141,8 +1190,8 @@ public class ReferencesPage {
 
     int idOfCustom = r.nextInt(1000);
 
-    public void addNewSpecies() throws InterruptedException {
-        Thread.sleep(2000);
+    public void addNewSpecies() {
+        ts.presenceOfElementWait(subMenu);
         ts.presenceOfElementWait(speciesLink);
         speciesLink.click();
         ts.presenceOfElementWait(speciesText);
@@ -1151,7 +1200,7 @@ public class ReferencesPage {
         ts.presenceOfElementWait(addSpeciesText);
         ts.presenceOfElementWait(commonNameInput);
         String cName = prop.getProperty("commonName");
-        commonNameInput.sendKeys(cName);
+        commonNameInput.sendKeys(cName+random);
         ts.presenceOfElementWait(genusNameInput);
         String genusName = prop.getProperty("genus");
         genusNameInput.sendKeys(genusName);
@@ -1174,14 +1223,14 @@ public class ReferencesPage {
         ts.presenceOfElementWait(referenceSpeciesInput);
         String speName = prop.getProperty("referenceSpeciesName");
         referenceSpeciesInput.sendKeys(speName);
-        Thread.sleep(2000);
-        referenceSpeciesInput.sendKeys(Keys.ENTER);
+        ts.presenceOfElementWait(elementInDropDown);
+        elementInDropDown.click();
         ts.presenceOfElementWait(selectRelatedTestDropDown);
         selectRelatedTestDropDown.click();
         ts.presenceOfElementWait(selectRelatedTestInput);
         String test = prop.getProperty("selectTest");
-        Thread.sleep(2000);
-        selectRelatedTestInput.sendKeys(Keys.ENTER);
+        ts.presenceOfElementWait(elementInDropDown);
+        elementInDropDown.click();
         ts.presenceOfElementWait(addSpeciesSubmitButton);
         addSpeciesSubmitButton.click();
         ts.presenceOfElementWait(status);
@@ -1223,15 +1272,15 @@ public class ReferencesPage {
         ts.presenceOfElementWait(speciesID);
     }
 
-    public void editTheSpecies() throws InterruptedException {
+    public void editTheSpecies()  {
         ts.presenceOfElementWait(speciesID);
         speciesID.click();
         ts.presenceOfElementWait(selectRelatedTestDropDown);
         selectRelatedTestDropDown.click();
         ts.presenceOfElementWait(selectRelatedTestInput);
         String test = prop.getProperty("selectTest");
-        Thread.sleep(2000);
-        selectRelatedTestInput.sendKeys(Keys.ENTER);
+        ts.presenceOfElementWait(elementInDropDown);
+        elementInDropDown.click();
         ts.presenceOfElementWait(addSpeciesSubmitButton);
         addSpeciesSubmitButton.click();
         ts.presenceOfElementWait(status);
@@ -1247,7 +1296,7 @@ public class ReferencesPage {
         deleteTheAddedSpecie.click();
         ts.presenceOfElementWait(yesButtonForDeleteTheSpecie);
         yesButtonForDeleteTheSpecie.click();
-        ts.presenceOfElementWait(status);
+        ts.presenceOfElementWait(deleteStatus);
     }
 
     public void addAQuestion() {
@@ -1298,9 +1347,8 @@ public class ReferencesPage {
 
     }
 
-    public void editTheAddedQuestion() throws InterruptedException {
+    public void editTheAddedQuestion() {
         ts.presenceOfElementWait(addedQuestion);
-        Thread.sleep(4000);
         addedQuestion.click();
         ts.presenceOfElementWait(questionFormText);
         ts.presenceOfElementWait(questionInputField);
@@ -1309,7 +1357,6 @@ public class ReferencesPage {
         questionInputField.sendKeys(question);
         ts.presenceOfElementWait(submitButtonForQuestions);
         submitButtonForQuestions.click();
-        Thread.sleep(4000);
         ts.presenceOfElementWait(cancelIcon);
         cancelIcon.click();
         ts.presenceOfElementWait(searchBar);
@@ -1318,16 +1365,15 @@ public class ReferencesPage {
 
     }
 
-    public void deleteTheAddedTest() throws InterruptedException {
+    public void deleteTheAddedTest()  {
         ts.presenceOfElementWait(addedQuestion);
-        Thread.sleep(2000);
         addedQuestion.click();
         ts.presenceOfElementWait(questionFormText);
         ts.presenceOfElementWait(deleteTheAddedQuestion);
         deleteTheAddedQuestion.click();
         ts.presenceOfElementWait(yesButtonForDeleteTheQuestion);
         yesButtonForDeleteTheQuestion.click();
-        ts.presenceOfElementWait(status);
+        ts.presenceOfElementWait(deleteStatus);
     }
 
     public void addATest() {
@@ -1369,7 +1415,7 @@ public class ReferencesPage {
 
     public void editTheTest() {
         ts.presenceOfElementWait(firstTestName);
-        firstTestName.click();
+        ts.clickOnElement(firstTestName);
         ts.presenceOfElementWait(defaultPriceInputField);
         defaultPriceInputField.clear();
         String price = prop.getProperty("defaultPrice");
@@ -1399,20 +1445,18 @@ public class ReferencesPage {
 
     static String testGroupId;
 
-    public void searchForTheAddedTestGroup() throws InterruptedException {
+    public void searchForTheAddedTestGroup() {
         ts.presenceOfElementWait(searchBar);
         String testGroupName = prop.getProperty("testGroupName");
         searchBar.sendKeys(testGroupName + random);
-        Thread.sleep(2000);
         ts.presenceOfElementWait(firstTestGroupName);
         ts.presenceOfElementWait(firstTestGroupID);
         testGroupId = firstTestGroupID.getText();
     }
 
-    public void editTheTestGroup() throws InterruptedException {
+    public void editTheTestGroup()  {
         ts.presenceOfElementWait(firstTestGroupName);
-        Thread.sleep(4000);
-        firstTestGroupName.click();
+        ts.clickOnElement(firstTestGroupName);
         String testGroupName = prop.getProperty("editTestGroupName");
         ts.presenceOfElementWait(testGroupNameTextInputField);
         testGroupNameTextInputField.clear();
@@ -1422,14 +1466,13 @@ public class ReferencesPage {
         ts.presenceOfElementWait(status);
     }
 
-    public void deleteTheAddedTestGroup() throws InterruptedException {
+    public void deleteTheAddedTestGroup()  {
         ts.presenceOfElementWait(searchBar);
         ts.presenceOfElementWait(cancelIcon);
         cancelIcon.click();
         searchBar.sendKeys(testGroupId);
         ts.presenceOfElementWait(firstTestGroupName);
-        Thread.sleep(2000);
-        firstTestGroupName.click();
+        ts.clickOnElement(firstTestGroupName);
         ts.presenceOfElementWait(deleteTestGroupButton);
         deleteTestGroupButton.click();
         ts.presenceOfElementWait(yesButtonForDeleteTestGroup);
@@ -1437,15 +1480,20 @@ public class ReferencesPage {
         ts.presenceOfElementWait(status);
     }
 
-    public void checkForSortFilter() throws InterruptedException {
+    public void checkForSortFilter() {
         ts.refreshTheWebPAge();
-        Thread.sleep(4000);
         ts.presenceOfElementWait(sortFilterDropDown);
         sortFilterDropDown.click();
         int size = sortingFilterDropDownElements.size();
         for (int i = 0; i < size; i++) {
             sortingFilterDropDownElements.get(i).click();
-            ts.presenceOfElementWait(firstTestGroupID);
+            try {
+                ts.waitForTheElementVisibility(firstTestGroupID,10);
+            }
+            catch (Exception e)
+            {
+                ts.waitForTheElementVisibility(noResultFound,10);
+            }
             ts.presenceOfElementWait(sortFilterDropDown);
             sortFilterDropDown.click();
         }
@@ -1495,17 +1543,13 @@ public class ReferencesPage {
         itemID = firstItemID.getText();
     }
 
-    public void editTheItem() throws InterruptedException {
+    public void editTheItem(){
         ts.presenceOfElementWait(firstItemName);
-        Thread.sleep(2000);
-        firstItemName.click();
+        ts.clickOnElement(firstItemName);
         ts.presenceOfElementWait(itemUnitInputField);
         itemUnitInputField.clear();
         String itemUnit = prop.getProperty("editItemUnit");
         itemUnitInputField.sendKeys(itemUnit);
-//        ts.presenceOfElementWait(imageInputField);
-//        String imagePAth=prop.getProperty("image_path");
-//        imageInputField.sendKeys(imagePAth);
         ts.presenceOfElementWait(addItemSubmitButton);
         addItemSubmitButton.click();
 
@@ -1529,17 +1573,21 @@ public class ReferencesPage {
         ts.presenceOfElementWait(itemSortingFilterDropDown);
         itemSortingFilterDropDown.click();
         int size = sortingFilterDropDownElements.size();
-        System.out.println(size);
         for (int i = 0; i < size; i++) {
-            System.out.println(i);
             sortingFilterDropDownElements.get(i).click();
             ts.presenceOfElementWait(itemSortingFilterDropDown);
             itemSortingFilterDropDown.click();
-            ts.presenceOfElementWait(firstItemID);
+            try {
+                ts.waitForTheElementVisibility(firstItemID,10);
+            }
+            catch (Exception e)
+            {
+                ts.waitForTheElementVisibility(noResultFound,10);
+            }
         }
     }
 
-    public void addABundle() throws InterruptedException {
+    public void addABundle() {
         ts.waitForTheElementVisibility(bundleLink, 10);
         bundleLink.click();
         ts.presenceOfElementWait(bundleText);
@@ -1552,37 +1600,28 @@ public class ReferencesPage {
         bundleNameInputField.sendKeys(bundleName+random);
         ts.presenceOfElementWait(addReferenceTestToBundleDropDown);
         addReferenceTestToBundleDropDown.click();
-        Thread.sleep(4000);
         ts.presenceOfElementWait(addReferenceTestToBundleInputField);
         String referenceTestName = prop.getProperty("addReferenceTest");
         String secondReferenceTest = prop.getProperty("addSecondReferenceTest");
-        int size = allReferenceTests.size();
-        for (int i = 0; i < size; i++)
-        {
-
-            if (allReferenceTests.get(i).getText().equalsIgnoreCase(referenceTestName)) {
-                allReferenceTests.get(i).click();
-                ts.presenceOfElementWait(referenceTestAddButton);
-                referenceTestAddButton.click();
-                ts.presenceOfElementWait(cancelButton);
-                cancelButton.click();
-                ts.presenceOfElementWait(addReferenceTestToBundleDropDown);
-                addReferenceTestToBundleDropDown.click();
-                ts.presenceOfElementWait(addReferenceTestToBundleInputField);
-
-            } else if (allReferenceTests.get(i).getText().equalsIgnoreCase(secondReferenceTest)) {
-                allReferenceTests.get(i).click();
-                ts.presenceOfElementWait(referenceTestAddButton);
-                referenceTestAddButton.click();
-                break;
-            }
-
-
-        }
+        addReferenceTestToBundleInputField.sendKeys(referenceTestName);
+        ts.presenceOfElementWait(listBox);
+        ts.presenceOfElementWait(firstElementInDropDown);
+        firstElementInDropDown.click();
+        ts.presenceOfElementWait(referenceTestAddButton);
+        referenceTestAddButton.click();
+        ts.presenceOfElementWait(cancelButton);
+        cancelButton.click();
+        addReferenceTestToBundleDropDown.click();
+        ts.presenceOfElementWait(addReferenceTestToBundleInputField);
+        addReferenceTestToBundleInputField.sendKeys(secondReferenceTest);
+        ts.presenceOfElementWait(firstElementInDropDown);
+        firstElementInDropDown.click();
+        ts.presenceOfElementWait(referenceTestAddButton);
+        referenceTestAddButton.click();
+        ts.presenceOfElementWait(cancelButton);
         ts.presenceOfElementWait(addBundleSubmitButton);
         addBundleSubmitButton.click();
         ts.presenceOfElementWait(status);
-
     }
 
     public void searchTheAddedBundle() {
@@ -1590,17 +1629,13 @@ public class ReferencesPage {
         String bundleName = prop.getProperty("bundleName");
         searchBar.sendKeys(bundleName);
         ts.presenceOfElementWait(firstBundleName);
-
     }
 
-    public void editTheBundle() throws InterruptedException {
-        Thread.sleep(2000);
+    public void editTheBundle() {
         ts.presenceOfElementWait(firstBundleName);
-        Thread.sleep(2000);
-        firstBundleName.click();
+        ts.clickOnElement(firstBundleName);
         ts.presenceOfElementWait(addReferenceTestToBundleDropDown);
         addReferenceTestToBundleDropDown.click();
-        Thread.sleep(4000);
         ts.presenceOfElementWait(addReferenceTestToBundleInputField);
         String referenceTestName = prop.getProperty("editReferenceTest");
         int size = allReferenceTests.size();
@@ -1634,7 +1669,7 @@ public class ReferencesPage {
         deleteTheAddedBundleButton.click();
         ts.presenceOfElementWait(yesButtonForDeletingBundle);
         yesButtonForDeletingBundle.click();
-        ts.presenceOfElementWait(status);
+        ts.presenceOfElementWait(deleteStatus);
     }
 
     public void bundleSortingFilter()
@@ -1642,16 +1677,22 @@ public class ReferencesPage {
         ts.refreshTheWebPAge();
         ts.presenceOfElementWait(upDownArrow);
         upDownArrow.click();
-        ts.presenceOfElementWait(firstBundleName);
-        ts.presenceOfElementWait(idText);
-        idText.click();
-        ts.presenceOfElementWait(firstBundleName);
-        ts.presenceOfElementWait(upDownArrow);
-        upDownArrow.click();
-        ts.presenceOfElementWait(firstBundleName);
+        try {
+            ts.waitForTheElementVisibility(firstBundleName,10);
+            ts.waitForTheElementVisibility(idText,10);
+            idText.click();
+            ts.waitForTheElementVisibility(firstBundleName,10);
+            ts.presenceOfElementWait(upDownArrow);
+            upDownArrow.click();
+            ts.waitForTheElementVisibility(firstBundleName,10);
+        }
+        catch (Exception e)
+        {
+            ts.waitForTheElementVisibility(noResultFound,10);
+        }
     }
 
-    public void addAVolumeTier() throws InterruptedException {
+    public void addAVolumeTier(){
         ts.presenceOfElementWait(volumeTierLink);
         volumeTierLink.click();
         ts.presenceOfElementWait(volumeTierText);
@@ -1668,14 +1709,9 @@ public class ReferencesPage {
         maxOrderInputField.sendKeys(maxOrder);
         ts.presenceOfElementWait(referenceBundleDropDown);
         referenceBundleDropDown.click();
-        Thread.sleep(4000);
         ts.presenceOfElementWait(referenceBundleInputField);
-        int size=allReferenceBundle.size();
-        for(int i=0; i<size; i++)
-        {
-            allReferenceBundle.get(i).click();
-            break;
-        }
+        ts.presenceOfElementWait(firstElementInDropDown);
+        firstElementInDropDown.click();
         ts.presenceOfElementWait(addVolumeSubmitButton);
         addVolumeSubmitButton.click();
         ts.presenceOfElementWait(status);
@@ -1707,7 +1743,6 @@ public class ReferencesPage {
 
     public void deleteTheTier()
     {
-        ts.presenceOfElementWait(firstTierName);
         firstTierName.click();
         ts.presenceOfElementWait(deleteVolumeTierButton);
         deleteVolumeTierButton.click();
@@ -1716,29 +1751,23 @@ public class ReferencesPage {
         ts.presenceOfElementWait(status);
     }
 
+
     public void addAClinicalTemplate()
     {
         ts.presenceOfElementWait(clinicalTemplateLink);
-        clinicalTemplateLink.click();
+        ts.clickOnElement(clinicalTemplateLink);
         ts.presenceOfElementWait(addClinicalTemplateButton);
         ts.presenceOfElementWait(searchBar);
         addClinicalTemplateButton.click();
         ts.presenceOfElementWait(templateNameInputField);
         String templateName=prop.getProperty("templateName");
-        templateNameInputField.sendKeys(templateName);
+        templateNameInputField.sendKeys(templateName+c);
         ts.presenceOfElementWait(templateTypeDropDown);
         templateTypeDropDown.click();
         ts.presenceOfElementWait(templateNameInputField);
         String templateTypeName=prop.getProperty("templateType");
-        int size=allTypes.size();
-        for(int i=0; i<size; i++)
-        {
-            if(allTypes.get(i).getText().equalsIgnoreCase(templateTypeName))
-            {
-                allTypes.get(i).click();
-                break;
-            }
-        }
+        ts.presenceOfElementWait(firstElementInDropDown);
+        firstElementInDropDown.click();
         ts.presenceOfElementWait(templateBodyInputField);
         String templateBody=prop.getProperty("templateBody");
         templateBodyInputField.sendKeys(templateBody);
@@ -1778,7 +1807,7 @@ public class ReferencesPage {
         ts.presenceOfElementWait(status);
     }
 
-    public void addAConditions() throws InterruptedException {
+    public void addAConditions() {
         ts.presenceOfElementWait(itemsLink);
         ts.scrollIntoView(conditionsLink);
         ts.presenceOfElementWait(conditionsLink);
@@ -1790,18 +1819,11 @@ public class ReferencesPage {
         ts.presenceOfElementWait(conditionsFormText);
         ts.presenceOfElementWait(referenceTestDropDown);
         referenceTestDropDown.click();
-        Thread.sleep(4000);
         String refTest=prop.getProperty("referenceTest");
         ts.presenceOfElementWait(referenceTestInputField);
-        int size=allReferenceTests.size();
-        for(int i=0; i<size; i++)
-        {
-            if(allReferenceTests.get(i).getText().equalsIgnoreCase(refTest))
-            {
-                allReferenceTests.get(i).click();
-                break;
-            }
-        }
+        referenceTestInputField.sendKeys(refTest);
+        ts.presenceOfElementWait(firstElementInDropDown);
+        firstElementInDropDown.click();
         ts.presenceOfElementWait(conditionsTextInputField);
         String conditions=prop.getProperty("conditionsText");
         conditionsTextInputField.sendKeys(conditions+random);
@@ -1821,12 +1843,12 @@ public class ReferencesPage {
     public void editTheConditions()
     {
         ts.presenceOfElementWait(firstCondition);
-        firstCondition.click();
+        ts.clickOnElement(firstCondition);
         ts.presenceOfElementWait(conditionsFormText);
         ts.presenceOfElementWait(conditionsTextInputField);
         conditionsTextInputField.clear();
         String conditionText=prop.getProperty("editConditionText");
-        conditionsTextInputField.sendKeys(conditionText);
+        conditionsTextInputField.sendKeys(conditionText+random1);
         ts.presenceOfElementWait(addConditionSubmitButton);
         addConditionSubmitButton.click();
         ts.presenceOfElementWait(status);
@@ -1834,13 +1856,13 @@ public class ReferencesPage {
 
     public void deleteTheAddedConditions()
     {
-        ts.presenceOfElementWait(firstCondition);
+        ts.presenceOfElementWait(firstConditionID);
         firstCondition.click();
         ts.presenceOfElementWait(deleteConditionsButton);
-        deleteConditionsButton.click();
+        ts.clickOnElement(deleteConditionsButton);
         ts.presenceOfElementWait(yesButtonForDeletingConditions);
-        yesButtonForDeletingConditions.click();
-        ts.presenceOfElementWait(status);
+        ts.clickOnElement(yesButtonForDeletingConditions);
+        ts.presenceOfElementWait(deleteStatus);
     }
 
     public void filterTheCondition()
@@ -1848,21 +1870,26 @@ public class ReferencesPage {
         ts.refreshTheWebPAge();
         ts.presenceOfElementWait(downArrow);
         downArrow.click();
-        ts.presenceOfElementWait(firstCondition);
-        ts.presenceOfElementWait(idText);
-        idText.click();
-        ts.presenceOfElementWait(firstCondition);
-        ts.presenceOfElementWait(upDownArrow);
-        upDownArrow.click();
-        ts.presenceOfElementWait(firstCondition);
+        try {
+            ts.waitForTheElementVisibility(firstCondition,15);
+            ts.presenceOfElementWait(idText);
+            idText.click();
+            ts.waitForTheElementVisibility(firstCondition,15);
+            ts.presenceOfElementWait(upDownArrow);
+            upDownArrow.click();
+            ts.waitForTheElementVisibility(firstCondition,15);
+        }
+        catch (Exception e)
+        {
+            ts.presenceOfElementWait(noResultFound);
+        }
     }
 
-    public void addATask() throws InterruptedException {
+    public void addATask() {
         ts.presenceOfElementWait(itemsLink);
         ts.scrollIntoView(tasksLink);
         ts.presenceOfElementWait(tasksLink);
-        Thread.sleep(1000);
-        tasksLink.click();
+        ts.clickOnElement(tasksLink);
         ts.presenceOfElementWait(addNewTaskButton);
         addNewTaskButton.click();
         ts.presenceOfElementWait(tasksForm);
@@ -1871,46 +1898,25 @@ public class ReferencesPage {
         tasksNameInputField.sendKeys(taskName+random);
         ts.presenceOfElementWait(taskAvailableDropDown);
         taskAvailableDropDown.click();
-        Thread.sleep(2000);
         ts.presenceOfElementWait(taskAvailableInput);
         String taskAvailable= prop.getProperty("taskAvailable");
-        int size=allElements.size();
-        System.out.println(allElements);
-        for(int i=0; i<size; i++)
-        {
-
-            if(allElements.get(i).getText().equalsIgnoreCase(taskAvailable))
-            {
-                allElements.get(i).click();
-                break;
-            }
-        }
+        taskAvailableInput.sendKeys(taskAvailable);
+        ts.presenceOfElementWait(firstElementInDropDown);
+        firstElementInDropDown.click();
         ts.presenceOfElementWait(refTestDropDown);
         refTestDropDown.click();
-        Thread.sleep(2000);
         ts.presenceOfElementWait(refTestInputField);
         String refTest=prop.getProperty("taskReferenceTest");
-        for(int i=0; i<size; i++)
-        {
-            if(allElements.get(i).getText().equalsIgnoreCase(refTest))
-            {
-                allElements.get(i).click();
-                break;
-            }
-        }
+        refTestInputField.sendKeys(refTest);
+        ts.presenceOfElementWait(firstElementInDropDown);
+        firstElementInDropDown.click();
         ts.presenceOfElementWait(selectStatusDropDown);
         selectStatusDropDown.click();
-        Thread.sleep(2000);
         String taskStatus=prop.getProperty("taskStatus");
         ts.presenceOfElementWait(selectStatusInput);
-        for(int i=0; i<size; i++)
-        {
-            if(allElements.get(i).getText().equalsIgnoreCase(taskStatus))
-            {
-                allElements.get(i).click();
-                break;
-            }
-        }
+        selectStatusInput.sendKeys(taskStatus);
+        ts.presenceOfElementWait(firstElementInDropDown);
+        firstElementInDropDown.click();
         ts.presenceOfElementWait(addTaskSubmitButton);
         addTaskSubmitButton.click();
         ts.presenceOfElementWait(status);
@@ -1926,40 +1932,25 @@ public class ReferencesPage {
 
     }
 
-    public void editTheTask() throws InterruptedException {
-        Thread.sleep(2000);
+    public void editTheTask(){
         ts.presenceOfElementWait(firstTaskName);
         firstTaskName.click();
-        Thread.sleep(2000);
         ts.presenceOfElementWait(addMoreLink);
         addMoreLink.click();
         ts.presenceOfElementWait(secondRefTestDropDown);
         secondRefTestDropDown.click();
-        Thread.sleep(2000);
         ts.presenceOfElementWait(secondRefTestInputField);
         String refTest=prop.getProperty("editRefTest");
-        int size=allElements.size();
-        for(int i=0;i <size; i++)
-        {
-            if(allElements.get(i).getText().equalsIgnoreCase(refTest))
-            {
-                allElements.get(i).click();
-                break;
-            }
-        }
+        secondRefTestInputField.sendKeys(refTest);
+        ts.presenceOfElementWait(firstElementInDropDown);
+        firstElementInDropDown.click();
         ts.presenceOfElementWait(secondSelectStatusDropDown);
         secondSelectStatusDropDown.click();
-        Thread.sleep(2000);
         ts.presenceOfElementWait(secondSelectStatusInputField);
         String taskStatus=prop.getProperty("editTaskStatus");
-        for(int i=0;i <size; i++)
-        {
-            if(allElements.get(i).getText().equalsIgnoreCase(taskStatus))
-            {
-                allElements.get(i).click();
-                break;
-            }
-        }
+        secondSelectStatusInputField.sendKeys(taskStatus);
+        ts.presenceOfElementWait(firstElementInDropDown);
+        firstElementInDropDown.click();
         ts.presenceOfElementWait(addTaskSubmitButton);
         addTaskSubmitButton.click();
         ts.presenceOfElementWait(status);

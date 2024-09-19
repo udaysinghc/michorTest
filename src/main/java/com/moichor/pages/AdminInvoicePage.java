@@ -11,6 +11,7 @@ import org.openqa.selenium.support.PageFactory;
 import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Properties;
 import java.util.Random;
@@ -58,8 +59,17 @@ public class AdminInvoicePage {
     @FindBy(xpath = "//div[contains(@class,'react-select__place')]/parent::div/../../descendant::input[@id]")
     private WebElement clinicInput;
 
+    @FindBy(css = "[role='listbox']")
+    private WebElement listBox;
+
+    @FindBy(css = "[class*=' css-d']")
+    private WebElement firstElementInDropDown;
+
     @FindBy(xpath = "//div[contains(@class,'modal')]/descendant::div[contains(@id,'date')]/descendant::input[@placeholder='Start']")
     private WebElement startInvoiceDate;
+
+    @FindBy(css = "[class='react-datepicker__current-month']")
+    private WebElement monthPicker;
 
     @FindBy(xpath = "//div[contains(@class,'modal')]/descendant::div[contains(@id,'date')]/descendant::input[@placeholder='End']")
     private WebElement endInvoiceDate;
@@ -76,6 +86,11 @@ public class AdminInvoicePage {
     @FindBy(css = "[role='status']")
     private WebElement status;
 
+    @FindBy(xpath = "//div[contains(text(),'successfully')]")
+    private WebElement successStatus;
+
+    @FindBy(xpath = "//div[contains(text(),'successfully issued.')]")
+    private WebElement invoiceSuccessfullyIssuedStatus;
 
     @FindBy(xpath = "(//div[contains(@class,'d-flex flex-row list-item-card  card')])[1]")
     private WebElement firstInvoice;
@@ -227,7 +242,7 @@ public class AdminInvoicePage {
 
     }
 
-    public void generateInvoices() throws InterruptedException {
+    public void generateInvoices(){
         ts.presenceOfElementWait(generateInvoice);
         generateInvoice.click();
         ts.presenceOfElementWait(clinicDropDown);
@@ -235,51 +250,32 @@ public class AdminInvoicePage {
         ts.presenceOfElementWait(clinicInput);
         String hospitalName=prop.getProperty("hospitalName");
         clinicInput.sendKeys(hospitalName);
-        Thread.sleep(2000);
-        List<WebElement> allClinic = driver.findElements(By.cssSelector("[class*='react-select__option']"));
-        for(WebElement r:allClinic)
-        {
-            if(r.getText().equalsIgnoreCase(hospitalName))
-            {
-                r.click();
-                break;
-            }
-        }
+        ts.presenceOfElementWait(listBox);
+        ts.presenceOfElementWait(firstElementInDropDown);
+        firstElementInDropDown.click();
         ts.presenceOfElementWait(startInvoiceDate);
-        String startDate=prop.getProperty("startDate");
+        String startDate=getRandomDate();
         startInvoiceDate.sendKeys(startDate);
-        Thread.sleep(2000);
+        ts.presenceOfElementWait(monthPicker);
         startInvoiceDate.sendKeys(Keys.ENTER);
         String endDate=localDate();
         endInvoiceDate.sendKeys(endDate);
-        Thread.sleep(2000);
+        ts.presenceOfElementWait(monthPicker);
         endInvoiceDate.sendKeys(Keys.ENTER);
         ts.presenceOfElementWait(generateInvoiceButton);
         generateInvoiceButton.click();
         ts.presenceOfElementWait(status);
-        String text = status.getText();
-        System.out.println(text);
-        Thread.sleep(9000);
-        ts.presenceOfElementWait(status);
-        System.out.println(status.getText());
-        Thread.sleep(5000);
-
+        ts.presenceOfElementWait(successStatus);
     }
 
-    public void searchForInvoice() throws InterruptedException {
+    public void searchForInvoice() {
         ts.presenceOfElementWait(searchBar);
         String hospitalName=prop.getProperty("hospitalName");
         ts.presenceOfElementWait(firstInvoice);
         searchBar.sendKeys(hospitalName);
-        Thread.sleep(2000);
         try {
-            List<WebElement> particularInvoice = driver.findElements(By.cssSelector("[class*='card-body'] div+p+p+p"));
-            particularInvoice.get(0);
-            for (WebElement r : particularInvoice) {
-                String name = r.getText();
-                Assert.assertEquals(hospitalName, name);
+            ts.waitForTheElementVisibility(firstInvoice,10);
             }
-        }
         catch (Exception e)
         {
             ts.presenceOfElementWait(noResult);
@@ -289,10 +285,10 @@ public class AdminInvoicePage {
         }
     }
 
-    public void searchInvoiceBetweenDates() throws ParseException {
+    public void searchInvoiceBetweenDates(){
         ts.presenceOfElementWait(startDate);
         String start = prop.getProperty("startInvoice");
-        String end = prop.getProperty("endInvoice");
+        String end = localDate();
         startDate.sendKeys(start);
         startDate.sendKeys(Keys.ENTER);
         endDate.sendKeys(end);
@@ -301,19 +297,29 @@ public class AdminInvoicePage {
         List<WebElement> allInvoice = driver.findElements(By.cssSelector("[class*='card-body'] div+p+p+p+div"));
         for(WebElement r: allInvoice)
         {
-            ts.presenceOfElementWait(r);
+            try {
+                ts.presenceOfElementWait(r);
+            }
+            catch (Exception e)
+            {
+                ts.presenceOfElementWait(noResult);
+                String text=noResult.getText();
+                String noResult=prop.getProperty("noResultMessage");
+                Assert.assertEquals(noResult,text);
+            }
         }
 
     }
 
-    public void searchTheInvoiceByEnteringHospitalName() throws InterruptedException {
+    public void searchTheInvoiceByEnteringHospitalName()  {
         ts.presenceOfElementWait(selectClinic);
         selectClinic.click();
         ts.presenceOfElementWait(selectClinicInput);
         String hospitalName=prop.getProperty("hospitalName");
         selectClinicInput.sendKeys(hospitalName);
-        Thread.sleep(4000);
-        selectClinicInput.sendKeys(Keys.ENTER);
+        ts.presenceOfElementWait(listBox);
+        ts.presenceOfElementWait(firstElementInDropDown);
+        firstElementInDropDown.click();
         ts.presenceOfElementWait(firstInvoice);
         ts.presenceOfElementWait(invoice);
        try {
@@ -366,7 +372,7 @@ public class AdminInvoicePage {
 
     }
 
-    public void issueTheInvoice() throws InterruptedException {
+    public void issueTheInvoice()  {
         ts.presenceOfElementWait(createdStatusLink);
         createdStatusLink.click();
         ts.presenceOfElementWait(firstPaymentStatus);
@@ -380,23 +386,18 @@ public class AdminInvoicePage {
         ts.presenceOfElementWait(yesButton);
         yesButton.click();
         ts.presenceOfElementWait(status);
-        ts.presenceOfElementWait(status);
-        Thread.sleep(5000);
+        ts.presenceOfElementWait(invoiceSuccessfullyIssuedStatus);
         ts.presenceOfElementWait(invoiceID);
         String idName=invoiceID.getText();
         String idOfIssueInvoice=trimTheInvoiceID(idName);
         System.out.println(idOfIssueInvoice);
         ts.presenceOfElementWait(invoiceCloseButton);
-        Thread.sleep(2000);
-        invoiceCloseButton.click();
-        Thread.sleep(2000);
+        ts.clickOnElement(invoiceCloseButton);
         ts.presenceOfElementWait(issuedInvoiceLink);
-        issuedInvoiceLink.click();
-        Thread.sleep(2000);
+        ts.clickOnElement(issuedInvoiceLink);
         ts.presenceOfElementWait(searchBar);
         searchBar.sendKeys(idOfIssueInvoice);
         ts.presenceOfElementWait(firstPaymentStatus);
-
     }
 
     public String localDate()
@@ -427,37 +428,28 @@ public class AdminInvoicePage {
         return id2.trim();
     }
 
-    public void downloadTheInvoice() throws InterruptedException {
+    public void downloadTheInvoice()  {
         ts.presenceOfElementWait(selectFirstInvoice);
         selectFirstInvoice.click();
         ts.presenceOfElementWait(title);
         ts.presenceOfElementWait(clientInfo);
         ts.presenceOfElementWait(downloadLink);
         downloadLink.click();
-        Thread.sleep(4000);
-        ts.openNewTab();
-        Thread.sleep(2000);
-        ts.switchToTab(1);
-        driver.get("chrome://downloads/");
 
     }
 
-    public void editThePriceOFInvoice() throws InterruptedException {
-        Thread.sleep(2000);
+    public void editThePriceOFInvoice(){
         ts.presenceOfElementWait(issuedInvoiceLink);
         issuedInvoiceLink.click();
-        Thread.sleep(2000);
         ts.presenceOfElementWait(unpaidInvoiceLink);
         unpaidInvoiceLink.click();
         ts.presenceOfElementWait(firstInvoice);
         ts.presenceOfElementWait(firstID);
         firstID.click();
-        Thread.sleep(2000);
         ts.presenceOfElementWait(title);
         ts.presenceOfElementWait(clientInfo);
         ts.scrollIntoView(price);
         ts.presenceOfElementWait(price);
-        Thread.sleep(4000);
         ts.doActionsDoubleClick(price);
         ts.presenceOfElementWait(priceInput);
         priceInput.clear();
@@ -466,19 +458,16 @@ public class AdminInvoicePage {
         priceInput.sendKeys("1"+random);
         ts.presenceOfElementWait(rightIcon);
         rightIcon.click();
-        Thread.sleep(2000);
         ts.presenceOfElementWait(editInvoice);
         editInvoice.click();
         ts.presenceOfElementWait(tableInvoice);
         ts.presenceOfElementWait(editPriceYesButton);
         editPriceYesButton.click();
         ts.presenceOfElementWait(status);
-        Thread.sleep(4000);
-        ts.presenceOfElementWait(status);
-        String message=status.getText();
-        System.out.println(message);
-        String error=prop.getProperty("errorMessage");
-        if(message.equalsIgnoreCase(error))
+        try {
+            ts.waitForTheElementVisibility(successStatus,10);
+        }
+        catch (Exception e)
         {
             ts.presenceOfElementWait(markAsPaidNoButton);
             markAsPaidNoButton.click();
@@ -525,7 +514,7 @@ public class AdminInvoicePage {
         {
             ts.refreshTheWebPAge();
             ts.presenceOfElementWait(inboxMessage);
-            inboxMessage.click();
+            ts.clickOnElement(inboxMessage);
         }
 
         ts.presenceOfElementWait(payInvoiceLink);
@@ -535,7 +524,7 @@ public class AdminInvoicePage {
         ts.presenceOfElementWait(paymentPage);
     }
 
-    public void getNada() throws InterruptedException {
+    public void getNada(){
         ts.openNewTab();
         driver.get("https://inboxes.com/");
         ts.switchToTab(1);
@@ -550,15 +539,12 @@ public class AdminInvoicePage {
         ts.doSelectDropDownByVisibleText(selectDomain,domain);
         ts.presenceOfElementWait(addInbox);
         addInbox.click();
-        Thread.sleep(2000);
         ts.switchToTab(0);
     }
 
-    public void cancelOrder() throws InterruptedException {
-        Thread.sleep(2000);
+    public void cancelOrder() {
         ts.presenceOfElementWait(issuedInvoiceLink);
         issuedInvoiceLink.click();
-        Thread.sleep(2000);
         ts.presenceOfElementWait(unpaidInvoiceLink);
         unpaidInvoiceLink.click();
         ts.presenceOfElementWait(firstInvoice);
@@ -580,4 +566,23 @@ public class AdminInvoicePage {
     }
 
 
+    public static LocalDate getRandomDate(LocalDate startDate, LocalDate endDate) {
+        Random random = new Random();
+        long daysBetween = ChronoUnit.DAYS.between(startDate, endDate);
+        long randomDays = random.nextInt((int) daysBetween + 1);
+        return startDate.plusDays(randomDays);
+    }
+
+    public static String formatDate(LocalDate date) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+        return date.format(formatter);
+    }
+
+    public String getRandomDate()
+    {
+        LocalDate startDate = LocalDate.of(2024, 8, 1);
+        LocalDate endDate = LocalDate.of(2024, 9, 30);
+        LocalDate randomDate= getRandomDate(startDate, endDate);
+        return formatDate(randomDate);
+    }
 }

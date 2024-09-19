@@ -18,27 +18,27 @@ public class UsersSteps extends DriverFactory {
     }
 
     @Then("Add a user and search for added user")
-    public void addAUserAndSearchForAddedUser() throws InterruptedException {
+    public void addAUserAndSearchForAddedUser()  {
         usersPage.clickOnUsersButton();
         usersPage.addAUser();
         usersPage.searchTheUser();
     }
 
     @Then("Edit the user")
-    public void editTheUser() throws InterruptedException {
+    public void editTheUser(){
+        usersPage.clickOnUsersButton();
         usersPage.editTheUser();
 
     }
 
     @Then("Deactivate the user and restore the deactivated user")
-    public void deactivateTheUserAndRestoreTheDeactivatedUser() throws InterruptedException {
+    public void deactivateTheUserAndRestoreTheDeactivatedUser(){
         usersPage.deactivateTheUser();
-        Thread.sleep(5000);
         usersPage.restoreTheDeactivateUser();
     }
 
     @Then("Reset the password of existing user")
-    public void resetThePasswordOfExistingUser() throws InterruptedException {
+    public void resetThePasswordOfExistingUser(){
         usersPage.clickOnResetPasswordLink();
         usersPage.getNada();
     }

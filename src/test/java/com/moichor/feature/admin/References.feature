@@ -1,24 +1,24 @@
 Feature: Test The Functionality Of References
-  Scenario: Verify the Add Bin functionality, Search for Added Bin, Edit the Bin, Delete The Bin
+  Scenario: Verify the Add Bin, Search for Added Bin, Edit the Bin, Delete The Bin functionalities
     Given user logged in to the admin portal
     Then add a bin
     Then search for an added bin
     Then edit the added bin
     Then delete the bin
 
-  Scenario: Verify the Add Issue functionality, Search for Added Issue, Edit the Issue, Delete the Issue
+  Scenario: Verify the Add Issue, Search for Added Issue, Edit the Issue, Delete the Issue functionalities
     Given user logged in to the admin portal
     Then add a issue and search for added issue
     Then edit the issue and delete the issue
 
 
-  Scenario: Verify the Add Variable functionality, Search for Added Variable, Edit the Variable, Delete the Variable
+  Scenario: Verify the Add Variable, Search for Added Variable, Edit the Variable, Delete the Variable functionalities
     Given user logged in to the admin portal
     Then add a variable and search for added variable
     Then edit the variable and delete the variable
 
 
-  Scenario: Verify the Add Value functionality, Search for Added Value, Edit the Value, Delete the variable
+  Scenario: Verify the Add Value, Search for Added Value, Edit the Value, Delete the value functionalities
     Given user logged in to the admin portal
     Then add a value
     And search for added value

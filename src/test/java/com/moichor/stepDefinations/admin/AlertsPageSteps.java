@@ -19,7 +19,7 @@ public class AlertsPageSteps extends DriverFactory {
     }
 
     @Then("add a alerts")
-    public void addAAlerts() throws InterruptedException {
+    public void addAAlerts()  {
         alertsPage.addAAlerts();
     }
 
@@ -29,7 +29,7 @@ public class AlertsPageSteps extends DriverFactory {
     }
 
     @Then("edit the alerts")
-    public void editTheAlerts() throws InterruptedException {
+    public void editTheAlerts()  {
         alertsPage.editTheAlerts();
     }
 

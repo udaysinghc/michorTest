@@ -3,10 +3,7 @@ package com.moichor.pages;
 import com.moichor.base.DriverFactory;
 import com.moichor.util.ConfigReader;
 import com.moichor.util.TestUtil;
-import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
@@ -132,7 +129,7 @@ public class AdminTestPage {
             String pName = prop.getProperty("patientName");
             ts.presenceOfElementWait(searchBar);
             searchBar.sendKeys(pName);
-            ts.presenceOfElementWait(firstTest);
+            ts.waitForTheElementVisibility(firstTest,15);
         }
         catch (Exception e)
         {
@@ -149,25 +146,23 @@ public class AdminTestPage {
             ts.presenceOfElementWait(endDate);
             String sDate = prop.getProperty("start");
             String eDate = prop.getProperty("end");
-            startDate.sendKeys(sDate);
-            endDate.sendKeys(eDate);
-            ts.presenceOfElementWait(allReviewTest);
+            startDate.sendKeys(sDate, Keys.ENTER);
+            endDate.sendKeys(eDate,Keys.ENTER);
+            ts.waitForTheElementVisibility(firstTest,10);
         }
         catch(Exception e)
         {
             ts.presenceOfElementWait(noResultFound);
-            System.out.print(noResultFound.getText());
         }
     }
 
-    public void clickOnQCLink() throws InterruptedException {
+    public void clickOnQCLink()  {
         ts.presenceOfElementWait(qc);
         qc.click();
-        Thread.sleep(2000);
         ts.presenceOfElementWait(qcText);
     }
 
-    public void searchQCResult() throws InterruptedException {
+    public void searchQCResult() {
         ts.presenceOfElementWait(referenceTestDropDown);
         referenceTestDropDown.click();
         ts.presenceOfElementWait(referenceTestInput);
@@ -182,7 +177,6 @@ public class AdminTestPage {
             }
         }
         ts.presenceOfElementWait(applicableStatusDropDown);
-        Thread.sleep(2000);
         applicableStatusDropDown.click();
         ts.presenceOfElementWait(applicableStatusInput);
         List<WebElement> allApplicable = driver.findElements(By.cssSelector("[role='listbox'] div"));
@@ -237,9 +231,6 @@ public class AdminTestPage {
         ts.presenceOfElementWait(testName);
         testI=testID.getText();
         testN=testName.getText();
-        System.out.println(testI);
-        System.out.println(testN);
-        System.out.println(testS);
         ts.scrollIntoView(closeButton);
         closeButton.click();
         ts.presenceOfElementWait(testsButton);

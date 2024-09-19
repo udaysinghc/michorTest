@@ -61,6 +61,12 @@ public class HomePage {
     @FindBy(css = "[role='status']")
     private WebElement status;
 
+    @FindBy(xpath = "//div[contains(text(),'successfully')]")
+    private WebElement successStatus;
+
+    @FindBy(xpath = "//div[contains(text(),'deleted')]")
+    private WebElement deleteStatus;
+
     @FindBy(xpath = "(//span[@class='float-right']/parent::div/descendant::div[@id])[1]")
     private WebElement patientDropDown;
 
@@ -104,7 +110,7 @@ public class HomePage {
     @FindBy(id="search")
     private  WebElement search;
 
-    @FindBy(xpath = "//div/a/p[contains(@class,'list-it')]")
+    @FindBy(xpath = "(//div/a/p[contains(@class,'list-it')])[1]")
     private WebElement selectTheClient;
 
     @FindBy(xpath = "//button[text()='DELETE']")
@@ -114,7 +120,10 @@ public class HomePage {
     private WebElement confirmDelete;
 
     @FindBy(css = "[class*=' css-d']")
-    private WebElement selectClient;
+    private WebElement selectFirstElement;
+
+    @FindBy(xpath = "(//div[contains(@class,' css-qr')]/div)[1]")
+    private WebElement firstPatient;
 
     @FindBy(css = "[role='listbox'] [role='option']")
     private List<WebElement> selectPatient;
@@ -155,7 +164,6 @@ public class HomePage {
 
     @FindBy(css = "[class*='btn btn-success']")
     private WebElement updateButtonColony;
-
 
 
     @FindBy(xpath = "//button[text()='Revert']")
@@ -224,20 +232,22 @@ public class HomePage {
         ts.presenceOfElementWait(clientInput);
         String fn=prop.getProperty("searchClient");
         clientInput.sendKeys(fn);
-        ts.presenceOfElementWait(selectClient);
-        selectClient.click();
+        ts.presenceOfElementWait(selectFirstElement);
+        selectFirstElement.click();
         ts.presenceOfElementWait(state);
     }
 
-    public void addPatient() throws InterruptedException {
+    public void addPatient() {
 
         patientDropDown.click();
         ts.presenceOfElementWait(patientInput);
         String pName=prop.getProperty("namePatient");
         int random=r.nextInt(100);
-        patientInput.sendKeys(pName+random);
-        Thread.sleep(5000);
-        patientInput.sendKeys(Keys.ENTER);
+        Random r = new Random();
+        char c = (char)(r.nextInt(26) + 'a');
+        patientInput.sendKeys(pName+c+random);
+        ts.presenceOfElementWait(selectFirstElement);
+        selectFirstElement.click();
         ts.presenceOfElementWait(patientExternalId);
         String id=prop.getProperty("idPatient");
         patientExternalId.sendKeys(id);
@@ -255,10 +265,7 @@ public class HomePage {
         dob.sendKeys(date);
         ts.presenceOfElementWait(saveDetailsButton);
         saveDetailsButton.click();
-        Thread.sleep(2000);
         ts.presenceOfElementWait(status);
-
-
     }
 
     public void searchForAddedPatient()
@@ -272,15 +279,14 @@ public class HomePage {
 
     }
 
-    public void deleteTheAddedPatient() throws InterruptedException {
+    public void deleteTheAddedPatient(){
         ts.presenceOfElementWait(addedPatient);
-        Thread.sleep(4000);
-        addedPatient.click();
+        ts.clickOnElement(addedPatient);
         ts.presenceOfElementWait(deleteButton);
         deleteButton.click();
         ts.presenceOfElementWait(patientConfirmDelete);
         patientConfirmDelete.click();
-        ts.presenceOfElementWait(status);
+        ts.presenceOfElementWait(deleteStatus);
 
     }
 
@@ -291,24 +297,21 @@ public class HomePage {
         cancelButton.click();
     }
 
-    public void deleteTheAddedClient() throws InterruptedException {
+    public void deleteTheAddedClient() {
         ts.presenceOfElementWait(clientButton);
         clientButton.click();
         ts.presenceOfElementWait(search);
         search.sendKeys(id);
         ts.presenceOfElementWait(selectTheClient);
-        Thread.sleep(2000);
         selectTheClient.click();
         ts.presenceOfElementWait(deleteButton);
         deleteButton.click();
         ts.presenceOfElementWait(confirmDelete);
         confirmDelete.click();
-        ts.presenceOfElementWait(status);
-
-
+        ts.presenceOfElementWait(deleteStatus);
     }
 
-    public void turnOnColonyModeAndAddAPatient() throws InterruptedException {
+    public void turnOnColonyModeAndAddAPatient()  {
         searchTheClient();
         ts.presenceOfElementWait(colonyModeButton);
         colonyModeButton.click();
@@ -317,7 +320,7 @@ public class HomePage {
 
     String st=prop.getProperty("state");
     String zip=prop.getProperty("zip");
-    public void updateThePatient() throws InterruptedException {
+    public void updateThePatient() {
         searchTheClient();
         state.clear();
         state.sendKeys(st);
@@ -347,7 +350,7 @@ public class HomePage {
 
     }
 
-    public void turnOnColonyMode() throws InterruptedException {
+    public void turnOnColonyMode() {
         searchTheClient();
         state.clear();
         state.sendKeys(st);
@@ -373,12 +376,11 @@ public class HomePage {
         String wg=prop.getProperty("weight");
         weightField.sendKeys(wg);
         saveDetailsButton.click();
-        Thread.sleep(2000);
-        ts.presenceOfElementWait(status);
+        ts.presenceOfElementWait(successStatus);
         ts.scrollIntoView(selectTestFromMenu);
     }
 
-    public void selectClientPatient() throws InterruptedException {
+    public void selectClientPatient(){
         ts.presenceOfElementWait(orderIcon);
         orderIcon.click();
         ts.presenceOfElementWait(clientDropDown);
@@ -386,24 +388,26 @@ public class HomePage {
         ts.presenceOfElementWait(clientInput);
         String fn=prop.getProperty("searchClient");
         clientInput.sendKeys(fn);
-        ts.presenceOfElementWait(selectClient);
-        selectClient.click();
+        ts.presenceOfElementWait(selectFirstElement);
+        selectFirstElement.click();
         ts.presenceOfElementWait(patientDropDown);
         patientDropDown.click();
         ts.presenceOfElementWait(patientInput);
         String pn=prop.getProperty("searchPatient");
         patientInput.sendKeys(pn);
-        Thread.sleep(2000);
-        int size=selectPatient.size();
-        for(int i=0; i<size; i++)
-        {
-            selectPatient.get(i).click();
-            break;
-        }
+        ts.presenceOfElementWait(selectFirstElement);
+        selectFirstElement.click();
+//        int size=selectPatient.size();
+//        System.out.println(size);
+//        for(int i=0; i<size; i++)
+//        {
+//            selectPatient.get(i).click();
+//            break;
+//        }
     }
 
-    public void selectTestMenu() throws InterruptedException {
-        Thread.sleep(5000);
+    public void selectTestMenu() {
+        ts.presenceOfElementWait(selectTestFromMenu);
         ts.scrollIntoView(selectTestFromMenu);
         selectTestFromMenu.click();
         ts.presenceOfElementWait(selectTest);
@@ -418,14 +422,12 @@ public class HomePage {
         ts.presenceOfElementWait(generateVerificationCode);
     }
 
-    public void clickOnShippingLabel() throws InterruptedException {
+    public void clickOnShippingLabel(){
         ts.presenceOfElementWait(shippindLabelIcon);
         shippindLabelIcon.click();
-        Thread.sleep(5000);
         ts.presenceOfElementWait(status);
         ts.openNewTab();
         driver.get("chrome://downloads/");
-
     }
 
 }

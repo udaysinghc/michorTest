@@ -5,7 +5,6 @@ import com.moichor.pages.AdminInvoicePage;
 import io.cucumber.java.en.Then;
 import org.openqa.selenium.JavascriptExecutor;
 
-import java.text.ParseException;
 
 public class InvoicesSteps extends  DriverFactory{
 
@@ -20,26 +19,26 @@ public class InvoicesSteps extends  DriverFactory{
     }
 
     @Then("generate the invoices")
-    public void generateTheInvoices() throws InterruptedException {
+    public void generateTheInvoices(){
 
         adminInvoicePage.clickOnInvoices();
         adminInvoicePage.generateInvoices();
     }
 
     @Then("search for an existing invoice")
-    public void searchForAnExistingInvoice() throws InterruptedException {
+    public void searchForAnExistingInvoice()  {
         adminInvoicePage.clickOnInvoices();
         adminInvoicePage.searchForInvoice();
     }
 
     @Then("search for an existing invoice between dates")
-    public void searchForAnExistingInvoiceBetweenDates() throws ParseException {
+    public void searchForAnExistingInvoiceBetweenDates() {
         adminInvoicePage.clickOnInvoices();
         adminInvoicePage.searchInvoiceBetweenDates();
     }
 
     @Then("search for the particular invoice")
-    public void searchForTheParticularInvoice() throws InterruptedException {
+    public void searchForTheParticularInvoice() {
         adminInvoicePage.clickOnInvoices();
         adminInvoicePage.searchTheInvoiceByEnteringHospitalName();
 
@@ -53,21 +52,21 @@ public class InvoicesSteps extends  DriverFactory{
     }
 
     @Then("issue the invoice for created payment status")
-    public void issueTheInvoiceForCreatedPaymentStatus() throws InterruptedException {
+    public void issueTheInvoiceForCreatedPaymentStatus(){
 
         adminInvoicePage.issueTheInvoice();
 
     }
 
     @Then("download the invoice from an existing invoice")
-    public void downloadTheInvoiceFromAnExistingInvoice() throws InterruptedException {
+    public void downloadTheInvoiceFromAnExistingInvoice() {
         adminInvoicePage.clickOnInvoices();
         adminInvoicePage.downloadTheInvoice();
 
     }
 
     @Then("edit the price of any issued invoice")
-    public void editThePriceOfAnyIssuedInvoice() throws InterruptedException {
+    public void editThePriceOfAnyIssuedInvoice(){
         adminInvoicePage.clickOnInvoices();
         adminInvoicePage.editThePriceOFInvoice();
 
@@ -79,7 +78,7 @@ public class InvoicesSteps extends  DriverFactory{
     }
 
     @Then("send the invoice email")
-    public void sendTheInvoiceEmail() throws InterruptedException {
+    public void sendTheInvoiceEmail() {
         adminInvoicePage.clickOnInvoices();
         adminInvoicePage.getNada();
         adminInvoicePage.sendTheInvoiceEmail();
@@ -87,7 +86,7 @@ public class InvoicesSteps extends  DriverFactory{
     }
 
     @Then("cancel some order")
-    public void cancelSomeOrder() throws InterruptedException {
+    public void cancelSomeOrder(){
         adminInvoicePage.cancelOrder();
 
     }

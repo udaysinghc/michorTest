@@ -97,6 +97,7 @@ public class ACLPage {
     }
 
     static Random r=new Random();
+    char c = (char)(r.nextInt(26) + 'a');
     static int random=r.nextInt(1000);
     public void addARole()
     {
@@ -109,10 +110,10 @@ public class ACLPage {
         addRole.click();
         ts.presenceOfElementWait(title);
         String titleName=prop.getProperty("title");
-        title.sendKeys(titleName);
+        title.sendKeys(titleName+c+random);
         ts.presenceOfElementWait(slug);
         String slugName=prop.getProperty("slug");
-        slug.sendKeys(slugName+random);
+        slug.sendKeys(slugName+c+random);
         String permission=prop.getProperty("permissionTitle");
         driver.findElement(By.xpath("//label[text()='"+permission+"']/../input")).click();
         ts.presenceOfElementWait(submitButton);
@@ -146,11 +147,10 @@ public class ACLPage {
 
     public void editTheRole()
     {
-        int random=r.nextInt(100);
         ts.presenceOfElementWait(title);
         title.clear();
         String titleName=prop.getProperty("title");
-        title.sendKeys(titleName+random);
+        title.sendKeys(titleName+c+random);
         ts.presenceOfElementWait(submitButton);
         submitButton.click();
         ts.presenceOfElementWait(status);
@@ -167,29 +167,6 @@ public class ACLPage {
 
     }
 
-    public void addAPermission()
-    {
-        ts.presenceOfElementWait(addPermissionButton);
-        addPermissionButton.click();
-        ts.presenceOfElementWait(title);
-        String titleName=prop.getProperty("permissionTitle");
-        title.sendKeys(titleName);
-        ts.presenceOfElementWait(slug);
-        String slugName=prop.getProperty("permissionSlug");
-        slug.sendKeys(slugName+random);
-        ts.presenceOfElementWait(roleDropDown);
-        roleDropDown.click();
-        ts.presenceOfElementWait(Role);
-        Role.click();
-    }
-
-    public void searchAddedPermission()
-    {
-        ts.presenceOfElementWait(searchBar);
-        String slugName=prop.getProperty("permissionSlug");
-        searchBar.sendKeys(slugName+random);
-        ts.presenceOfElementWait(Permission);
-    }
 
     public void searchForExistingPermission()
     {

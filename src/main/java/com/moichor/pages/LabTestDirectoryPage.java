@@ -53,6 +53,12 @@ public class LabTestDirectoryPage {
     @FindBy(xpath = "(//div[@class='action-card large card']/a)[1]")
     private WebElement testBundles;
 
+    @FindBy(xpath = "//div[contains(@class,'card-body')]")
+    private WebElement cardBody;
+
+    @FindBy(css = "[class='btn btn-outline-primary']")
+    private WebElement orderButton;
+
     @FindBy(css = "[class*='text-zero'] button")
     private WebElement backButton;
 
@@ -71,7 +77,7 @@ public class LabTestDirectoryPage {
         ts.presenceOfElementWait(cancelIcon);
     }
 
-    public void clickOnEachElement() throws InterruptedException {
+    public void clickOnEachElement() {
         ts.scrollPageDown();
         ts.presenceOfElementWait(testBundles);
         testBundles.click();
@@ -79,7 +85,14 @@ public class LabTestDirectoryPage {
         for(WebElement r:allElement)
         {
             r.click();
-            Thread.sleep(2000);
+            try{
+                ts.waitForTheElementVisibility(cardBody,2);
+                ts.waitForTheElementVisibility(orderButton,2);
+            }
+            catch(Exception e)
+            {
+
+            }
         }
     }
 

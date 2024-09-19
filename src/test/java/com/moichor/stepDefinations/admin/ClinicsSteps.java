@@ -20,7 +20,7 @@ public class ClinicsSteps extends DriverFactory {
     }
 
     @Then("Add A Clinic From the Clinics Module")
-    public void addAClinicFromTheClinicsModule() throws InterruptedException {
+    public void addAClinicFromTheClinicsModule() {
 
         clinicsPage.clickOnClinicsButton();
         clinicsPage.addAClinics();

@@ -38,6 +38,7 @@ public class TestUtil {
             .until(ExpectedConditions.visibilityOf(element)));
   }
 
+
   public void waitForTheElementVisibility(WebElement element, int time) {
     webelement = (new WebDriverWait(driver, Duration.ofSeconds(time))
                     .until(ExpectedConditions.visibilityOf(element)));
@@ -63,6 +64,11 @@ public class TestUtil {
     driver.navigate().refresh();
   }
 
+  public void backTheWebPage()
+  {
+    driver.navigate().back();
+  }
+
   public WebElement elementToBeClickableWait(By locator) {
     webelement =
         (new WebDriverWait(driver, Duration.ofSeconds(120))
@@ -70,6 +76,12 @@ public class TestUtil {
     return webelement;
   }
 
+  public void clickOnElement(WebElement element)
+  {
+
+    ((JavascriptExecutor) driver).executeScript("arguments[0].click();", element);
+
+  }
   public void uploadFile(String path) throws InterruptedException, AWTException {
     // Store the location of the file in clipboard
     Thread.sleep(1500);

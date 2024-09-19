@@ -27,6 +27,7 @@ public class ACLSteps extends DriverFactory {
 
     @Then("Added role is displayed on roles page")
     public void addedRoleIsDisplayedOnRolesPage() {
+
         aclPage.searchTheAddedRole();
     }
 

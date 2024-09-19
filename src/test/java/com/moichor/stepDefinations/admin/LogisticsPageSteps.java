@@ -19,7 +19,7 @@ public class LogisticsPageSteps extends DriverFactory {
     }
 
     @Then("search the sample request by tracking number")
-    public void searchTheSampleRequestByTrackingNumber() throws InterruptedException {
+    public void searchTheSampleRequestByTrackingNumber(){
         adminLogisticsPage.searchTheSampleRequest();
     }
 
@@ -29,7 +29,7 @@ public class LogisticsPageSteps extends DriverFactory {
     }
 
     @Then("search the sample request by selecting clinic")
-    public void searchTheSampleRequestBySelectingClinic() throws InterruptedException {
+    public void searchTheSampleRequestBySelectingClinic(){
         adminLogisticsPage.searchSampleByEnterClinic();
     }
 
@@ -49,13 +49,27 @@ public class LogisticsPageSteps extends DriverFactory {
     }
 
     @Then("search the supplies by selecting clinic")
-    public void searchTheSuppliesBySelectingClinic() throws InterruptedException {
+    public void searchTheSuppliesBySelectingClinic(){
         adminLogisticsPage.searchSuppliesByClinicName();
     }
 
-
     @Then("add supplies request")
     public void addSuppliesRequest() {
+        adminLogisticsPage.addARequestSupplies();
+    }
 
+    @Then("check new label button functionality")
+    public void checkNewLabelButtonFunctionality() {
+        adminLogisticsPage.clickOnNewLabelButton();
+    }
+
+    @Then("fetch the test id from created test")
+    public void fetchTheTestIdFromCreatedTest() {
+        adminLogisticsPage.fetchTestID();
+    }
+
+    @Then("search sample receiving by created test id")
+    public void searchSampleReceivingByCreatedTestId() {
+        adminLogisticsPage.searchTheSampleByTestID();
     }
 }

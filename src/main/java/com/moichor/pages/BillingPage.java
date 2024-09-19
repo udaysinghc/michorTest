@@ -93,10 +93,9 @@ public class BillingPage {
         ts.presenceOfElementWait(allTextInInvoice);
     }
 
-    public void clickOnPDFButton() throws InterruptedException {
+    public void clickOnPDFButton()  {
         ts.scrollIntoView(pdfButton);
         pdfButton.click();
-        Thread.sleep(3000);
         ts.openNewTab();
         ts.switchToTab(1);
         driver.get("chrome://downloads/");

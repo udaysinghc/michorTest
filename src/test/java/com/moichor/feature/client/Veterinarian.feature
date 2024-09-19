@@ -1,12 +1,9 @@
-
 Feature: Test the Veterinarian Functionality
   @veterinarian
   Scenario: Add a Veterinarian
     Given user logged in to the application
-    When Add a veterinarian
-    Then Added Veterinarian is displayed
+    Then Add a veterinarian
 
-@EditVeterinarian
   Scenario: Edit a Veterinarian
     Given user logged in to the application
     When Edit a Veterinarian

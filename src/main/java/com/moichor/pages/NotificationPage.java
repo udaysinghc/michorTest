@@ -129,7 +129,7 @@ public class NotificationPage {
         firstTest.click();
     }
 
-    public void sendMessageToAdmin() throws InterruptedException {
+    public void sendMessageToAdmin() {
         ts.presenceOfElementWait(testDetail);
         ts.presenceOfElementWait(saveButton);
         ts.scrollIntoView(textBody);
@@ -138,7 +138,6 @@ public class NotificationPage {
         textBody.sendKeys(sms);
         ts.presenceOfElementWait(sendButton);
         sendButton.click();
-        Thread.sleep(2000);
         ts.presenceOfElementWait(replyButton);
         ts.presenceOfElementWait(notificationButton);
         notificationButton.click();
@@ -155,11 +154,6 @@ public class NotificationPage {
     {
         ts.presenceOfElementWait(notificationButton);
         notificationButton.click();
-//        ts.presenceOfElementWait(messageSent);
-//        messageSent.click();
-//        ts.presenceOfElementWait(messageReceived);
-//        messageReceived.click();
-//        ts.presenceOfElementWait(sentMessageDisplayed);
         String sms= prop.getProperty("message");
         ts.presenceOfElementWait(messageText);
         String text = messageText.getText();
@@ -168,10 +162,9 @@ public class NotificationPage {
 
     }
 
-    public void sendMessageToClient() throws InterruptedException {
+    public void sendMessageToClient() {
         ts.presenceOfElementWait(testID);
         testID.click();
-        Thread.sleep(2000);
         ts.switchToTab(1);
         ts.presenceOfElementWait(textArea);
         String sms=prop.getProperty("messageToClient");
@@ -188,10 +181,9 @@ public class NotificationPage {
         Assert.assertEquals("Message text validated",sms,text);
     }
 
-    public void searchMessageReceivedFromAdminSide() throws InterruptedException {
+    public void searchMessageReceivedFromAdminSide() {
         ts.presenceOfElementWait(notificationButton);
-        Thread.sleep(5000);
-        notificationButton.click();
+        ts.clickOnElement(notificationButton);
         ts.presenceOfElementWait(sentMessageDisplayed);
         ts.presenceOfElementWait(notificationText);
         String note = notificationText.getText();

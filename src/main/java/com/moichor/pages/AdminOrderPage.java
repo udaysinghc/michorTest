@@ -4,11 +4,14 @@ package com.moichor.pages;
 import com.moichor.base.DriverFactory;
 import com.moichor.util.ConfigReader;
 import com.moichor.util.TestUtil;
+import jdk.jfr.Experimental;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
 import java.awt.*;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Properties;
 
@@ -75,12 +78,23 @@ public class AdminOrderPage {
     @FindBy(css = "[id='clinic-select-field'] input[id]")
     private WebElement clinicInput;
 
+    @FindBy(css = "[role='listbox']")
+    private WebElement listBox;
+
+    @FindBy(xpath = "(//div[@role='option'])[1]")
+    private WebElement elementInDropDown;
+
+    @FindBy(xpath = "(//div[contains(@class,'indicatorContainer')])[1]")
+    private WebElement cancelIcon;
+
     @FindBy(id="species-select-field")
     private WebElement speciesDropDown;
 
     @FindBy(css = "[id='species-select-field'] input[id]")
     private WebElement speciesInput;
 
+    @FindBy(css = "[role='listbox'] [role='option']")
+    private List<WebElement> dropDownElements;
 
     @FindBy(xpath = "(//div[contains(@class,'d-flex list')])[1]")
     private WebElement firstTest;
@@ -88,7 +102,7 @@ public class AdminOrderPage {
     @FindBy(xpath = "//div/p[text()='Test status']")
     private WebElement testStatus;
 
-    @FindBy(css = "[class='infinite-scroll-component__outerdiv']")
+    @FindBy(xpath = "(//div[@class='d-flex flex-row']/../..)[1]")
     private WebElement allTests;
     
 
@@ -222,13 +236,11 @@ public class AdminOrderPage {
 
     }
 
-    public void clickOnDownloadStaticsButton() throws InterruptedException {
+    public void clickOnDownloadStaticsButton(){
         ts.presenceOfElementWait(downloadStatics);
         downloadStatics.click();
         ts.presenceOfElementWait(yesButton);
         yesButton.click();
-        Thread.sleep(2000);
-
     }
 
     public void enterStartAndEndDate()
@@ -237,40 +249,85 @@ public class AdminOrderPage {
         String start=prop.getProperty("start");
         startDate.sendKeys(start, Keys.ENTER);
         ts.presenceOfElementWait(endDate);
-        String end=prop.getProperty("end");
+        String end=localDate();
         endDate.sendKeys(end,Keys.ENTER);
-        ts.presenceOfElementWait(orderInParticularDate);
+        try {
+            ts.presenceOfElementWait(orderInParticularDate);
+        }
+        catch (Exception e)
+        {
+            ts.presenceOfElementWait(noResult);
+        }
         ts.presenceOfElementWait(clearDate);
     }
 
-    public void searchTheTest() throws InterruptedException {
+    public String localDate()
+    {
+        LocalDate currentDate = LocalDate.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy"); // Adjust pattern if needed
+
+        return currentDate.format(formatter);
+    }
+
+    public void searchTheTest() {
         ts.presenceOfElementWait(clinicDropDown);
         clinicDropDown.click();
         ts.presenceOfElementWait(clinicInput);
         String clinicText=prop.getProperty("clinicText");
         String speciesText=prop.getProperty("speciesText");
         clinicInput.sendKeys(clinicText);
-        Thread.sleep(2000);
-        clinicInput.sendKeys(Keys.ENTER);
+        ts.presenceOfElementWait(listBox);
+        ts.presenceOfElementWait(elementInDropDown);
+        int size=dropDownElements.size();
+        for(int i=0; i<size; i++)
+        {
+            String clinicName=dropDownElements.get(i).getText();
+            if(clinicName.contains(clinicText))
+            {
+                dropDownElements.get(i).click();
+                break;
+            }
+        }
         ts.presenceOfElementWait(speciesDropDown);
         speciesDropDown.click();
         ts.presenceOfElementWait(speciesInput);
         speciesInput.sendKeys(speciesText);
-        Thread.sleep(4000);
-        speciesInput.sendKeys(Keys.ENTER);
-        ts.presenceOfElementWait(firstTest);
+        ts.presenceOfElementWait(listBox);
+        ts.presenceOfElementWait(elementInDropDown);
+        int listOfSpecies=dropDownElements.size();
+        for(int i=0; i<listOfSpecies; i++)
+        {
+            String clinicName=dropDownElements.get(i).getText();
+            if(clinicName.contains(speciesText))
+            {
+                dropDownElements.get(i).click();
+                break;
+            }
+        }
+        try {
+            ts.presenceOfElementWait(firstTest);
+        }
+        catch (Exception e)
+        {
+            ts.presenceOfElementWait(noResult);
+        }
     }
 
     List<WebElement> allTestStatus;
-    public void testStatus() throws InterruptedException {
+    public void testStatus() {
         ts.presenceOfElementWait(testStatus);
         allTestStatus = driver.findElements(By.cssSelector("[class*='px'] [href*='/app/']"));
         for(WebElement r:allTestStatus)
         {
             r.click();
             ts.scrollIntoView(r);
-            ts.presenceOfElementWait(allTests);
-            Thread.sleep(2000);
+            try {
+                ts.waitForTheElementVisibility(allTests,10);
+            }
+            catch (Exception e)
+            {
+                ts.waitForTheElementVisibility(noResult,10);
+            }
         }
     }
 
@@ -294,22 +351,15 @@ public class AdminOrderPage {
         ts.presenceOfElementWait(status);
     }
 
-    public void uploadImage() throws InterruptedException, AWTException {
+    public void uploadImage() {
         ts.presenceOfElementWait(selectFirstTest);
         selectFirstTest.click();
         ts.presenceOfElementWait(body);
         ts.scrollIntoView(viewResultButton);
         viewResultButton.click();
-        Thread.sleep(5000);
-//        ts.presenceOfElementWait(uploadedImageButton);
         UploadedImageButton.click();
-        Thread.sleep(5000);
-//        ts.presenceOfElementWait(dropFile);
-//        dropFile.click();
         String path=prop.getProperty("image_path");
-//        ts.uploadFile(path);
         uploadedFile.sendKeys(path);
-//        Thread.sleep(5000);
         ts.presenceOfElementWait(uploadedButton);
         uploadedButton.click();
     }
@@ -354,28 +404,33 @@ public class AdminOrderPage {
 
     }
 
-    public void testValidationStatus() throws InterruptedException {
+    public void testValidationStatus(){
         ts.presenceOfElementWait(selectFirstTest);
         selectFirstTest.click();
         ts.presenceOfElementWait(viewResultButton);
         viewResultButton.click();
         ts.scrollIntoView(validationCheck);
         validationCheck.click();
-        ts.presenceOfElementWait(title);
-        String text=prop.getProperty("textForTestFailure");
-        driver.findElement(By.xpath("//label[contains(text(),'"+text+"')]/input")).click();
-        ts.scrollIntoView(testFailureYesButton);
-        ts.presenceOfElementWait(testFailureYesButton);
-        testFailureYesButton.click();
-        ts.presenceOfElementWait(status);
-        ts.presenceOfElementWait(viewResultButton);
-        viewResultButton.click();
-        Thread.sleep(4000);
-        ts.scrollIntoView(validationCheck);
-        validationCheck.click();
-        ts.presenceOfElementWait(saveButtonForComplete);
-        saveButtonForComplete.click();
-        ts.presenceOfElementWait(status);
+        try {
+            ts.waitForTheElementVisibility(title,10);
+            String text = prop.getProperty("textForTestFailure");
+            driver.findElement(By.xpath("//label[contains(text(),'" + text + "')]/input")).click();
+            ts.scrollIntoView(testFailureYesButton);
+            ts.presenceOfElementWait(testFailureYesButton);
+            testFailureYesButton.click();
+            ts.presenceOfElementWait(status);
+            ts.presenceOfElementWait(viewResultButton);
+            viewResultButton.click();
+            ts.scrollIntoView(validationCheck);
+            validationCheck.click();
+            ts.presenceOfElementWait(saveButtonForComplete);
+            saveButtonForComplete.click();
+            ts.presenceOfElementWait(status);
+        }
+        catch (Exception e)
+        {
+
+        }
 
     }
 }

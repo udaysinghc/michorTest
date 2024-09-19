@@ -7,7 +7,6 @@ import com.moichor.pages.AdminOrderPage;
 import io.cucumber.java.en.Then;
 import org.openqa.selenium.JavascriptExecutor;
 
-import java.awt.*;
 
 public class OrderSteps extends DriverFactory {
 
@@ -28,7 +27,7 @@ public class OrderSteps extends DriverFactory {
     }
 
     @Then("download the statistic functionality")
-    public void downloadTheStatisticFunctionality() throws InterruptedException {
+    public void downloadTheStatisticFunctionality() {
         adminOrderPage.clickOnOrdersButton();
         adminOrderPage.clickOnDownloadStaticsButton();
 
@@ -42,13 +41,13 @@ public class OrderSteps extends DriverFactory {
     }
 
     @Then("select the clinic and species from dropdown")
-    public void selectTheClinicAndSpeciesFromDropdown() throws InterruptedException {
+    public void selectTheClinicAndSpeciesFromDropdown()  {
         adminOrderPage.clickOnOrdersButton();
         adminOrderPage.searchTheTest();
     }
 
     @Then("check all test status in admin portal")
-    public void checkAllTestStatusInAdminPortal() throws InterruptedException {
+    public void checkAllTestStatusInAdminPortal()  {
         adminOrderPage.clickOnOrdersButton();
         adminOrderPage.testStatus();
     }
@@ -63,7 +62,7 @@ public class OrderSteps extends DriverFactory {
 
 
     @Then("upload the image and send a message with image")
-    public void uploadTheImageAndSendAMessageWithImage() throws InterruptedException, AWTException {
+    public void uploadTheImageAndSendAMessageWithImage()  {
         adminOrderPage.clickOnOrdersButton();
         adminOrderPage.uploadImage();
         adminOrderPage.sendMessage();
@@ -75,12 +74,12 @@ public class OrderSteps extends DriverFactory {
     }
 
     @Then("turn on historical toggle button")
-    public void turnOnHistoricalToggleButton() throws InterruptedException {
+    public void turnOnHistoricalToggleButton()  {
         adminOrderPage.turnOnToggle();
     }
 
     @Then("check for validation test status")
-    public void checkForValidationTestStatus() throws InterruptedException {
+    public void checkForValidationTestStatus()  {
         adminOrderPage.clickOnOrdersButton();
         adminOrderPage.testValidationStatus();
     }
