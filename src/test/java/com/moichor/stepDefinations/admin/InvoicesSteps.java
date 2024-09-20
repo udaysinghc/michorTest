@@ -87,7 +87,7 @@ public class InvoicesSteps extends  DriverFactory{
 
     @Then("cancel some order")
     public void cancelSomeOrder(){
-        adminInvoicePage.cancelOrder();
+        adminInvoicePage.cancelSomeOrders();
 
     }
 

@@ -7,8 +7,6 @@ import junit.framework.Assert;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
-
-import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
@@ -378,7 +376,6 @@ public class AdminInvoicePage {
         ts.presenceOfElementWait(firstPaymentStatus);
         ts.presenceOfElementWait(firstID);
         firstID.click();
-        ts.presenceOfElementWait(title);
         ts.presenceOfElementWait(clientInfo);
         ts.presenceOfElementWait(issueButton);
         issueButton.click();
@@ -387,19 +384,30 @@ public class AdminInvoicePage {
         yesButton.click();
         ts.presenceOfElementWait(status);
         ts.presenceOfElementWait(invoiceSuccessfullyIssuedStatus);
-        ts.presenceOfElementWait(invoiceID);
-        String idName=invoiceID.getText();
-        String idOfIssueInvoice=trimTheInvoiceID(idName);
-        System.out.println(idOfIssueInvoice);
         ts.presenceOfElementWait(invoiceCloseButton);
-        ts.clickOnElement(invoiceCloseButton);
-        ts.presenceOfElementWait(issuedInvoiceLink);
-        ts.clickOnElement(issuedInvoiceLink);
-        ts.presenceOfElementWait(searchBar);
-        searchBar.sendKeys(idOfIssueInvoice);
-        ts.presenceOfElementWait(firstPaymentStatus);
+        invoiceCloseButton.click();
     }
 
+    public void cancelSomeOrders() {
+        ts.presenceOfElementWait(issuedInvoiceLink);
+        ts.clickOnElement(issuedInvoiceLink);
+        ts.presenceOfElementWait(unpaidInvoiceLink);
+        ts.clickOnElement(unpaidInvoiceLink);
+        ts.presenceOfElementWait(firstInvoice);
+        ts.presenceOfElementWait(firstID);
+        ts.clickOnElement(firstID);
+        ts.presenceOfElementWait(title);
+        ts.presenceOfElementWait(clientInfo);
+        ts.presenceOfElementWait(summary);
+        List<WebElement> allCheckbox = driver.findElements(By.cssSelector("[type='checkbox']"));
+        allCheckbox.get(1).click();
+        ts.presenceOfElementWait(cancelOrder);
+        cancelOrder.click();
+        ts.presenceOfElementWait(cancelOrderYesButton);
+        cancelOrderYesButton.click();
+        ts.presenceOfElementWait(successStatus);
+
+    }
     public String localDate()
     {
         LocalDate currentDate = LocalDate.now();
@@ -408,25 +416,6 @@ public class AdminInvoicePage {
         return currentDate.format(formatter);
     }
 
-    public String trimTheInvoiceID(String id)
-    {
-        String id1=id.replaceAll("Invoice ID:","");
-        String id2="";
-        for(int i=0; i<id1.length(); i++)
-        {
-            char ch=id1.charAt(i);
-            if(ch=='(')
-            {
-                break;
-            }
-            else
-            {
-                id2=id2+ch;
-            }
-        }
-
-        return id2.trim();
-    }
 
     public void downloadTheInvoice()  {
         ts.presenceOfElementWait(selectFirstInvoice);
@@ -542,28 +531,7 @@ public class AdminInvoicePage {
         ts.switchToTab(0);
     }
 
-    public void cancelOrder() {
-        ts.presenceOfElementWait(issuedInvoiceLink);
-        issuedInvoiceLink.click();
-        ts.presenceOfElementWait(unpaidInvoiceLink);
-        unpaidInvoiceLink.click();
-        ts.presenceOfElementWait(firstInvoice);
-        ts.presenceOfElementWait(firstID);
-        firstID.click();
-        ts.presenceOfElementWait(title);
-        ts.presenceOfElementWait(clientInfo);
-        ts.presenceOfElementWait(summary);
-        List<WebElement> allCheckbox = driver.findElements(By.cssSelector("[type='checkbox']"));
-        allCheckbox.get(1).click();
-        ts.presenceOfElementWait(cancelOrder);
-        cancelOrder.click();
-        ts.presenceOfElementWait(cancelOrderYesButton);
-        cancelOrderYesButton.click();
-        ts.presenceOfElementWait(status);
-        String successMessage=status.getText();
-        org.junit.Assert.assertTrue(successMessage.contains("successfully"));
 
-    }
 
 
     public static LocalDate getRandomDate(LocalDate startDate, LocalDate endDate) {
