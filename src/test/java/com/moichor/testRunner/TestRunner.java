@@ -12,7 +12,7 @@ import org.junit.runner.RunWith;
       "html:target/site/cucumber-pretty",
       "json:target/cucumber/cucumber.json",
       "usage:target/usage.jsonx",
-      "junit:target/cucumber.xml"
+      "junit:target/cucumber.xml" 
     },
     glue = {
             "com/moichor/stepDefinations","com.moichor.base"
